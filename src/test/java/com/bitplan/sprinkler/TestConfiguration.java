@@ -20,7 +20,11 @@
  */
 package com.bitplan.sprinkler;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
+import com.bitplan.sprinkler.Location.Coordinate;
 
 /**
  * check the configuration
@@ -39,6 +43,19 @@ public class TestConfiguration {
     conf.setLatestSprinkleHour(20.5);
     conf.setlEvaporationPerDay(200);
     conf.setSprinklesPerDay(2);
+    Configuration conf2=new Configuration();
+    Location loc2=new Location();
+    Coordinate coord=new Coordinate();
+    coord.setLat(50.94);
+    coord.setLon(6.958);
+    loc2.setCoord(coord);
+    loc2.setName("Cologne");
+    loc2.setCountry("DE");
+    loc2.setId(Location.byName("Cologne").getId());
+    conf2.setLocation(loc2);
+    Location loc3=Location.byId(loc2.getId());
+    assertEquals(loc3.getName(),loc2.getName());
+    assertEquals("US",loc3.getCountry()); // really US? - need to fix byName then
   }
 
 }

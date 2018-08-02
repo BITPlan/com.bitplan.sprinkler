@@ -77,7 +77,19 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
+			<!-- sure-fire (test) plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.18.1</version>
+				<configuration>
+					<excludes>
+						<!-- JUnit4 TestSuites -->
+						<exclude>**/TestSuite.java</exclude>
+						<exclude>**/TestDebug.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 			<!-- License header handling -->
 			<plugin>
 				<!-- http://code.mycila.com/license-maven-plugin/ -->

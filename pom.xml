@@ -24,6 +24,9 @@
 		<system>Travis</system>
 	</ciManagement>
 	<properties>
+		<!-- http://stackoverflow.com/questions/3017695/how-to-configure-encoding-in-maven -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<!-- JUnit unit testing framework -->
 		<junit4.version>4.12</junit4.version>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->

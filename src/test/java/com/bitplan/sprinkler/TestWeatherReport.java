@@ -69,7 +69,7 @@ public class TestWeatherReport {
   
   @Test
   public void testWeatherForecast() throws Exception {
-    TestSuite.debug=true;
+    //TestSuite.debug=true;
     Location moscow=Location.byId(524901);
     WeatherForecast.debug=TestSuite.debug;
     WeatherForecast forecast=WeatherForecast.getByLocation(moscow);

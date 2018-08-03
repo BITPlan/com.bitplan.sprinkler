@@ -29,5 +29,5 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Rain {
   @SerializedName(value="3h")
-  double mm;
+  public double mm;
 }

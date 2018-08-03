@@ -20,6 +20,8 @@
  */
 package com.bitplan.sprinkler;
 
+import org.kohsuke.args4j.Option;
+import org.openweathermap.weather.Forecast;
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.OpenWeatherMapApi;
 import org.openweathermap.weather.WeatherForecast;
@@ -28,9 +30,19 @@ import com.bitplan.javafx.Main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * main program to control Sprinkler via command line
+ * 
+ * @author wf
+ *
+ */
 public class Sprinkler extends Main {
 
   private static Sprinkler sprinkler;
+
+  @Option(name = "-rf", aliases = {
+      "--rainforecat" }, usage = "rain\nshow the rainforecat")
+  protected boolean rainforecast = false;
 
   @Override
   public String getSupportEMail() {
@@ -53,23 +65,35 @@ public class Sprinkler extends Main {
     if (this.showHelp) {
       showHelp();
     }
-    Configuration configuration=Configuration.getConfiguration("default");
-    if (configuration==null) {
-      System.err.println(String.format("There is no configuration file %s yet.\nYou might want to create on as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",Configuration.getJsonFile("default").getPath()));
+    Configuration configuration = Configuration.getConfiguration("default");
+    if (configuration == null) {
+      System.err.println(String.format(
+          "There is no configuration file %s yet.\nYou might want to create on as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
+          Configuration.getJsonFile("default").getPath()));
       if (!testMode)
         System.exit(1);
     } else {
-      Location location=configuration.getLocation();
+      Location location = configuration.getLocation();
       OpenWeatherMapApi.enableProduction(configuration.appid);
-      WeatherForecast forecast=WeatherForecast.getByLocation(location);
-      System.out.println(String.format("The forecast for the total precipitation for the next 5 days is %3.1f mm",forecast.totalPrecipitation(5)));
+      WeatherForecast forecast = WeatherForecast.getByLocation(location);
+      System.out.println(String.format(
+          "The forecast for the total precipitation for the next 5 days is %3.1f mm",
+          forecast.totalPrecipitation(5)));
+      if (rainforecast) {
+        for (Forecast threehours:forecast.list) {
+          double rain=0.0;
+          if (threehours.rain!=null)
+            rain=threehours.rain.mm;
+          System.out.println(String.format("%s %s mm", threehours.dt_txt,rain));
+        }
+      }
       if (this.debug) {
-        Gson gson=new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(gson.toJson(forecast));
       }
     }
   }
-  
+
   /**
    * main routine
    * 

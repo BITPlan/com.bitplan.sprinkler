@@ -68,12 +68,12 @@ public class JsonUtil {
   }
 
   /**
-   * read the given inputstream
+   * read a json string from the given input stream
    * @param stream
-   * @return
+   * @return - the json string
    * @throws IOException
    */
-  protected static String read(InputStream stream) throws IOException {
+  public static String read(InputStream stream) throws IOException {
     StringWriter jsonWriter = new StringWriter();
     IOUtils.copy(stream, jsonWriter, "UTF-8");
     String json = jsonWriter.toString();

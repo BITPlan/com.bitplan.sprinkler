@@ -59,5 +59,8 @@ public class TestCityList {
     }
     Location kndorf2=Location.byId(2887186);
     assertEquals(kndorf.getCoord(),kndorf2.getCoord());
+    
+    Location moscow=Location.byId(524901);
+    assertEquals("Moscow",moscow.getName());
   }
 }

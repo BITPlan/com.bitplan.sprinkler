@@ -21,38 +21,18 @@
 package org.openweathermap.weather;
 
 /**
- * Weather Report from openweathermap.org
- * 
+ * Forecast for openweathermap
+ * example https://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=b6907d289e10d714a6e88b30761fae22
  * @author wf
  *
  */
-public class WeatherReport extends OpenWeatherMapApi {
-  /**
-   * members of the Weather report
-   */
-  public Coord coord;
-  public Weather[] weather;
+public class Forecast {
+  public long dt;
+  public String dt_txt;
   public Main main;
+  public Weather[] weather;
   public Clouds clouds;
+  public Snow snow;
   public Rain rain;
   public Wind wind;
-  public Sys sys;
-  public String base;
-  public long id;
-  public long dt;
-  public String name;
-  public long cod;
-  
-  /**
-   * get a Weather report by location
-   * @param location
-   * @return - the weather report
-   */
-  public static WeatherReport getByLocation(Location location) {
-    WeatherReport report=(WeatherReport) OpenWeatherMapApi.getByLocation(location, "weather", WeatherReport.class);
-    return report;
-  }
-
-  
-  
 }

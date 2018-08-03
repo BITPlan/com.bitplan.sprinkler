@@ -20,11 +20,14 @@
  */
 package com.bitplan.sprinkler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.Weather;
+import org.openweathermap.weather.WeatherForecast;
 import org.openweathermap.weather.WeatherReport;
 
 import com.google.gson.Gson;
@@ -39,7 +42,6 @@ public class TestWeatherReport {
 
   @Test
   public void testWeatherReport() throws Exception {
-    TestSuite.debug=true;
     Location location=Location.byName("Cairns");
     WeatherReport.debug=TestSuite.debug;
     WeatherReport report=WeatherReport.getByLocation(location);
@@ -63,6 +65,23 @@ public class TestWeatherReport {
     assertEquals("scattered clouds",weather.description);
     assertEquals("03n",weather.icon);
     assertNull(report.rain);
+  }
+  
+  @Test
+  public void testWeatherForecast() throws Exception {
+    TestSuite.debug=true;
+    Location moscow=Location.byId(524901);
+    WeatherForecast.debug=TestSuite.debug;
+    WeatherForecast forecast=WeatherForecast.getByLocation(moscow);
+    assertNotNull(forecast);
+   
+    if (TestSuite.debug) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+      System.out.println(gson.toJson(forecast));
+    }
+    assertEquals("Moscow",forecast.city.getName());
+    assertEquals(40,forecast.list.length);
+    assertEquals(2.645,forecast.totalPrecipitation(3),0.001);
   }
 
 }

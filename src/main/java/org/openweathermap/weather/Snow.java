@@ -20,39 +20,14 @@
  */
 package org.openweathermap.weather;
 
-/**
- * Weather Report from openweathermap.org
- * 
- * @author wf
- *
- */
-public class WeatherReport extends OpenWeatherMapApi {
-  /**
-   * members of the Weather report
-   */
-  public Coord coord;
-  public Weather[] weather;
-  public Main main;
-  public Clouds clouds;
-  public Rain rain;
-  public Wind wind;
-  public Sys sys;
-  public String base;
-  public long id;
-  public long dt;
-  public String name;
-  public long cod;
-  
-  /**
-   * get a Weather report by location
-   * @param location
-   * @return - the weather report
-   */
-  public static WeatherReport getByLocation(Location location) {
-    WeatherReport report=(WeatherReport) OpenWeatherMapApi.getByLocation(location, "weather", WeatherReport.class);
-    return report;
-  }
+import com.google.gson.annotations.SerializedName;
 
-  
-  
+/**
+ * Snow as in open weather API
+ * @author wf
+ * "snow":{"3h":0},
+ */
+public class Snow {
+  @SerializedName(value="3h")
+  double mm;
 }

@@ -43,4 +43,15 @@ public interface FritzBoxSession {
    * @return
    */
   public String getMd5(String input);
+  
+  /**
+   * get an XML Result for the given params
+   * @param relativeUrl
+   * @param params
+   * @param clazz
+   * @return the type
+   * @throws Exception 
+   */
+  @SuppressWarnings("rawtypes")
+  public <T> T getXmlResult(String relativeUrl,String params,Class clazz) throws Exception;
 }

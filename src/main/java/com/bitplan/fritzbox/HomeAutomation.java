@@ -20,12 +20,31 @@
  */
 package com.bitplan.fritzbox;
 
-import javax.xml.bind.annotation.XmlRootElement;
+/**
+ * Home Automation access
+ * @author wf
+ *
+ */
+public class HomeAutomation {
+  private final static String BASE_URL = "/webservices/homeautoswitch.lua";
+  private FritzBoxSession session;
+ 
+  /**
+   * construct me from a session
+   * @param session
+   */
+  public HomeAutomation(FritzBoxSession session) {
+    this.session=session;
+  }
 
-@XmlRootElement(name="SessionInfo")
-public class SessionInfo {
- //  <?xml version="1.0" encoding="utf-8"?><SessionInfo><SID>0000000000000000</SID><Challenge>096fe520</Challenge><BlockTime>0</BlockTime><Rights></Rights></SessionInfo>
- public String SID;
- public String Challenge;
- public long BlockTime;
+  /**
+   * get the Device List
+   * @return 
+   * @throws Exception
+   */
+  public DeviceList getDeviceList() throws Exception {
+    String params=String.format("?switchcmd=getdevicelistinfos");
+    DeviceList deviceList=session.getXmlResult(BASE_URL, params, DeviceList.class);
+    return deviceList;
+  }
 }

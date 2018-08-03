@@ -53,6 +53,7 @@ public class FritzBoxSessionImpl implements FritzBoxSession {
   protected static Logger LOGGER = Logger.getLogger("com.bitplan.fritzbox");
   
   String LOGIN_URL="/login_sid.lua";
+  
   private static final String DEFAULT_SESSION_ID="0000000000000000";
   private Fritzbox fritzbox;
   Charset UTF_16LE = Charset.forName("utf-16le");
@@ -108,9 +109,6 @@ public class FritzBoxSessionImpl implements FritzBoxSession {
     
     try {
       sessionInfo = this.getSessionInfo("");
-      if (!DEFAULT_SESSION_ID.equals(sessionInfo.SID)) {
-        throw new IllegalStateException("login called twice session "+sessionInfo.SID+" is active");
-      }
       String challengeResponse=sessionInfo.Challenge+"-"+this.getMd5(sessionInfo.Challenge+"-"+fritzbox.password);
       String params=String.format("?username=%s&response=%s", fritzbox.username,challengeResponse);
       sessionInfo=this.getSessionInfo(params);
@@ -128,18 +126,37 @@ public class FritzBoxSessionImpl implements FritzBoxSession {
    * @throws IOException
    */
   protected SessionInfo getSessionInfo(String params) throws Exception, IOException {
+    SessionInfo sessionInfo=this.getXmlResult(LOGIN_URL, params, SessionInfo.class);
+    return sessionInfo;
+  }
+  
+  /**
+   * get the XML Result
+   * @param relativeUrl
+   * @param params
+   * @param clazz
+   * @return the extracted JaxB Object
+   * @throws Exception
+   */
+  @SuppressWarnings("rawtypes")
+  public <T> T getXmlResult(String relativeUrl,String params,Class clazz) throws Exception {
     String xml;
-    xml = JsonUtil.read(fritzbox.url+LOGIN_URL+params);
+    // if logged in we need to add the session id security parameter
+    String security="";
+    if (this.sessionInfo!=null && !DEFAULT_SESSION_ID.equals(this.sessionInfo.SID)) {
+      security="&sid="+this.sessionInfo.SID;
+    }
+    xml = JsonUtil.read(fritzbox.url+relativeUrl+params+security);
     if (debug)
       LOGGER.log(Level.INFO, xml);
-    SessionInfo sessionInfo=JAXB.unmarshal(new StringReader(xml), SessionInfo.class);
-    return sessionInfo;
+    @SuppressWarnings("unchecked")
+    T result=(T) JAXB.unmarshal(new StringReader(xml), clazz);
+    return result;
   }
 
   @Override
   public void logout() {
-    // TODO Auto-generated method stub
-    
+    this.sessionInfo=null;
   }
 
   @Override

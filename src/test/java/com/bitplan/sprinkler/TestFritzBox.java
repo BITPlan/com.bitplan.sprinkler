@@ -25,9 +25,11 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.bitplan.fritzbox.DeviceList;
 import com.bitplan.fritzbox.FritzBoxSession;
 import com.bitplan.fritzbox.FritzBoxSessionImpl;
 import com.bitplan.fritzbox.Fritzbox;
+import com.bitplan.fritzbox.HomeAutomation;
 
 /**
  * test the fritz box access
@@ -42,6 +44,25 @@ public class TestFritzBox {
           config.fritzbox);
       FritzBoxSession session = new FritzBoxSessionImpl(config.fritzbox);
       session.login();
+      // FritzBoxSessionImpl.debug=true;
+      session.logout();
+    }
+  }
+  
+  @Test
+  public void testHomeAutomation() throws Exception {
+    Configuration config = Configuration.getConfiguration("default");
+    if (config != null) {
+      assertNotNull("There should be a fritzbox configuration",
+          config.fritzbox);
+      FritzBoxSession session = new FritzBoxSessionImpl(config.fritzbox);
+      session.login();
+      HomeAutomation homeAutomation=new HomeAutomation(session);
+      FritzBoxSessionImpl.debug=true;
+      DeviceList deviceList=homeAutomation.getDeviceList();
+      assertEquals(1,deviceList.version);
+      assertNotNull(deviceList.devices);
+      assertEquals(11,deviceList.devices.size());
     }
   }
 

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.bitplan.sprinkler.Location.Coordinate;
 import com.google.gson.Gson;
 
 /**
@@ -33,17 +34,16 @@ import com.google.gson.Gson;
  *
  */
 public class TestCityList {
-  boolean debug=false;
 
   @Test
   public void testCityList() throws Exception {
-    Location.debug=debug;
+    Location.debug=TestSuite.debug;
     Location[] locations=Location.getLocations();
-    if (debug)
+    if (TestSuite.debug)
       System.out.println("Found "+locations.length+" cities");
     // as of 2018-08 there are more than 200.000 cities
     assertTrue(locations.length>20000);
-    if (debug) {
+    if (TestSuite.debug) {
       Gson gson=new Gson();
     
       for (int i=0;i<=1;i++) {
@@ -52,6 +52,10 @@ public class TestCityList {
     }
     Location kndorf=Location.byName("Knickelsdorf");
     assertEquals(2887186,kndorf.getId());
+    Coordinate coord = kndorf.getCoord();
+    if (TestSuite.debug) {
+      System.out.println(String.format("lat: %4.2f lon: %4.2f", coord.getLat(),coord.getLon()));
+    }
     Location kndorf2=Location.byId(2887186);
     assertEquals(kndorf.getCoord(),kndorf2.getCoord());
   }

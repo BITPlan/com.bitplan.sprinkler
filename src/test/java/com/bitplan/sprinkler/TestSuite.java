@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ TestCityList.class, 
+@Suite.SuiteClasses({ TestDebug.class,TestCityList.class, 
     TestConfiguration.class
     })
 /**
@@ -35,4 +35,5 @@ import org.junit.runners.Suite;
  *         no content necessary - annotation has info
  */
 public class TestSuite {
+  public static boolean debug=false;
 }

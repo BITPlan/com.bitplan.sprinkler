@@ -21,6 +21,7 @@
 package com.bitplan.sprinkler;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -43,6 +44,7 @@ public class TestConfiguration {
     conf.setLatestSprinkleHour(20.5);
     conf.setlEvaporationPerDay(200);
     conf.setSprinklesPerDay(2);
+    conf.setlPerMinute(1); // 600 l per hour
     Configuration conf2=new Configuration();
     Location loc2=new Location();
     Coordinate coord=new Coordinate();
@@ -54,8 +56,16 @@ public class TestConfiguration {
     loc2.setId(Location.byName("Cologne").getId());
     conf2.setLocation(loc2);
     Location loc3=Location.byId(loc2.getId());
+    // check results
     assertEquals(loc3.getName(),loc2.getName());
     assertEquals("US",loc3.getCountry()); // really US? - need to fix byName then
+    assertEquals(100,conf.getAreaSizeSquareMeter(),0.1);
+    assertEquals(7.5,conf.getEarliestSprinkleHour(),0.1);
+    assertEquals(20.5,conf.getLatestSprinkleHour(),0.01);
+    assertEquals(200,conf.getlEvaporationPerDay(),0.01);
+    assertEquals(2,conf.getSprinklesPerDay());
+    assertEquals(1.0,conf.getlPerMinute(),0.01);
+    assertNotNull(conf.getLocation());
   }
 
 }

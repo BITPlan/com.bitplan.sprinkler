@@ -18,19 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.sprinkler;
+package org.openweathermap.weather;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
-import org.apache.commons.io.IOUtils;
-
+import com.bitplan.util.JsonUtil;
 import com.google.gson.Gson;
 
 /**
@@ -48,23 +43,7 @@ public class Location {
   long id;
   String name;
   String country;
-  public static class Coordinate {
-    double lat;
-    double lon;
-    public double getLat() {
-      return lat;
-    }
-    public void setLat(double lat) {
-      this.lat = lat;
-    }
-    public double getLon() {
-      return lon;
-    }
-    public void setLon(double lon) {
-      this.lon = lon;
-    }
-  }
-  Coordinate coord;
+  Coord coord;
 
   public long getId() {
     return id;
@@ -86,10 +65,10 @@ public class Location {
   public void setCountry(String country) {
     this.country = country;
   }
-  public Coordinate getCoord() {
+  public Coord getCoord() {
     return coord;
   }
-  public void setCoord(Coordinate coord) {
+  public void setCoord(Coord coord) {
     this.coord = coord;
   }
   /**
@@ -100,12 +79,7 @@ public class Location {
    */
   public static Location[] getLocations() throws MalformedURLException, IOException {
     if (locations==null) {
-      InputStream urlStream = new URL(url).openStream();
-      InputStream gzStream =new GZIPInputStream(urlStream);
-      StringWriter jsonWriter = new StringWriter();
-      IOUtils.copy(gzStream, jsonWriter, "UTF-8");
-      String json = jsonWriter.toString();
-      urlStream.close();
+      String json=JsonUtil.readGZIP(url);
       if (debug)
         System.out.println(json.substring(0, 280));
       Gson gson=new Gson();

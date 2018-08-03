@@ -18,17 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.sprinkler;
+package org.openweathermap.weather;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class TestDebug {
-
-  @Test
-  public void testDebug() {
-    TestSuite.debug=true;
-  }
-
+/**
+ * "sys":{"country":"JP","sunrise":1369769524,"sunset":1369821049},
+ * @author wf
+ *
+ */
+public class Sys {
+  public String message;
+  public String country;
+  public long sunrise;
+  public long sunset;
 }

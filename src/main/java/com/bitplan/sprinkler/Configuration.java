@@ -20,6 +20,8 @@
  */
 package com.bitplan.sprinkler;
 
+import org.openweathermap.weather.Location;
+
 /**
  * configuration of the irrigation system
  * see https://github.com/BITPlan/com.bitplan.sprinkler/issues/1

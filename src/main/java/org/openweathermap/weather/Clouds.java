@@ -18,17 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.sprinkler;
+package org.openweathermap.weather;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class TestDebug {
-
-  @Test
-  public void testDebug() {
-    TestSuite.debug=true;
-  }
-
+/**
+ * Clouds as in open weather API see https://openweathermap.org/current#JSON
+ * "clouds":{"all":92},
+ * @author wf
+ *
+ */
+public class Clouds {
+  int all; // cloudiness in %
 }

@@ -18,17 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.sprinkler;
+package org.openweathermap.weather;
 
-import static org.junit.Assert.*;
+import com.google.gson.annotations.SerializedName;
 
-import org.junit.Test;
-
-public class TestDebug {
-
-  @Test
-  public void testDebug() {
-    TestSuite.debug=true;
-  }
-
+/**
+ * Rain as in open weather API
+ * @author wf
+ * "rain":{"3h":0},
+ */
+public class Rain {
+  @SerializedName(value="3h")
+  double mm;
 }

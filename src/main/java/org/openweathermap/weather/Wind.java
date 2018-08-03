@@ -18,17 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.sprinkler;
+package org.openweathermap.weather;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class TestDebug {
-
-  @Test
-  public void testDebug() {
-    TestSuite.debug=true;
-  }
-
+/**
+ * Wind as in openweather API
+ * "wind":{"speed":7.31,"deg":187.002},
+ * @author wf
+ *
+ */
+public class Wind {
+  public double speed;
+  public double deg;
 }

@@ -18,17 +18,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.sprinkler;
+package org.openweathermap.weather;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class TestDebug {
-
-  @Test
-  public void testDebug() {
-    TestSuite.debug=true;
-  }
-
+/**
+ * 
+ * "main":{"temp":293.25,"pressure":1019,"humidity":83,"temp_min":289.82,"temp_max":295.37},
+ * @author wf
+ *
+ */
+public class Main {
+  double temp;
+  double pressure;
+  double humidity;
+  double temp_min;
+  double temp_max;
 }

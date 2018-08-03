@@ -24,8 +24,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-
-import com.bitplan.sprinkler.Location.Coordinate;
+import org.openweathermap.weather.Coord;
+import org.openweathermap.weather.Location;
 
 /**
  * check the configuration
@@ -47,7 +47,7 @@ public class TestConfiguration {
     conf.setlPerMinute(1); // 600 l per hour
     Configuration conf2=new Configuration();
     Location loc2=new Location();
-    Coordinate coord=new Coordinate();
+    Coord coord=new Coord();
     coord.setLat(50.94);
     coord.setLon(6.958);
     loc2.setCoord(coord);

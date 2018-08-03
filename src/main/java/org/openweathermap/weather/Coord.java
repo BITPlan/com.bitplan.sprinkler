@@ -18,17 +18,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.sprinkler;
+package org.openweathermap.weather;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-public class TestDebug {
-
-  @Test
-  public void testDebug() {
-    TestSuite.debug=true;
+public class Coord {
+  double lat;
+  double lon;
+  public double getLat() {
+    return lat;
   }
-
+  public void setLat(double lat) {
+    this.lat = lat;
+  }
+  public double getLon() {
+    return lon;
+  }
+  public void setLon(double lon) {
+    this.lon = lon;
+  }
 }

@@ -24,8 +24,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.openweathermap.weather.Coord;
+import org.openweathermap.weather.Location;
 
-import com.bitplan.sprinkler.Location.Coordinate;
 import com.google.gson.Gson;
 
 /**
@@ -52,7 +53,7 @@ public class TestCityList {
     }
     Location kndorf=Location.byName("Knickelsdorf");
     assertEquals(2887186,kndorf.getId());
-    Coordinate coord = kndorf.getCoord();
+    Coord coord = kndorf.getCoord();
     if (TestSuite.debug) {
       System.out.println(String.format("lat: %4.2f lon: %4.2f", coord.getLat(),coord.getLon()));
     }

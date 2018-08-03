@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 
 import org.openweathermap.weather.Location;
 
+import com.bitplan.fritzbox.Fritzbox;
 import com.bitplan.util.JsonUtil;
 import com.google.gson.Gson;
 
@@ -37,6 +38,7 @@ import com.google.gson.Gson;
  */
 public class Configuration {
   Location location;
+  Fritzbox fritzbox;
   String appid; // openweathermap appid
   double lPerMinute;
   double areaSizeSquareMeter;

@@ -26,6 +26,11 @@ import java.util.logging.Logger;
 import com.bitplan.util.JsonUtil;
 import com.google.gson.Gson;
 
+/**
+ * base class for open weather map api calls 
+ * @author wf
+ *
+ */
 public class OpenWeatherMapApi {
   // prepare a LOGGER
   protected static Logger LOGGER = Logger.getLogger("org.openweathermap.weather");

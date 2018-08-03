@@ -96,7 +96,10 @@ public class Location {
   public static Map<String,Location> getLocationsByName() throws Exception {
     if (locationsByNameMap.size()==0) {
       for (Location location:getLocations()) {
-        locationsByNameMap.put(location.getName(), location);
+        String key=location.getName()+"/"+location.country;
+        //if (locationsByNameMap.containsKey(key))
+        //  System.err.println("Duplicate location key "+key);
+        locationsByNameMap.put(key, location);
       }
     }
     return locationsByNameMap;
@@ -104,12 +107,12 @@ public class Location {
   
   /**
    * get a location by name
-   * @param name - the name to lookup
+   * @param key - the key (name/country) to lookup
    * @return the location
    * @throws Exception 
    */
-  public static Location byName(String name) throws Exception {
-    Location location=getLocationsByName().get(name);
+  public static Location byName(String key) throws Exception {
+    Location location=getLocationsByName().get(key);
     return location;
   }
   

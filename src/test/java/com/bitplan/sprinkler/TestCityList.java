@@ -21,6 +21,7 @@
 package com.bitplan.sprinkler;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -51,7 +52,8 @@ public class TestCityList {
         System.out.println(gson.toJson(locations[i]));
       }
     }
-    Location kndorf=Location.byName("Knickelsdorf");
+    Location kndorf=Location.byName("Knickelsdorf/DE");
+    assertNotNull(kndorf);
     assertEquals(2887186,kndorf.getId());
     Coord coord = kndorf.getCoord();
     if (TestSuite.debug) {
@@ -59,6 +61,9 @@ public class TestCityList {
     }
     Location kndorf2=Location.byId(2887186);
     assertEquals(kndorf.getCoord(),kndorf2.getCoord());
+    
+    Location willich=Location.byName("Willich/DE");
+    assertEquals(2808559,willich.getId());
     
     Location moscow=Location.byId(524901);
     assertEquals("Moscow",moscow.getName());

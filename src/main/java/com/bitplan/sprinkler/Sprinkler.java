@@ -41,8 +41,12 @@ public class Sprinkler extends Main {
   private static Sprinkler sprinkler;
 
   @Option(name = "-rf", aliases = {
-      "--rainforecat" }, usage = "rain\nshow the rainforecat")
+      "--rainforecast" }, usage = "rain\nshow the rainforecat")
   protected boolean rainforecast = false;
+
+  @Option(name = "-l", aliases = {
+      "--location" }, usage = "location\nuse/lookup the given location name")
+  protected String locationName;
 
   @Override
   public String getSupportEMail() {
@@ -57,6 +61,16 @@ public class Sprinkler extends Main {
         "Dear sprinkler support\nI am using version %s of the software on %s using Java %s\n",
         VERSION, os, javaversion);
   }
+  
+  /**
+   * exit with the given error message
+   * @param msg
+   */
+  private void error(String msg) {
+    System.err.println(msg);
+    if (!testMode)
+      System.exit(1);
+  }
 
   @Override
   public void work() throws Exception {
@@ -67,24 +81,28 @@ public class Sprinkler extends Main {
     }
     Configuration configuration = Configuration.getConfiguration("default");
     if (configuration == null) {
-      System.err.println(String.format(
+      error(String.format(
           "There is no configuration file %s yet.\nYou might want to create on as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
           Configuration.getJsonFile("default").getPath()));
-      if (!testMode)
-        System.exit(1);
     } else {
       Location location = configuration.getLocation();
+      if (locationName!=null) {
+        location=Location.byName(locationName);
+        if (location==null)
+          error("Could not find location "+locationName);
+      }
       OpenWeatherMapApi.enableProduction(configuration.appid);
       WeatherForecast forecast = WeatherForecast.getByLocation(location);
       System.out.println(String.format(
-          "The forecast for the total precipitation for the next 5 days is %3.1f mm",
-          forecast.totalPrecipitation(5)));
+          "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %3.1f mm",
+          forecast.city.getName(), forecast.city.getCountry(),forecast.city.getId(), forecast.totalPrecipitation(5)));
       if (rainforecast) {
-        for (Forecast threehours:forecast.list) {
-          double rain=0.0;
-          if (threehours.rain!=null)
-            rain=threehours.rain.mm;
-          System.out.println(String.format("%s %s mm", threehours.dt_txt,rain));
+        for (Forecast threehours : forecast.list) {
+          double rain = 0.0;
+          if (threehours.rain != null)
+            rain = threehours.rain.mm;
+          System.out
+              .println(String.format("%s %4.1f mm", threehours.dt_txt, rain));
         }
       }
       if (this.debug) {
@@ -93,6 +111,8 @@ public class Sprinkler extends Main {
       }
     }
   }
+
+
 
   /**
    * main routine

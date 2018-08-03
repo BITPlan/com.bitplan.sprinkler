@@ -1,3 +1,12 @@
+# travis configuration for com.bitplan.sprinkler open source project
+# WF 2018-08-02
+# https://github.com/lukaszlenart/launch4j-maven-plugin/issues/29
+# https://github.com/travis-ci/travis-ci/issues/3701
+sudo: required
+before_script:
+  - sudo apt-get update
+  - sudo apt-get install libc6:i386 libstdc++6:i386
+
 # this is a java project using maven
 language: java
 # switch off gpg handling

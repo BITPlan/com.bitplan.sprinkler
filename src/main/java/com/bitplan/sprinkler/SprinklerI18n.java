@@ -35,6 +35,14 @@ public class SprinklerI18n {
   public static final String HELP_MENU="helpMenu"; //Help 
   public static final String HELP_ABOUT_MENU_ITEM="helpAboutMenuItem"; //About
   
+  public static final String SETTINGS_PREFERENCES_MENU_ITEM="settingsPreferencesMenuItem"; //Preferences
+  public static final String FRITZ_BOX="FritzBox"; //"FRITZ!Box"
+  public static final String WEATHER_FORECAST="WeatherForecast"; //Weather forecast
+  public static final String SETTINGS_MENU="settingsMenu"; //Settings
+  public static final String CURRENT_WEATHER="CurrentWeather"; //current Weather
+  public static final String WEATHER_HISTORY="WeatherHistory"; //Weather history
+  public static final String WEATHER_MENU="weatherMenu"; //Weather
+  
   public static final String WE_ARE_SORRY="weAreSorry"; //We are sorry ...
   public static final String NOT_IMPLEMENTED_YET="notImplementedYet"; //is not implemented yet
   public static final String SORRY="sorry"; //sorry

@@ -3,20 +3,88 @@
 	"home": "http://wiki.bitplan.com/index.php/Sprinkler",
 	"feedback": "https://github.com/BITPlan/com.bitplan.sprinkler/issues",
 	"help": "http://wiki.bitplan.com/index.php/Sprinkler/Help",
-	"groups": [{
+	"groups": [
+		{
+			"id": "sprinklerGroup",
+			"title": "Sprinkler",
+			"icon": "watering_can",
+			"forms": [
+				{
+					"title": "Sprinkle",
+					"icon": "on_off",
+					"fields": [
+						{
+							"title": "on",
+							"type": "Boolean"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "weatherGroup",
+			"title": "Weather",
+			"icon": "cloud",
+			"forms": [
+				{
+					"title": "CurrentWeather",
+					"icon": "eye",
+					"fields": [
+						{
+							"title": "CurrentWeather",
+							"fieldKind": "Plot"
+						}
+					]
+				},
+				{
+					"title": "WeatherForecast",
+					"icon": "hand_alt_right",
+					"fields": [
+						{
+							"title": "WeatherForecast",
+							"fieldKind": "Plot"
+						}
+					]
+				},
+				{
+					"title": "WeatherHistory",
+					"icon": "history",
+					"fields": [
+						{
+							"title": "WeatherHistory",
+							"fieldKind": "Plot"
+						}
+					]
+				}
+			]
+		},
+		{
 			"id": "preferencesGroup",
-			"forms": [{
+			"title": "Preferences",
+			"icon": "cogs",
+			"forms": [
+				{
 					"title": "Settings",
 					"id": "settingsForm",
-					"icon": "garden",
+					"icon": "tint",
 					"headerText": "choose your sprinkler area settings",
-					"fields": [{
+					"fields": [
+						{
 							"title": "soilType",
 							"hint": "type of Soil",
 							"format": "%s",
 							"type": "Choice",
 							"choices": "Sand,Silt,Clay"
-						}, {
+						},
+						{
+							"title": "mmPerHour",
+							"hint": "rain equivalent of mm per Hour the sprinkler can apply",
+							"type": "Double",
+							"fieldSize": 5,
+							"format": "%5.1f",
+							"labelSize": 20
+						},
+						{
 							"title": "areaSizeSquareMeter",
 							"hint": "size of the area to be sprinkled in square meters",
 							"type": "Integer",
@@ -53,7 +121,8 @@
 					"id": "preferencesForm",
 					"icon": "preferences",
 					"headerText": "choose your Preferences",
-					"fields": [{
+					"fields": [
+						{
 							"title": "language",
 							"hint": "the language of your choice",
 							"format": "%s",
@@ -103,14 +172,9 @@
 				{
 					"title": "FritzBox",
 					"id": "fritzBoxForm",
-					"icon": "vehicle",
+					"icon": "plug",
 					"headerText": "FritzBox details",
-					"fields": [{
-							"title": "nickName",
-							"format": "%s",
-							"labelSize": 10,
-							"fieldSize": 40
-						},
+					"fields": [
 						{
 							"title": "url",
 							"format": "%s",
@@ -129,43 +193,28 @@
 							"labelSize": 10,
 							"fieldSize": 40,
 							"type": "Password"
-							
-						},	
+						},
 						{
 							"title": "password2",
 							"format": "%s",
 							"labelSize": 10,
 							"fieldSize": 40,
 							"type": "Password"
+						},
+						{
+							"title": "deviceName",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40
 						}
-					]
-				}
-			]
-		},
-		{
-			"id": "mainGroup",
-			"forms": [
-				{
-					"title": "Current Weather",
-					"fields": [{
-						"title": "Current Weather",
-						"fieldKind": "Plot"
-					}]
-				},
-				{
-					"title": "Weather Forecast",
-					"fields": [{
-							"title": "Weather Forecast",
-							"fieldKind": "Plot"
-						}
-
 					]
 				}
 			]
 		}
 	],
 	"mainMenu": {
-		"subMenus": [{
+		"subMenus": [
+			{
 				"id": "fileMenu",
 				"title": "File",
 				"shortCut": "F",
@@ -181,19 +230,20 @@
 				"id": "weatherMenu",
 				"title": "Weather",
 				"shortCut": "W",
-				"menuItems": [{
+				"menuItems": [
+					{
 						"id": "current",
-						"title": "Current",
+						"title": "CurrentWeather",
 						"shortCut": "C"
 					},
 					{
 						"id": "forecast",
-						"title": "Forecast",
+						"title": "WeatherForecast",
 						"shortCut": "F"
 					},
 					{
 						"id": "history",
-						"title": "History",
+						"title": "WeatherHistory",
 						"shortCut": "H"
 					}
 				]
@@ -202,7 +252,8 @@
 				"id": "settingsMenu",
 				"title": "Settings",
 				"shortCut": "S",
-				"menuItems": [{
+				"menuItems": [
+					{
 						"id": "settingsSprinkleAreaMenuItem",
 						"title": "SprinkleArea",
 						"shortCut": "S"
@@ -217,34 +268,36 @@
 						"title": "Welcome",
 						"shortCut": "W"
 					}
-
 				]
 			},
 			{
 				"id": "SprinklerMenu",
 				"title": "Sprinkler",
 				"shortCut": "S",
-				"menuItems": [{
-					"id": "autoMenuItem",
-					"title": "Automatic",
-					"shortCut": "A"
-				},
-				{
-					"id": "beginMenuItem",
-					"title": "Begin",
-					"shortCut": "B"
-				},
-				{
-					"id": "endMenuItem",
-					"title": "End",
-					"shortCut": "E"
-				}]
+				"menuItems": [
+					{
+						"id": "autoMenuItem",
+						"title": "Automatic",
+						"shortCut": "A"
+					},
+					{
+						"id": "beginMenuItem",
+						"title": "Begin",
+						"shortCut": "B"
+					},
+					{
+						"id": "endMenuItem",
+						"title": "End",
+						"shortCut": "E"
+					}
+				]
 			},
 			{
 				"id": "helpMenu",
 				"title": "Help",
 				"shortCut": "H",
-				"menuItems": [{
+				"menuItems": [
+					{
 						"id": "helpAboutMenuItem",
 						"title": "About",
 						"shortCut": "A"
@@ -268,15 +321,16 @@
 			}
 		]
 	},
-	"exceptionHelps": [{
-	   "exception": "java.net.BindException:Address already in use (Bind failed)",
-	   "url": "http://can4eve.bitplan.com/index.php/Help#java.net.BindException:_Address_already_in_use_.28Bind_failed.29",
-	   "i18nHint": "addressAlreadyInUse"
-	  },
-	  {
-	   "exception": "java.net.SocketException:Network is unreachable (connect failed)",
-	   "url": "http://can4eve.bitplan.com/index.php/Help#java.net.SocketException:_Network_is_unreachable_.28connect_failed.29",
-	   "i18nHint": "networkIsUnreachable"
-	  }
+	"exceptionHelps": [
+		{
+			"exception": "java.net.BindException:Address already in use (Bind failed)",
+			"url": "http://can4eve.bitplan.com/index.php/Help#java.net.BindException:_Address_already_in_use_.28Bind_failed.29",
+			"i18nHint": "addressAlreadyInUse"
+		},
+		{
+			"exception": "java.net.SocketException:Network is unreachable (connect failed)",
+			"url": "http://can4eve.bitplan.com/index.php/Help#java.net.SocketException:_Network_is_unreachable_.28connect_failed.29",
+			"i18nHint": "networkIsUnreachable"
+		}
 	]
 }

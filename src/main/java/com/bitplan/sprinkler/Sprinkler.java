@@ -41,12 +41,16 @@ public class Sprinkler extends Main {
   private static Sprinkler sprinkler;
 
   @Option(name = "-rf", aliases = {
-      "--rainforecast" }, usage = "rain\nshow the rainforecat")
+      "--rainforecast" }, usage = "rain\nshow the rainforecast")
   protected boolean rainforecast = false;
 
   @Option(name = "-l", aliases = {
       "--location" }, usage = "location\nuse/lookup the given location name")
   protected String locationName;
+
+  @Option(name = "-n", aliases = {
+      "--nogui" }, usage = "nogui\ndo not show the graphical user interfaces")
+  protected boolean nogui = false;
 
   @Override
   public String getSupportEMail() {
@@ -61,9 +65,10 @@ public class Sprinkler extends Main {
         "Dear sprinkler support\nI am using version %s of the software on %s using Java %s\n",
         VERSION, os, javaversion);
   }
-  
+
   /**
    * exit with the given error message
+   * 
    * @param msg
    */
   private void error(String msg) {
@@ -86,16 +91,17 @@ public class Sprinkler extends Main {
           Configuration.getJsonFile("default").getPath()));
     } else {
       Location location = configuration.getLocation();
-      if (locationName!=null) {
-        location=Location.byName(locationName);
-        if (location==null)
-          error("Could not find location "+locationName);
+      if (locationName != null) {
+        location = Location.byName(locationName);
+        if (location == null)
+          error("Could not find location " + locationName);
       }
       OpenWeatherMapApi.enableProduction(configuration.appid);
       WeatherForecast forecast = WeatherForecast.getByLocation(location);
       System.out.println(String.format(
           "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %3.1f mm",
-          forecast.city.getName(), forecast.city.getCountry(),forecast.city.getId(), forecast.totalPrecipitation(5)));
+          forecast.city.getName(), forecast.city.getCountry(),
+          forecast.city.getId(), forecast.totalPrecipitation(5 * 24)));
       if (rainforecast) {
         for (Forecast threehours : forecast.list) {
           double rain = 0.0;
@@ -110,9 +116,13 @@ public class Sprinkler extends Main {
         System.out.println(gson.toJson(forecast));
       }
     }
+    if (!nogui) {
+      SprinklerApp gApp = SprinklerApp.getInstance(this);
+      gApp.show();
+      gApp.waitOpen();
+      gApp.waitClose();
+    }
   }
-
-
 
   /**
    * main routine

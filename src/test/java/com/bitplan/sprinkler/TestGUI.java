@@ -18,14 +18,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bitplan.fritzbox;
+package com.bitplan.sprinkler;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import org.junit.Test;
 
-@XmlRootElement(name="SessionInfo")
-public class SessionInfo {
- //  <?xml version="1.0" encoding="utf-8"?><SessionInfo><SID>0000000000000000</SID><Challenge>096fe520</Challenge><BlockTime>0</BlockTime><Rights></Rights></SessionInfo>
- public String SID;
- public String Challenge;
- public long BlockTime;
+public class TestGUI {
+  static int SHOW_TIME = 16000;
+
+  
+  @Test
+  public void testGUI() throws Exception {
+    SprinklerApp gApp = SprinklerApp.getInstance(new Sprinkler());
+    gApp.show();
+    gApp.waitOpen();
+    Thread.sleep(SHOW_TIME);
+    gApp.close();
+  }
+
 }

@@ -1,0 +1,282 @@
+{
+	"name": "Sprinkler",
+	"home": "http://wiki.bitplan.com/index.php/Sprinkler",
+	"feedback": "https://github.com/BITPlan/com.bitplan.sprinkler/issues",
+	"help": "http://can4eve.bitplan.com/index.php/Help",
+	"groups": [{
+			"id": "preferencesGroup",
+			"forms": [{
+					"title": "Settings",
+					"id": "settingsForm",
+					"icon": "garden",
+					"headerText": "choose your sprinkler area settings",
+					"fields": [{
+							"title": "soilType",
+							"hint": "type of Soil",
+							"format": "%s",
+							"type": "Choice",
+							"choices": "Sand,Silt,Clay"
+						}, {
+							"title": "areaSizeSquareMeter",
+							"hint": "size of the area to be sprinkled in square meters",
+							"type": "Integer",
+							"fieldSize": 5,
+							"format": "%3d",
+							"labelSize": 10
+						},
+						{
+							"title": "earliestSprinkleHour",
+							"hint": "earliest time to sprinkle e.g. 6:30",
+							"format": "%s",
+							"fieldSize": 6,
+							"gridX": 3,
+							"gridY": 1
+						},
+						{
+							"title": "latestSprinkleHour",
+							"hint": "latest time to sprinkle e.g. 20:30",
+							"format": "%s",
+							"fieldSize": 6,
+							"gridX": 4,
+							"gridY": 1
+						},
+						{
+							"title": "debug",
+							"hint": "display debugging information for the sprinkler controller",
+							"format": "%s",
+							"type": "Boolean",
+							"gridX": 3,
+							"gridY": 3
+						}
+					]
+				},
+				{
+					"title": "Preferences",
+					"id": "preferencesForm",
+					"icon": "preferences",
+					"headerText": "choose your Preferences",
+					"fields": [{
+							"title": "language",
+							"hint": "the language of your choice",
+							"format": "%s",
+							"type": "Choice",
+							"choices": "en,de"
+						},
+						{
+							"title": "screenPercent",
+							"label": "% of Screen",
+							"hint": "percentage of display to be used 100=Fullscreen",
+							"format": "%s",
+							"type": "Integer"
+						},
+						{
+							"title": "debug",
+							"hint": "output debugging information for the application",
+							"format": "%s",
+							"type": "Boolean"
+						},
+						{
+							"title": "autoStart",
+							"hint": "automatically start OBD reading on start of application",
+							"format": "%s",
+							"type": "Boolean"
+						},
+						{
+							"title": "logPrefix",
+							"hint": "the prefix to use for logfiles",
+							"format": "%s"
+						},
+						{
+							"title": "logDirectory",
+							"hint": "the directory in which to store logfiles",
+							"format": "%s",
+							"type": "Directory",
+							"fieldSize": 60
+						},
+						{
+							"title": "screenShotDirectory",
+							"hint": "the directory in which to store screenShots",
+							"format": "%s",
+							"type": "Directory",
+							"fieldSize": 60
+						}
+					]
+				},
+				{
+					"title": "FritzBox",
+					"id": "fritzBoxForm",
+					"icon": "vehicle",
+					"headerText": "FritzBox details",
+					"fields": [{
+							"title": "nickName",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40
+						},
+						{
+							"title": "url",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40
+						},
+						{
+							"title": "username",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40
+						},
+						{
+							"title": "password",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40
+						},	
+						{
+							"title": "password2",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40,
+							"type": "Password"
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "mainGroup",
+			"forms": [
+				{
+					"title": "Current Weather",
+					"fields": [{
+						"title": "Current Weather",
+						"fieldKind": "Plot"
+					}]
+				},
+				{
+					"title": "Weather Forecast",
+					"fields": [{
+							"title": "Weather Forecast",
+							"fieldKind": "Plot"
+						}
+
+					]
+				}
+			]
+		}
+	],
+	"mainMenu": {
+		"subMenus": [{
+				"id": "fileMenu",
+				"title": "File",
+				"shortCut": "F",
+				"menuItems": [
+					{
+						"id": "fileQuitMenuItem",
+						"title": "Quit",
+						"shortCut": "Q"
+					}
+				]
+			},
+			{
+				"id": "weatherMenu",
+				"title": "Weather",
+				"shortCut": "W",
+				"menuItems": [{
+						"id": "current",
+						"title": "Current",
+						"shortCut": "C"
+					},
+					{
+						"id": "forecast",
+						"title": "Forecast",
+						"shortCut": "F"
+					},
+					{
+						"id": "history",
+						"title": "History",
+						"shortCut": "H"
+					}
+				]
+			},
+			{
+				"id": "settingsMenu",
+				"title": "Settings",
+				"shortCut": "S",
+				"menuItems": [{
+						"id": "settingsSprinkleAreaMenuItem",
+						"title": "SprinkleArea",
+						"shortCut": "S"
+					},
+					{
+						"id": "settingsPreferencesMenuItem",
+						"title": "Preferences",
+						"shortCut": "P"
+					},
+					{
+						"id": "settingsWelcomeMenuItem",
+						"title": "Welcome",
+						"shortCut": "W"
+					}
+
+				]
+			},
+			{
+				"id": "SprinklerMenu",
+				"title": "Sprinkler",
+				"shortCut": "S",
+				"menuItems": [{
+					"id": "autoMenuItem",
+					"title": "Automatic",
+					"shortCut": "A"
+				},
+				{
+					"id": "beginMenuItem",
+					"title": "Begin",
+					"shortCut": "B"
+				},
+				{
+					"id": "endMenuItem",
+					"title": "End",
+					"shortCut": "E"
+				}]
+			},
+			{
+				"id": "helpMenu",
+				"title": "Help",
+				"shortCut": "H",
+				"menuItems": [{
+						"id": "helpAboutMenuItem",
+						"title": "About",
+						"shortCut": "A"
+					},
+					{
+						"id": "helpHelpMenuItem",
+						"title": "sprinkler help",
+						"shortCut": "S"
+					},
+					{
+						"id": "helpFeedbackMenuItem",
+						"title": "send Feedback",
+						"shortCut": "F"
+					},
+					{
+						"id": "helpBugReportMenuItem",
+						"title": "create BugReport",
+						"shortCut": "B"
+					}
+				]
+			}
+		]
+	},
+	"exceptionHelps": [{
+	   "exception": "java.net.BindException:Address already in use (Bind failed)",
+	   "url": "http://can4eve.bitplan.com/index.php/Help#java.net.BindException:_Address_already_in_use_.28Bind_failed.29",
+	   "i18nHint": "addressAlreadyInUse"
+	  },
+	  {
+	   "exception": "java.net.SocketException:Network is unreachable (connect failed)",
+	   "url": "http://can4eve.bitplan.com/index.php/Help#java.net.SocketException:_Network_is_unreachable_.28connect_failed.29",
+	   "i18nHint": "networkIsUnreachable"
+	  }
+	]
+}

@@ -25,7 +25,7 @@ import java.io.FileInputStream;
 
 import org.openweathermap.weather.Location;
 
-import com.bitplan.fritzbox.Fritzbox;
+import com.bitplan.fritzbox.FritzboxImpl;
 import com.bitplan.util.JsonUtil;
 import com.google.gson.Gson;
 
@@ -38,14 +38,40 @@ import com.google.gson.Gson;
  */
 public class Configuration {
   Location location;
-  Fritzbox fritzbox;
+  FritzboxImpl fritzbox;
+  enum SoilType{Sand,Silt,Clay};
   String appid; // openweathermap appid
-  double lPerMinute;
+  SoilType soilType;
+  double mmPerHour;
   double areaSizeSquareMeter;
   double earliestSprinkleHour;
   double latestSprinkleHour;
   int sprinklesPerDay;
   double lEvaporationPerDay;
+
+  public String getAppid() {
+    return appid;
+  }
+
+  public void setAppid(String appid) {
+    this.appid = appid;
+  }
+
+  public SoilType getSoilType() {
+    return soilType;
+  }
+
+  public void setSoilType(SoilType soilType) {
+    this.soilType = soilType;
+  }
+
+  public double getMmPerHour() {
+    return mmPerHour;
+  }
+
+  public void setMmPerHour(double mmPerHour) {
+    this.mmPerHour = mmPerHour;
+  }
 
   public Location getLocation() {
     return location;
@@ -53,14 +79,6 @@ public class Configuration {
 
   public void setLocation(Location location) {
     this.location = location;
-  }
-
-  public double getlPerMinute() {
-    return lPerMinute;
-  }
-
-  public void setlPerMinute(double lPerMinute) {
-    this.lPerMinute = lPerMinute;
   }
 
   public double getAreaSizeSquareMeter() {

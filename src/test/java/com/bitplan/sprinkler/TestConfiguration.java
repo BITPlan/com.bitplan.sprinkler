@@ -37,34 +37,34 @@ public class TestConfiguration {
   @Test
   public void testConfiguration() throws Exception {
     Configuration conf=new Configuration();
-    Location loc=Location.byName("Knickelsdorf");
+    Location loc=Location.byName("Knickelsdorf/DE");
     conf.setLocation(loc);
     conf.setAreaSizeSquareMeter(100);
     conf.setEarliestSprinkleHour(7.5);
     conf.setLatestSprinkleHour(20.5);
     conf.setlEvaporationPerDay(200);
     conf.setSprinklesPerDay(2);
-    conf.setlPerMinute(1); // 600 l per hour
+    conf.setMmPerHour(22.8); // 2280 l per hour
     Configuration conf2=new Configuration();
     Location loc2=new Location();
     Coord coord=new Coord();
     coord.setLat(50.94);
     coord.setLon(6.958);
     loc2.setCoord(coord);
-    loc2.setName("Cologne");
+    loc2.setName("Krefeld");
     loc2.setCountry("DE");
-    loc2.setId(Location.byName("Cologne").getId());
+    loc2.setId(Location.byName("Krefeld/DE").getId());
     conf2.setLocation(loc2);
     Location loc3=Location.byId(loc2.getId());
     // check results
     assertEquals(loc3.getName(),loc2.getName());
-    assertEquals("US",loc3.getCountry()); // really US? - need to fix byName then
+    assertEquals("DE",loc3.getCountry()); 
     assertEquals(100,conf.getAreaSizeSquareMeter(),0.1);
     assertEquals(7.5,conf.getEarliestSprinkleHour(),0.1);
     assertEquals(20.5,conf.getLatestSprinkleHour(),0.01);
     assertEquals(200,conf.getlEvaporationPerDay(),0.01);
     assertEquals(2,conf.getSprinklesPerDay());
-    assertEquals(1.0,conf.getlPerMinute(),0.01);
+    assertEquals(22.8,conf.getMmPerHour(),0.01);
     assertNotNull(conf.getLocation());
   }
 

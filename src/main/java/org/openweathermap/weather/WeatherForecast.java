@@ -20,15 +20,22 @@
  */
 package org.openweathermap.weather;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Weather Forecast from openweathermap.org
  * 
- * example: https://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=b6907d289e10d714a6e88b30761fae22
+ * example:
+ * https://samples.openweathermap.org/data/2.5/forecast?id=524901&appid=b6907d289e10d714a6e88b30761fae22
  * 
  * @author wf
  *
  */
 public class WeatherForecast extends OpenWeatherMapApi {
+  // prepare a LOGGER
+  protected static Logger LOGGER = Logger
+      .getLogger("org.openweathermap.weather");
   
   /**
    * members of the Weather forecast
@@ -38,33 +45,43 @@ public class WeatherForecast extends OpenWeatherMapApi {
   public int cnt;
   public Location city;
   public Forecast[] list;
-  
+
   /**
-   * get the total rain forecast for the given number of days
-   * @param days
+   * get the total rain forecast for the given number of hours
+   * 
+   * @param hours
    * @return - the total mm of rain/snow
    */
-  public double totalPrecipitation(int days) {
-    if (days>list.length/8) {
-      throw new IllegalArgumentException(String.format("%2d days is out of range for totralRain calculation max days for forecast is %2d days",days,list.length/8));
+  public double totalPrecipitation(int hours) {
+    if (hours > list.length * 3) {
+      String msg=String.format(
+          "%2d hours is out of range for totalRain calculation max hours for forecast is %2d hours - result is limited",
+          hours, list.length * 3);
+      LOGGER.log(Level.WARNING,msg);
     }
-    double total=0;
-    for (Forecast forecast:list) {
-      if (forecast.rain!=null)
-        total+=forecast.rain.mm;
-      if (forecast.snow!=null)
-        total+=forecast.snow.mm;
+    double total = 0;
+    // loop over the list
+    for (Forecast forecast : list) {
+      if (forecast.rain != null)
+        total += forecast.rain.mm;
+      if (forecast.snow != null)
+        total += forecast.snow.mm;
+      hours-=3;
+      if (hours<=0)
+        break;
     }
     return total;
   }
-  
+
   /**
    * get a Weather forecast by location
+   * 
    * @param location
    * @return - the weather forecast
    */
   public static WeatherForecast getByLocation(Location location) {
-    WeatherForecast forecast=(WeatherForecast) OpenWeatherMapApi.getByLocation(location, "forecast", WeatherForecast.class);
+    WeatherForecast forecast = (WeatherForecast) OpenWeatherMapApi
+        .getByLocation(location, "forecast", WeatherForecast.class);
     return forecast;
   }
 }

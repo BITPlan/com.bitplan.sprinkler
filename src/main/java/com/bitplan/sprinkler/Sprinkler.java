@@ -26,6 +26,7 @@ import org.openweathermap.weather.Location;
 import org.openweathermap.weather.OpenWeatherMapApi;
 import org.openweathermap.weather.WeatherForecast;
 
+import com.bitplan.i18n.Translator;
 import com.bitplan.javafx.Main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -43,6 +44,10 @@ public class Sprinkler extends Main {
   @Option(name = "-rf", aliases = {
       "--rainforecast" }, usage = "rain\nshow the rainforecast")
   protected boolean rainforecast = false;
+
+  @Option(name = "--lang", aliases = {
+      "--language" }, usage = "language\nlanguage to use: de/en")
+  protected String lang = "en";
 
   @Option(name = "-l", aliases = {
       "--location" }, usage = "location\nuse/lookup the given location name")
@@ -79,6 +84,7 @@ public class Sprinkler extends Main {
 
   @Override
   public void work() throws Exception {
+    Translator.initialize("sprinkler", lang);
     if (this.showVersion || this.debug)
       showVersion();
     if (this.showHelp) {

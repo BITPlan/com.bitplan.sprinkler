@@ -21,14 +21,19 @@
 package com.bitplan.sprinkler;
 
 import java.io.InputStream;
+import java.util.logging.Level;
 
 import com.bitplan.error.SoftwareVersion;
 import com.bitplan.gui.App;
+import com.bitplan.i18n.I18n;
 import com.bitplan.javafx.GenericApp;
+import com.bitplan.javafx.GenericDialog;
+import com.bitplan.javafx.TaskLaunch;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -40,6 +45,8 @@ import javafx.stage.Stage;
  */
 @SuppressWarnings("restriction")
 public class SprinklerApp extends GenericApp {
+  public static final String RESOURCE_PATH="com/bitplan/sprinkler/gui";
+  public static final String SPRINKLER_APP_PATH=RESOURCE_PATH+"/Sprinkler.json";
   private static SprinklerApp instance;
   private int screenPercent;
   private int divX;
@@ -73,22 +80,69 @@ public class SprinklerApp extends GenericApp {
     stage.show();
   }
 
+  /**
+   * get the instance for the sprinkler app
+   * @param sprinkler
+   * @return
+   * @throws Exception
+   */
   public static SprinklerApp getInstance(Sprinkler sprinkler) throws Exception {
     if (instance == null) {
-      String path = "com/bitplan/sprinkler/gui/Sprinkler.json";
-      InputStream jsonStream = App.class.getClassLoader()
-          .getResourceAsStream(path);
-      App app = App.fromJsonStream(jsonStream);
+      App app=App.getInstance(SPRINKLER_APP_PATH);
       GenericApp.debug = true;
-      instance = new SprinklerApp(app, sprinkler, "com/bitplan/sprinkler/gui");
+      instance = new SprinklerApp(app, sprinkler, RESOURCE_PATH);
     }
     return instance;
+  }
+  
+  /**
+   * show a message that the given feature is not implemented yet
+   * 
+   * @param feature
+   *          - i18n string code of feature e.g. menuItem
+   */
+  public void notImplemented(String feature) {
+    GenericDialog.showAlert(stage, I18n.get(SprinklerI18n.SORRY),
+        I18n.get(SprinklerI18n.WE_ARE_SORRY),
+        I18n.get(feature) + " " + I18n.get(SprinklerI18n.NOT_IMPLEMENTED_YET));
   }
 
   @Override
   public void handle(ActionEvent event) {
-    // TODO Auto-generated method stub
-    
+    try {
+      Object source = event.getSource();
+      if (source instanceof MenuItem) {
+        MenuItem menuItem = (MenuItem) source;
+        switch (menuItem.getId()) {
+        case SprinklerI18n.FILE_QUIT_MENU_ITEM:
+          close();
+          break;
+        case SprinklerI18n.HELP_ABOUT_MENU_ITEM:
+          TaskLaunch.start(() -> showLink(app.getHome()));
+          showAbout();
+          break;
+        case SprinklerI18n.HELP_HELP_MENU_ITEM:
+          TaskLaunch.start(() -> showLink(app.getHelp()));
+          break;
+        case SprinklerI18n.HELP_FEEDBACK_MENU_ITEM:
+          GenericDialog.sendReport(softwareVersion,
+              softwareVersion.getName() + " feedback", "...");
+          break;
+        case SprinklerI18n.HELP_BUG_REPORT_MENU_ITEM:
+          TaskLaunch.start(() -> showLink(app.getFeedback()));
+          break;
+        /* case SprinklerI18n.SETTINGS_SETTINGS_MENU_ITEM:
+          this.notImplemented("Settings");
+          // showSettings(false);
+          break;*/
+        default:
+          LOGGER.log(Level.WARNING, "unhandled menu item " + menuItem.getId()
+              + ":" + menuItem.getText());
+        }
+      }
+    } catch (Exception e) {
+      handleException(e);
+    }
   }
 
 }

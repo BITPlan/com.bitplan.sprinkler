@@ -129,7 +129,9 @@
 							"title": "password",
 							"format": "%s",
 							"labelSize": 10,
-							"fieldSize": 40
+							"fieldSize": 40,
+							"type": "Password"
+							
 						},	
 						{
 							"title": "password2",

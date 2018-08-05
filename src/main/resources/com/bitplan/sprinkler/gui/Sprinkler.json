@@ -2,7 +2,7 @@
 	"name": "Sprinkler",
 	"home": "http://wiki.bitplan.com/index.php/Sprinkler",
 	"feedback": "https://github.com/BITPlan/com.bitplan.sprinkler/issues",
-	"help": "http://can4eve.bitplan.com/index.php/Help",
+	"help": "http://wiki.bitplan.com/index.php/Sprinkler/Help",
 	"groups": [{
 			"id": "preferencesGroup",
 			"forms": [{
@@ -22,23 +22,21 @@
 							"type": "Integer",
 							"fieldSize": 5,
 							"format": "%3d",
-							"labelSize": 10
+							"labelSize": 20
 						},
 						{
 							"title": "earliestSprinkleHour",
 							"hint": "earliest time to sprinkle e.g. 6:30",
 							"format": "%s",
 							"fieldSize": 6,
-							"gridX": 3,
-							"gridY": 1
+							"labelSize": 20
 						},
 						{
 							"title": "latestSprinkleHour",
 							"hint": "latest time to sprinkle e.g. 20:30",
 							"format": "%s",
-							"fieldSize": 6,
-							"gridX": 4,
-							"gridY": 1
+							"labelSize": 20,
+							"fieldSize": 6
 						},
 						{
 							"title": "debug",

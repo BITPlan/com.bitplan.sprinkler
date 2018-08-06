@@ -22,12 +22,15 @@ package com.bitplan.sprinkler;
 
 import java.util.logging.Level;
 
+import com.bitplan.appconfig.Preferences;
 import com.bitplan.error.SoftwareVersion;
 import com.bitplan.gui.App;
 import com.bitplan.i18n.I18n;
 import com.bitplan.javafx.GenericApp;
 import com.bitplan.javafx.GenericDialog;
+import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
+import com.bitplan.sprinkler.javafx.presenter.PreferencesModifier;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
@@ -36,6 +39,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 /**
  * create a sprinkler App
@@ -85,6 +89,7 @@ public class SprinklerApp extends GenericApp {
    
     getRoot().getChildren().add(mainPane);
     setup(app);
+    setupSettings();
     stage.show();
   }
 
@@ -102,6 +107,16 @@ public class SprinklerApp extends GenericApp {
       instance = new SprinklerApp(app, sprinkler, RESOURCE_PATH);
     }
     return instance;
+  }
+  
+  /**
+   * setup the settings
+   */
+  private void setupSettings() {
+    // TODO - use Presenter
+    GenericPanel preferencesPanel=this.getPanels().get(SprinklerI18n.PREFERENCES_FORM);
+    com.bitplan.appconfig.Preferences preferences=com.bitplan.appconfig.Preferences.getInstance();
+    preferencesPanel.setModifier(new PreferencesModifier(this.stage,this.app,this,preferencesPanel,preferences));
   }
 
   /**
@@ -177,6 +192,8 @@ public class SprinklerApp extends GenericApp {
           LOGGER.log(Level.WARNING, "unhandled menu item " + menuItem.getId()
               + ":" + menuItem.getText());
         }
+      } else {
+        LOGGER.log(Level.INFO, "event from "+source.getClass().getName()+" received");
       }
     } catch (Exception e) {
       handleException(e);

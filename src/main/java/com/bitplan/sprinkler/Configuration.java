@@ -22,6 +22,8 @@ package com.bitplan.sprinkler;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.openweathermap.weather.Location;
 
@@ -37,6 +39,9 @@ import com.google.gson.Gson;
  *
  */
 public class Configuration {
+  // prepare a LOGGER
+  protected static Logger LOGGER = Logger.getLogger("com.bitplan.sprinkler");
+  
   Location location;
   FritzboxImpl fritzbox;
   enum SoilType{Sand,Silt,Clay};
@@ -137,6 +142,10 @@ public class Configuration {
       String json = JsonUtil.read(fsi);
       Gson gson = new Gson();
       configuration = gson.fromJson(json, Configuration.class);
+    } else {
+      String msg=String.format("There is no configuration file %s yet.\nYou might want to create one as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
+      Configuration.getJsonFile(confName).getPath());
+      LOGGER.log(Level.WARNING,msg);
     }
     return configuration;
   }

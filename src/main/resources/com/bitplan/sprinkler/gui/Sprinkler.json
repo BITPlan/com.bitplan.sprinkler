@@ -11,6 +11,7 @@
 				{
 					"title": "Sprinkle",
 					"icon": "on_off",
+					"readOnly": "true",
 					"fields": [
 						{
 							"title": "on",
@@ -27,6 +28,7 @@
 				{
 					"title": "CurrentWeather",
 					"icon": "eye",
+					"readOnly": "true",
 					"fields": [
 						{
 							"title": "CurrentWeather",
@@ -37,6 +39,7 @@
 				{
 					"title": "WeatherForecast",
 					"icon": "hand_alt_right",
+					"readOnly": "true",
 					"fields": [
 						{
 							"title": "WeatherForecast",
@@ -46,6 +49,7 @@
 				},
 				{
 					"title": "WeatherHistory",
+					"readOnly": "true",
 					"icon": "history",
 					"fields": [
 						{
@@ -101,16 +105,8 @@
 							"format": "%s",
 							"labelSize": 20,
 							"fieldSize": 6
-						},
-						{
-							"title": "debug",
-							"hint": "display debugging information for the sprinkler controller",
-							"format": "%s",
-							"type": "Boolean",
-							"gridX": 3,
-							"gridY": 3
 						}
-					]
+			    ]
 				},
 				{
 					"title": "Preferences",

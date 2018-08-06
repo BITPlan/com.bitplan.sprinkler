@@ -68,6 +68,10 @@ public class SprinklerI18n {
   public static final String NOT_IMPLEMENTED_YET="notImplementedYet"; //is not implemented yet
   public static final String SORRY="sorry"; //sorry  
   
+  public static final String LANGUAGE_CHANGED_TITLE = "language_changed_title"; 
+  public static final String LANGUAGE_CHANGED = "language_changed"; 
+  public static final String NEWLANGUAGE_RESTART = "newlanguage_restart"; 
+  
   public static final String ADDRESS_ALREADY_IN_USE="addressAlreadyInUse"; //address already in use
   public static final String NETWORK_IS_UNREACHABLE="networkIsUnreachable"; //network is unreachable
 }

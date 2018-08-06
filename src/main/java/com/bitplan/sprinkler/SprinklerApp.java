@@ -22,7 +22,6 @@ package com.bitplan.sprinkler;
 
 import java.util.logging.Level;
 
-import com.bitplan.appconfig.Preferences;
 import com.bitplan.error.SoftwareVersion;
 import com.bitplan.gui.App;
 import com.bitplan.i18n.I18n;
@@ -30,6 +29,8 @@ import com.bitplan.javafx.GenericApp;
 import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
+import com.bitplan.sprinkler.javafx.presenter.ConfigurationModifier;
+import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
 import com.bitplan.sprinkler.javafx.presenter.PreferencesModifier;
 
 import javafx.event.ActionEvent;
@@ -39,7 +40,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
 
 /**
  * create a sprinkler App
@@ -89,7 +89,11 @@ public class SprinklerApp extends GenericApp {
    
     getRoot().getChildren().add(mainPane);
     setup(app);
-    setupSettings();
+    try {
+      setupSettings();
+    } catch (Throwable th) {
+      this.handleException(th);
+    }
     stage.show();
   }
 
@@ -111,12 +115,26 @@ public class SprinklerApp extends GenericApp {
   
   /**
    * setup the settings
+   * @throws Exception 
    */
-  private void setupSettings() {
-    // TODO - use Presenter
+  private void setupSettings() throws Exception {
+    GenericPanel sprinklePanel=this.getPanels().get(SprinklerI18n.SPRINKLE_FORM);
+    sprinklePanel.setEditable(true);
+    
     GenericPanel preferencesPanel=this.getPanels().get(SprinklerI18n.PREFERENCES_FORM);
     com.bitplan.appconfig.Preferences preferences=com.bitplan.appconfig.Preferences.getInstance();
     preferencesPanel.setModifier(new PreferencesModifier(this.stage,this.app,this,preferencesPanel,preferences));
+    
+    GenericPanel configPanel=this.getPanels().get(SprinklerI18n.SETTINGS_FORM);
+    Configuration configuration = Configuration.getConfiguration("default");
+    if (configuration == null) {
+      configuration=new Configuration();
+    }
+    configPanel.setModifier(new ConfigurationModifier(this.stage,this.app,this,configPanel,configuration));
+    
+    GenericPanel fritzBoxConfigPanel=this.getPanels().get(SprinklerI18n.FRITZ_BOX_FORM);
+    FritzBoxConfig fritzBoxConfig=FritzBoxConfig.getInstance();
+    fritzBoxConfigPanel.setModifier(new FritzBoxConfigModifier(this.stage,this.app,this,fritzBoxConfigPanel,fritzBoxConfig));
   }
 
   /**

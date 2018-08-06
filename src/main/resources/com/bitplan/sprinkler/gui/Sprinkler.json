@@ -105,6 +105,14 @@
 							"format": "%s",
 							"labelSize": 20,
 							"fieldSize": 6
+						},
+						{
+							"title": "appid",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40,
+							"type": "Password",
+					    "hint": "openweathermap appid"
 						}
 			    ]
 				},

@@ -40,8 +40,8 @@ public class TestConfiguration {
     Location loc=Location.byName("Knickelsdorf/DE");
     conf.setLocation(loc);
     conf.setAreaSizeSquareMeter(100);
-    conf.setEarliestSprinkleHour(7.5);
-    conf.setLatestSprinkleHour(20.5);
+    conf.setEarliestSprinkleHour("07:30");
+    conf.setLatestSprinkleHour("20:30");
     conf.setlEvaporationPerDay(200);
     conf.setSprinklesPerDay(2);
     conf.setMmPerHour(22.8); // 2280 l per hour
@@ -60,8 +60,8 @@ public class TestConfiguration {
     assertEquals(loc3.getName(),loc2.getName());
     assertEquals("DE",loc3.getCountry()); 
     assertEquals(100,conf.getAreaSizeSquareMeter(),0.1);
-    assertEquals(7.5,conf.getEarliestSprinkleHour(),0.1);
-    assertEquals(20.5,conf.getLatestSprinkleHour(),0.01);
+    assertEquals("07:30",conf.getEarliestSprinkleHour(),0.1);
+    assertEquals("20:30",conf.getLatestSprinkleHour(),0.01);
     assertEquals(200,conf.getlEvaporationPerDay(),0.01);
     assertEquals(2,conf.getSprinklesPerDay());
     assertEquals(22.8,conf.getMmPerHour(),0.01);

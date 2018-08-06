@@ -22,12 +22,17 @@ package com.bitplan.sprinkler;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.openweathermap.weather.Location;
 
+import com.bitplan.appconfig.Preferences;
 import com.bitplan.fritzbox.FritzboxImpl;
+import com.bitplan.json.JsonAble;
 import com.bitplan.util.JsonUtil;
 import com.google.gson.Gson;
 
@@ -38,21 +43,21 @@ import com.google.gson.Gson;
  * @author wf
  *
  */
-public class Configuration {
+public class Configuration implements JsonAble {
   // prepare a LOGGER
   protected static Logger LOGGER = Logger.getLogger("com.bitplan.sprinkler");
   
   Location location;
-  FritzboxImpl fritzbox;
   enum SoilType{Sand,Silt,Clay};
   String appid; // openweathermap appid
   SoilType soilType;
-  double mmPerHour;
-  double areaSizeSquareMeter;
-  double earliestSprinkleHour;
-  double latestSprinkleHour;
-  int sprinklesPerDay;
-  double lEvaporationPerDay;
+  Double mmPerHour;
+  Integer areaSizeSquareMeter;
+  String earliestSprinkleHour;
+  String latestSprinkleHour;
+  Integer sprinklesPerDay;
+  Double lEvaporationPerDay;
+  String confName="default";
 
   public String getAppid() {
     return appid;
@@ -86,29 +91,15 @@ public class Configuration {
     this.location = location;
   }
 
-  public double getAreaSizeSquareMeter() {
+  public Integer getAreaSizeSquareMeter() {
     return areaSizeSquareMeter;
   }
 
-  public void setAreaSizeSquareMeter(double areaSizeSquareMeter) {
+  public void setAreaSizeSquareMeter(Integer areaSizeSquareMeter) {
     this.areaSizeSquareMeter = areaSizeSquareMeter;
   }
 
-  public double getEarliestSprinkleHour() {
-    return earliestSprinkleHour;
-  }
 
-  public void setEarliestSprinkleHour(double earliestSprinkleHour) {
-    this.earliestSprinkleHour = earliestSprinkleHour;
-  }
-
-  public double getLatestSprinkleHour() {
-    return latestSprinkleHour;
-  }
-
-  public void setLatestSprinkleHour(double latestSprinkleHour) {
-    this.latestSprinkleHour = latestSprinkleHour;
-  }
 
   public int getSprinklesPerDay() {
     return sprinklesPerDay;
@@ -116,6 +107,34 @@ public class Configuration {
 
   public void setSprinklesPerDay(int sprinklesPerDay) {
     this.sprinklesPerDay = sprinklesPerDay;
+  }
+
+  /**
+   * @return the earliestSprinkleHour
+   */
+  public String getEarliestSprinkleHour() {
+    return earliestSprinkleHour;
+  }
+
+  /**
+   * @param earliestSprinkleHour the earliestSprinkleHour to set
+   */
+  public void setEarliestSprinkleHour(String earliestSprinkleHour) {
+    this.earliestSprinkleHour = earliestSprinkleHour;
+  }
+
+  /**
+   * @return the latestSprinkleHour
+   */
+  public String getLatestSprinkleHour() {
+    return latestSprinkleHour;
+  }
+
+  /**
+   * @param latestSprinkleHour the latestSprinkleHour to set
+   */
+  public void setLatestSprinkleHour(String latestSprinkleHour) {
+    this.latestSprinkleHour = latestSprinkleHour;
   }
 
   public double getlEvaporationPerDay() {
@@ -142,6 +161,7 @@ public class Configuration {
       String json = JsonUtil.read(fsi);
       Gson gson = new Gson();
       configuration = gson.fromJson(json, Configuration.class);
+      configuration.confName=confName;
     } else {
       String msg=String.format("There is no configuration file %s yet.\nYou might want to create one as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
       Configuration.getJsonFile(confName).getPath());
@@ -156,5 +176,28 @@ public class Configuration {
     String jsonFileName = name + ".json";
     File jsonFile = new File(configDirectory, jsonFileName);
     return jsonFile;
+  }
+  
+  public void save() throws IOException {
+    File jsonFile=getJsonFile(confName);
+    if (!jsonFile.getParentFile().isDirectory())
+      jsonFile.getParentFile().mkdirs();
+    FileUtils.writeStringToFile(jsonFile, this.asJson(),"UTF-8");
+  }
+
+  @Override
+  public void reinit() {
+    
+  }
+
+  @Override
+  public void fromMap(Map<String, Object> map) {
+    this.appid=(String) map.get("appid");
+    // this.confName=(String) map.get("confName");
+    this.mmPerHour=Double.parseDouble((String)map.get("mmPerHour"));
+    this.latestSprinkleHour=(String)map.get("latestSprinkleHour");
+    this.earliestSprinkleHour=(String)map.get("earliestSprinkleHour");
+    this.areaSizeSquareMeter=(Integer)map.get("areaSizeSquareMeter");
+    this.soilType=SoilType.valueOf((String)map.get("soilType"));
   }
 }

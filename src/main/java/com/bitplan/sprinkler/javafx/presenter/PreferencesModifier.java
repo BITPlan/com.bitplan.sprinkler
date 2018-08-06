@@ -74,7 +74,7 @@ public class PreferencesModifier extends BaseModifier<Preferences>{
       this.getExceptionHandler().handleException(e);
     }
     if (!lang.equals(preferences.getLanguage())) {
-      Translator.initialize(Translator.APPLICATION_PREFIX, lang.name());
+      Translator.initialize(Translator.APPLICATION_PREFIX, preferences.getLanguage().name());
       GenericDialog.showAlert(getStage(), I18n.get(SprinklerI18n.LANGUAGE_CHANGED_TITLE),
           I18n.get(SprinklerI18n.LANGUAGE_CHANGED), I18n.get(SprinklerI18n.NEWLANGUAGE_RESTART));
     }

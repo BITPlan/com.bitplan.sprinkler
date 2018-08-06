@@ -141,12 +141,15 @@ public class SprinklerApp extends GenericApp {
           TaskLaunch.start(() -> showLink(app.getFeedback()));
           break;
         case SprinklerI18n.SPRINKLER_MENU__BEGIN_MENU_ITEM:
+          this.selectTab(SprinklerI18n.SPRINKLE_FORM);
           this.notImplemented("begin sprinkling");
           break;
         case SprinklerI18n.SPRINKLER_MENU__END_MENU_ITEM:
+          this.selectTab(SprinklerI18n.SPRINKLE_FORM);
           this.notImplemented("end sprinkling");
           break;
         case SprinklerI18n.SPRINKLER_MENU__AUTOMATIC_MENU_ITEM:
+          this.selectTab(SprinklerI18n.SPRINKLE_FORM);
           this.notImplemented("automatic sprinkling");
           break;
         case SprinklerI18n.SETTINGS_MENU__SPRINKLE_AREA_MENU_ITEM:

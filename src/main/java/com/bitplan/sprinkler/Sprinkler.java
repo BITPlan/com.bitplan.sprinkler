@@ -93,7 +93,7 @@ public class Sprinkler extends Main {
     Configuration configuration = Configuration.getConfiguration("default");
     if (configuration == null) {
       error(String.format(
-          "There is no configuration file %s yet.\nYou might want to create on as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
+          "There is no configuration file %s yet.\nYou might want to create one as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
           Configuration.getJsonFile("default").getPath()));
     } else {
       Location location = configuration.getLocation();

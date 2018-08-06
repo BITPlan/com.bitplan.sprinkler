@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bitplan.sprinkler</groupId>
@@ -71,19 +72,19 @@
 		<dependency>
 			<groupId>com.bitplan.gui</groupId>
 			<artifactId>com.bitplan.javafx</artifactId>
-			<version>0.0.9</version>
+			<version>0.0.10</version>
 		</dependency>
 		<!-- https://search.maven.org/#artifactdetails%7Ccom.bitplan%7Ccom.bitplan.fritzbox%7C0.0.1%7Cjar -->
 		<dependency>
-			<groupId>com.bitplan.</groupId>
+			<groupId>com.bitplan</groupId>
 			<artifactId>com.bitplan.fritzbox</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-		<!--  TestI18n dependency -->
+		<!-- TestI18n dependency -->
 		<dependency>
 			<groupId>com.bitplan.gui</groupId>
 			<artifactId>com.bitplan.gui</artifactId>
-			<version>0.0.6</version>
+			<version>0.0.7</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -217,7 +218,8 @@
 						<copy
 							file="target/com.bitplan.sprinkler-${project.version}-jar-with-dependencies.jar"
 							tofile="release/sprinkler.jar" />
-						<copy file="target/sprinkler.exe" tofile="release/sprinkler.exe" />
+						<copy file="target/sprinkler.exe"
+							tofile="release/sprinkler.exe" />
 					</tasks>
 				</configuration>
 				<executions>

@@ -20,12 +20,46 @@
  */
 package com.bitplan.sprinkler;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.openweathermap.weather.Location;
+import org.openweathermap.weather.OpenWeatherMapApi;
+import org.openweathermap.weather.WeatherForecast;
 
+import com.bitplan.i18n.Translator;
+import com.bitplan.javafx.SampleApp;
+import com.bitplan.javafx.WaitableApp;
+import com.bitplan.sprinkler.javafx.WeatherPlot;
+
+/**
+ * test the graphical user interface
+ * @author wf
+ *
+ */
 public class TestGUI {
   static int SHOW_TIME = 16000;
-
+  @Before
+  public void initGUI() {
+    WaitableApp.toolkitInit();
+    Translator.initialize("sprinkler", "en");
+  }
   
+  @Test
+  public void testWeatherPlot() throws Exception {
+    Configuration configuration = Configuration.getConfiguration("default");
+    OpenWeatherMapApi.enableProduction(configuration.appid);
+    Location location = configuration.getLocation();
+    WeatherForecast forecast = WeatherForecast.getByLocation(location);
+    WeatherPlot weatherPlot = new WeatherPlot("5 day Weather Forecast", "Date",
+        "mm Rain", forecast);
+    SampleApp sampleApp = new SampleApp("WeatherPlot",
+        weatherPlot.getBarChart());
+    sampleApp.show();
+    sampleApp.waitOpen();
+    Thread.sleep(SHOW_TIME);
+    sampleApp.close();
+  }
+
   @Test
   public void testGUI() throws Exception {
     SprinklerApp gApp = SprinklerApp.getInstance(new Sprinkler());

@@ -35,4 +35,17 @@ public class Forecast {
   public Snow snow;
   public Rain rain;
   public Wind wind;
+  
+  /**
+   * get the precipitation for this forecast
+   * @return the precipitation
+   */
+  public double getPrecipitation() {
+    double result=0.0;
+    if (rain!=null)
+      result+=rain.mm;
+    if (snow!=null)
+      result+=snow.mm;
+    return result;
+  }
 }

@@ -62,10 +62,7 @@ public class WeatherForecast extends OpenWeatherMapApi {
     double total = 0;
     // loop over the list
     for (Forecast forecast : list) {
-      if (forecast.rain != null)
-        total += forecast.rain.mm;
-      if (forecast.snow != null)
-        total += forecast.snow.mm;
+      total+=forecast.getPrecipitation();
       hours-=3;
       if (hours<=0)
         break;

@@ -81,16 +81,15 @@ public class Sprinkler extends Main {
     if (!testMode)
       System.exit(1);
   }
-
-  @Override
-  public void work() throws Exception {
-    Translator.initialize("sprinkler", lang);
-    if (this.showVersion || this.debug)
-      showVersion();
-    if (this.showHelp) {
-      showHelp();
-    }
+  
+  /**
+   * get a weather Forecast for the default location
+   * @return
+   * @throws Exception 
+   */
+  public WeatherForecast getWeatherForeCast() throws Exception {
     Configuration configuration = Configuration.getConfiguration("default");
+    WeatherForecast forecast=null;
     if (configuration == null) {
       error(String.format(
           "There is no configuration file %s yet.\nYou might want to create one as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
@@ -103,7 +102,21 @@ public class Sprinkler extends Main {
           error("Could not find location " + locationName);
       }
       OpenWeatherMapApi.enableProduction(configuration.appid);
-      WeatherForecast forecast = WeatherForecast.getByLocation(location);
+      forecast = WeatherForecast.getByLocation(location); 
+    }
+    return forecast;
+  }
+
+  @Override
+  public void work() throws Exception {
+    Translator.initialize("sprinkler", lang);
+    if (this.showVersion || this.debug)
+      showVersion();
+    if (this.showHelp) {
+      showHelp();
+    }
+    WeatherForecast forecast=getWeatherForeCast();
+    if (forecast!=null) {
       System.out.println(String.format(
           "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %3.1f mm",
           forecast.city.getName(), forecast.city.getCountry(),

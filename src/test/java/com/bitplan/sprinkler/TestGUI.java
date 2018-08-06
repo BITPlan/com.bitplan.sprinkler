@@ -53,18 +53,16 @@ public class TestGUI {
 
   @Test
   public void testWeatherPlot() throws Exception {
-    Configuration configuration = Configuration.getConfiguration("default");
-    if (configuration != null) {
-      OpenWeatherMapApi.enableProduction(configuration.appid);
-      Location location = configuration.getLocation();
-      WeatherForecast forecast = WeatherForecast.getByLocation(location);
+    Sprinkler sprinkler=new Sprinkler();
+    WeatherForecast forecast=sprinkler.getWeatherForeCast();
+    if (forecast!=null) {
       WeatherPlot weatherPlot = new WeatherPlot("5 day Weather Forecast",
           "Date", "mm Rain", forecast);
       SampleApp sampleApp = new SampleApp("WeatherPlot",
           weatherPlot.getBarChart());
       sampleApp.show();
       sampleApp.waitOpen();
-      Thread.sleep(SHOW_TIME);
+      Thread.sleep(SHOW_TIME*4);
       sampleApp.close();
     }
   }

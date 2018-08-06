@@ -11,7 +11,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
-import javafx.scene.chart.XYChart.Series;
 
 @SuppressWarnings("restriction")
 public class WeatherPlot {
@@ -62,10 +61,11 @@ public class WeatherPlot {
     barChart.setBarGap(1);
     // defining a series
     series = new XYChart.Series<String, Number>();
-    series.setName(forecast.city.getName() + "/" + forecast.city.getName());
+    series.setName(forecast.city.getName() + "/" + forecast.city.getCountry());
     ObservableList<Data<String, Number>> seriesData = series.getData();
     for (Forecast forecast : forecast.list) {
-      seriesData.add(new XYChart.Data<String, Number>(forecast.dt_txt,
+      String time=forecast.dt_txt.substring(8,13);
+      seriesData.add(new XYChart.Data<String, Number>(time,
           forecast.getPrecipitation()));
     }
     barChart.getData().add(series);

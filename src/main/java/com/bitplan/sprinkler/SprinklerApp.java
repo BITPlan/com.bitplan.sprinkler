@@ -22,21 +22,26 @@ package com.bitplan.sprinkler;
 
 import java.util.logging.Level;
 
-import com.bitplan.error.SoftwareVersion;
+import org.openweathermap.weather.WeatherForecast;
+
 import com.bitplan.gui.App;
 import com.bitplan.i18n.I18n;
 import com.bitplan.javafx.GenericApp;
 import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
+import com.bitplan.sprinkler.javafx.WeatherPlot;
 import com.bitplan.sprinkler.javafx.presenter.ConfigurationModifier;
 import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
 import com.bitplan.sprinkler.javafx.presenter.PreferencesModifier;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -58,10 +63,11 @@ public class SprinklerApp extends GenericApp {
   private int divY;
 
   String title;
+  private Sprinkler sprinkler;
 
-  public SprinklerApp(App app, SoftwareVersion softwareVersion,
-      String resourcePath) {
-    super(app, softwareVersion, resourcePath);
+  public SprinklerApp(App app, Sprinkler sprinkler, String resourcePath) {
+    super(app, sprinkler, resourcePath);
+    this.sprinkler = sprinkler;
     title = softwareVersion.getName() + " " + softwareVersion.getVersion();
     screenPercent = 67;
     divX = 2;
@@ -86,10 +92,25 @@ public class SprinklerApp extends GenericApp {
     mainPane.setCenter(xyTabPane);
     mainPane.prefHeightProperty().bind(getScene().heightProperty());
     mainPane.prefWidthProperty().bind(getScene().widthProperty());
-   
+
     getRoot().getChildren().add(mainPane);
     setup(app);
     try {
+      TabPane weatherTabPane = xyTabPane
+          .getTabPane(SprinklerI18n.WEATHER_GROUP);
+      if (weatherTabPane != null) {
+        Tab tab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
+        WeatherForecast forecast = sprinkler.getWeatherForeCast();
+        WeatherPlot weatherPlot = new WeatherPlot("5 day Weather Forecast",
+            "Date", "mm Rain", forecast);
+        Platform.runLater(() -> tab.setContent(weatherPlot.getBarChart()));
+      }
+      /*
+      weatherTabPane.getSelectionModel().selectedItemProperty()
+          .addListener((ov, oldTab, newTab) -> {
+            System.err.println("changed to " + newTab.getId());
+          });
+       */
       setupSettings();
     } catch (Throwable th) {
       this.handleException(th);
@@ -112,29 +133,38 @@ public class SprinklerApp extends GenericApp {
     }
     return instance;
   }
-  
+
   /**
    * setup the settings
-   * @throws Exception 
+   * 
+   * @throws Exception
    */
   private void setupSettings() throws Exception {
-    GenericPanel sprinklePanel=this.getPanels().get(SprinklerI18n.SPRINKLE_FORM);
+    GenericPanel sprinklePanel = this.getPanels()
+        .get(SprinklerI18n.SPRINKLE_FORM);
     sprinklePanel.setEditable(true);
-    
-    GenericPanel preferencesPanel=this.getPanels().get(SprinklerI18n.PREFERENCES_FORM);
-    com.bitplan.appconfig.Preferences preferences=com.bitplan.appconfig.Preferences.getInstance();
-    preferencesPanel.setModifier(new PreferencesModifier(this.stage,this.app,this,preferencesPanel,preferences));
-    
-    GenericPanel configPanel=this.getPanels().get(SprinklerI18n.SETTINGS_FORM);
+
+    GenericPanel preferencesPanel = this.getPanels()
+        .get(SprinklerI18n.PREFERENCES_FORM);
+    com.bitplan.appconfig.Preferences preferences = com.bitplan.appconfig.Preferences
+        .getInstance();
+    preferencesPanel.setModifier(new PreferencesModifier(this.stage, this.app,
+        this, preferencesPanel, preferences));
+
+    GenericPanel configPanel = this.getPanels()
+        .get(SprinklerI18n.SETTINGS_FORM);
     Configuration configuration = Configuration.getConfiguration("default");
     if (configuration == null) {
-      configuration=new Configuration();
+      configuration = new Configuration();
     }
-    configPanel.setModifier(new ConfigurationModifier(this.stage,this.app,this,configPanel,configuration));
-    
-    GenericPanel fritzBoxConfigPanel=this.getPanels().get(SprinklerI18n.FRITZ_BOX_FORM);
-    FritzBoxConfig fritzBoxConfig=FritzBoxConfig.getInstance();
-    fritzBoxConfigPanel.setModifier(new FritzBoxConfigModifier(this.stage,this.app,this,fritzBoxConfigPanel,fritzBoxConfig));
+    configPanel.setModifier(new ConfigurationModifier(this.stage, this.app,
+        this, configPanel, configuration));
+
+    GenericPanel fritzBoxConfigPanel = this.getPanels()
+        .get(SprinklerI18n.FRITZ_BOX_FORM);
+    FritzBoxConfig fritzBoxConfig = FritzBoxConfig.getInstance();
+    fritzBoxConfigPanel.setModifier(new FritzBoxConfigModifier(this.stage,
+        this.app, this, fritzBoxConfigPanel, fritzBoxConfig));
   }
 
   /**
@@ -196,22 +226,23 @@ public class SprinklerApp extends GenericApp {
           break;
         case SprinklerI18n.SETTINGS_MENU__WELCOME_MENU_ITEM:
           this.notImplemented("Welcome");
-          break;         
+          break;
         case SprinklerI18n.WEATHER_MENU__CURRENT_WEATHER_MENU_ITEM:
           this.selectTab(SprinklerI18n.CURRENT_WEATHER_FORM);
-          break; 
+          break;
         case SprinklerI18n.WEATHER_MENU__WEATHER_FORECAST_MENU_ITEM:
           this.selectTab(SprinklerI18n.WEATHER_FORECAST_FORM);
-          break; 
+          break;
         case SprinklerI18n.WEATHER_MENU__WEATHER_HISTORY_MENU_ITEM:
           this.selectTab(SprinklerI18n.WEATHER_HISTORY_FORM);
-          break;   
+          break;
         default:
           LOGGER.log(Level.WARNING, "unhandled menu item " + menuItem.getId()
               + ":" + menuItem.getText());
         }
       } else {
-        LOGGER.log(Level.INFO, "event from "+source.getClass().getName()+" received");
+        LOGGER.log(Level.INFO,
+            "event from " + source.getClass().getName() + " received");
       }
     } catch (Exception e) {
       handleException(e);

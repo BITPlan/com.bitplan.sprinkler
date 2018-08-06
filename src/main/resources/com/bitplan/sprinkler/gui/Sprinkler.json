@@ -5,7 +5,6 @@
 	"help": "http://wiki.bitplan.com/index.php/Sprinkler/Help",
 	"groups": [
 		{
-			"id": "sprinklerGroup",
 			"title": "Sprinkler",
 			"icon": "watering_can",
 			"forms": [
@@ -22,7 +21,6 @@
 			]
 		},
 		{
-			"id": "weatherGroup",
 			"title": "Weather",
 			"icon": "cloud",
 			"forms": [
@@ -59,13 +57,11 @@
 			]
 		},
 		{
-			"id": "preferencesGroup",
 			"title": "Preferences",
 			"icon": "cogs",
 			"forms": [
 				{
 					"title": "Settings",
-					"id": "settingsForm",
 					"icon": "tint",
 					"headerText": "choose your sprinkler area settings",
 					"fields": [
@@ -118,7 +114,6 @@
 				},
 				{
 					"title": "Preferences",
-					"id": "preferencesForm",
 					"icon": "preferences",
 					"headerText": "choose your Preferences",
 					"fields": [
@@ -171,7 +166,6 @@
 				},
 				{
 					"title": "FritzBox",
-					"id": "fritzBoxForm",
 					"icon": "plug",
 					"headerText": "FritzBox details",
 					"fields": [
@@ -215,106 +209,87 @@
 	"mainMenu": {
 		"subMenus": [
 			{
-				"id": "fileMenu",
 				"title": "File",
 				"shortCut": "F",
 				"menuItems": [
 					{
-						"id": "fileQuitMenuItem",
 						"title": "Quit",
 						"shortCut": "Q"
 					}
 				]
 			},
 			{
-				"id": "weatherMenu",
 				"title": "Weather",
 				"shortCut": "W",
 				"menuItems": [
 					{
-						"id": "current",
 						"title": "CurrentWeather",
 						"shortCut": "C"
 					},
 					{
-						"id": "forecast",
 						"title": "WeatherForecast",
 						"shortCut": "F"
 					},
 					{
-						"id": "history",
 						"title": "WeatherHistory",
 						"shortCut": "H"
 					}
 				]
 			},
 			{
-				"id": "settingsMenu",
 				"title": "Settings",
 				"shortCut": "S",
 				"menuItems": [
 					{
-						"id": "settingsSprinkleAreaMenuItem",
 						"title": "SprinkleArea",
 						"shortCut": "S"
 					},
 					{
-						"id": "settingsPreferencesMenuItem",
 						"title": "Preferences",
 						"shortCut": "P"
 					},
 					{
-						"id": "settingsWelcomeMenuItem",
-						"title": "Welcome",
-						"shortCut": "W"
+						"title": "FritzBox",
+						"shortCut": "F"
 					}
 				]
 			},
 			{
-				"id": "SprinklerMenu",
 				"title": "Sprinkler",
 				"shortCut": "S",
 				"menuItems": [
 					{
-						"id": "autoMenuItem",
 						"title": "Automatic",
 						"shortCut": "A"
 					},
 					{
-						"id": "beginMenuItem",
 						"title": "Begin",
 						"shortCut": "B"
 					},
 					{
-						"id": "endMenuItem",
 						"title": "End",
 						"shortCut": "E"
 					}
 				]
 			},
 			{
-				"id": "helpMenu",
 				"title": "Help",
 				"shortCut": "H",
 				"menuItems": [
 					{
-						"id": "helpAboutMenuItem",
 						"title": "About",
 						"shortCut": "A"
 					},
 					{
-						"id": "helpHelpMenuItem",
-						"title": "sprinkler help",
-						"shortCut": "S"
+						"title": "Help",
+						"shortCut": "H"
 					},
 					{
-						"id": "helpFeedbackMenuItem",
-						"title": "send Feedback",
+						"title": "Feedback",
 						"shortCut": "F"
 					},
 					{
-						"id": "helpBugReportMenuItem",
-						"title": "create BugReport",
+						"title": "BugReport",
 						"shortCut": "B"
 					}
 				]

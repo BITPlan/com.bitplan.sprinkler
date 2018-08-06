@@ -20,7 +20,6 @@
  */
 package com.bitplan.sprinkler;
 
-import java.io.InputStream;
 import java.util.logging.Level;
 
 import com.bitplan.error.SoftwareVersion;
@@ -34,6 +33,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -45,8 +45,9 @@ import javafx.stage.Stage;
  */
 @SuppressWarnings("restriction")
 public class SprinklerApp extends GenericApp {
-  public static final String RESOURCE_PATH="com/bitplan/sprinkler/gui";
-  public static final String SPRINKLER_APP_PATH=RESOURCE_PATH+"/Sprinkler.json";
+  public static final String RESOURCE_PATH = "com/bitplan/sprinkler/gui";
+  public static final String SPRINKLER_APP_PATH = RESOURCE_PATH
+      + "/Sprinkler.json";
   private static SprinklerApp instance;
   private int screenPercent;
   private int divX;
@@ -76,25 +77,33 @@ public class SprinklerApp extends GenericApp {
     stage.setY(sceneBounds.getMinY());
     setMenuBar(createMenuBar(getScene(), app));
     showMenuBar(getScene(), getMenuBar(), true);
+    // FIXME - do we need this?
+    BorderPane mainPane = new BorderPane();
+    mainPane.setCenter(xyTabPane);
+    mainPane.prefHeightProperty().bind(getScene().heightProperty());
+    mainPane.prefWidthProperty().bind(getScene().widthProperty());
+   
+    getRoot().getChildren().add(mainPane);
     setup(app);
     stage.show();
   }
 
   /**
    * get the instance for the sprinkler app
+   * 
    * @param sprinkler
    * @return
    * @throws Exception
    */
   public static SprinklerApp getInstance(Sprinkler sprinkler) throws Exception {
     if (instance == null) {
-      App app=App.getInstance(SPRINKLER_APP_PATH);
+      App app = App.getInstance(SPRINKLER_APP_PATH);
       GenericApp.debug = true;
       instance = new SprinklerApp(app, sprinkler, RESOURCE_PATH);
     }
     return instance;
   }
-  
+
   /**
    * show a message that the given feature is not implemented yet
    * 
@@ -114,27 +123,53 @@ public class SprinklerApp extends GenericApp {
       if (source instanceof MenuItem) {
         MenuItem menuItem = (MenuItem) source;
         switch (menuItem.getId()) {
-        case SprinklerI18n.FILE_QUIT_MENU_ITEM:
+        case SprinklerI18n.FILE_MENU__QUIT_MENU_ITEM:
           close();
           break;
-        case SprinklerI18n.HELP_ABOUT_MENU_ITEM:
+        case SprinklerI18n.HELP_MENU__ABOUT_MENU_ITEM:
           TaskLaunch.start(() -> showLink(app.getHome()));
           showAbout();
           break;
-        case SprinklerI18n.HELP_HELP_MENU_ITEM:
+        case SprinklerI18n.HELP_MENU__HELP_MENU_ITEM:
           TaskLaunch.start(() -> showLink(app.getHelp()));
           break;
-        case SprinklerI18n.HELP_FEEDBACK_MENU_ITEM:
+        case SprinklerI18n.HELP_MENU__FEEDBACK_MENU_ITEM:
           GenericDialog.sendReport(softwareVersion,
               softwareVersion.getName() + " feedback", "...");
           break;
-        case SprinklerI18n.HELP_BUG_REPORT_MENU_ITEM:
+        case SprinklerI18n.HELP_MENU__BUG_REPORT_MENU_ITEM:
           TaskLaunch.start(() -> showLink(app.getFeedback()));
           break;
-        /* case SprinklerI18n.SETTINGS_SETTINGS_MENU_ITEM:
-          this.notImplemented("Settings");
-          // showSettings(false);
-          break;*/
+        case SprinklerI18n.SPRINKLER_MENU__BEGIN_MENU_ITEM:
+          this.notImplemented("begin sprinkling");
+          break;
+        case SprinklerI18n.SPRINKLER_MENU__END_MENU_ITEM:
+          this.notImplemented("end sprinkling");
+          break;
+        case SprinklerI18n.SPRINKLER_MENU__AUTOMATIC_MENU_ITEM:
+          this.notImplemented("automatic sprinkling");
+          break;
+        case SprinklerI18n.SETTINGS_MENU__SPRINKLE_AREA_MENU_ITEM:
+          this.selectTab(SprinklerI18n.SETTINGS_FORM);
+          break;
+        case SprinklerI18n.SETTINGS_MENU__PREFERENCES_MENU_ITEM:
+          this.selectTab(SprinklerI18n.PREFERENCES_FORM);
+          break;
+        case SprinklerI18n.SETTINGS_MENU__FRITZ_BOX_MENU_ITEM:
+          this.selectTab(SprinklerI18n.FRITZ_BOX_FORM);
+          break;
+        case SprinklerI18n.SETTINGS_MENU__WELCOME_MENU_ITEM:
+          this.notImplemented("Welcome");
+          break;         
+        case SprinklerI18n.WEATHER_MENU__CURRENT_WEATHER_MENU_ITEM:
+          this.selectTab(SprinklerI18n.CURRENT_WEATHER_FORM);
+          break; 
+        case SprinklerI18n.WEATHER_MENU__WEATHER_FORECAST_MENU_ITEM:
+          this.selectTab(SprinklerI18n.WEATHER_FORECAST_FORM);
+          break; 
+        case SprinklerI18n.WEATHER_MENU__WEATHER_HISTORY_MENU_ITEM:
+          this.selectTab(SprinklerI18n.WEATHER_HISTORY_FORM);
+          break;   
         default:
           LOGGER.log(Level.WARNING, "unhandled menu item " + menuItem.getId()
               + ":" + menuItem.getText());

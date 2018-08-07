@@ -30,7 +30,6 @@ import com.bitplan.fritzbox.Device;
 import com.bitplan.fritzbox.DeviceList;
 import com.bitplan.fritzbox.FritzBoxSession;
 import com.bitplan.fritzbox.FritzBoxSessionImpl;
-import com.bitplan.fritzbox.FritzboxImpl;
 import com.bitplan.fritzbox.HomeAutomation;
 import com.bitplan.fritzbox.HomeAutomationImpl;
 import com.bitplan.gui.App;
@@ -40,7 +39,6 @@ import com.bitplan.javafx.GenericControl;
 import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
-import com.bitplan.javafx.XYTabPane;
 import com.bitplan.sprinkler.javafx.WeatherPlot;
 import com.bitplan.sprinkler.javafx.presenter.ConfigurationModifier;
 import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
@@ -55,7 +53,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -99,17 +96,20 @@ public class SprinklerApp extends GenericApp {
   public void start(Stage stage) {
     super.start(stage);
     stage.setTitle(title);
-    setRoot(new VBox());
+    VBox vbox = new VBox();
+    setRoot(vbox);
     Rectangle2D sceneBounds = super.getSceneBounds(screenPercent, divX, divY);
     setScene(
         new Scene(getRoot(), sceneBounds.getWidth(), sceneBounds.getHeight()));
     stage.setScene(getScene());
     stage.setX(sceneBounds.getMinX());
     stage.setY(sceneBounds.getMinY());
+    // create a Menu Bar and show it
     setMenuBar(createMenuBar(getScene(), app));
     showMenuBar(getScene(), getMenuBar(), true);
-    getRoot().getChildren().add(xyTabPane);
-    getRoot().setVgrow(xyTabPane, Priority.ALWAYS);
+    // add the XY TabPane and set it's growing
+    setupXyTabPane();
+    // setup the forms
     setup(app);
     try {
       TabPane weatherTabPane = xyTabPane
@@ -128,12 +128,6 @@ public class SprinklerApp extends GenericApp {
           Platform.runLater(() -> tab.setContent(weatherPlot.getBarChart()));
         }
       }
-      /*
-       * weatherTabPane.getSelectionModel().selectedItemProperty()
-       * .addListener((ov, oldTab, newTab) -> {
-       * System.err.println("changed to " + newTab.getId());
-       * });
-       */
       setupSprinklerOnOff();
 
       // setup the setting modifiers

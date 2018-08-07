@@ -84,7 +84,7 @@ public class WeatherPlot {
     series.setName(forecast.city.getName() + "/" + forecast.city.getCountry());
     ObservableList<Data<String, Number>> seriesData = series.getData();
     for (Forecast forecast : forecast.list) {
-      String time=forecast.dt_txt.substring(8,13);
+      String time=forecast.dt_txt.substring(8,13)+"h";
       seriesData.add(new XYChart.Data<String, Number>(time,
           forecast.getPrecipitation()));
     }

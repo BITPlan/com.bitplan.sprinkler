@@ -20,9 +20,19 @@
  */
 package org.openweathermap.weather;
 
+import gov.nasa.worldwind.geom.Angle;
+
+/**
+ * coordinate
+ * @author wf
+ *
+ */
 public class Coord {
   double lat;
   double lon;
+  private transient Angle latangle;
+  private transient Angle lonangle;
+  
   public double getLat() {
     return lat;
   }
@@ -34,5 +44,32 @@ public class Coord {
   }
   public void setLon(double lon) {
     this.lon = lon;
+  }
+  
+  public void init() {
+    latangle = Angle.fromDegreesLatitude(Math.abs(lat));
+    lonangle = Angle.fromDegreesLongitude(Math.abs(lon));
+  }
+  
+  public String getLatDMS() {
+    if (latangle==null)
+      init();
+    String latDMS=String.format("%s %s",latangle.toFormattedDMSString(), lat >= 0.0 ? "N" : "S");
+    return latDMS;
+  }
+  
+  public String getLonDMS() {
+    if (lonangle==null)
+      init();
+    String lonDMS=String.format("%s %s",lonangle.toFormattedDMSString(), lon >= 0.0 ? "E" : "W");
+    return lonDMS;
+  }
+  
+  /**
+   * return the GEO coordinates
+   */
+  public String toString() {
+    String dmsString = getLatDMS()+getLonDMS();
+    return dmsString;
   }
 }

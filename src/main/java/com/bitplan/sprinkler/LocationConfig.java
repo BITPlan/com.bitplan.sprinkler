@@ -21,6 +21,8 @@
 package com.bitplan.sprinkler;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.openweathermap.weather.Coord;
 import org.openweathermap.weather.Location;
@@ -28,12 +30,15 @@ import org.openweathermap.weather.Location;
 import com.bitplan.json.JsonAble;
 
 /**
- * FritzBox Configuration
+ * Location Configuration
  * 
  * @author wf
  *
  */
 public class LocationConfig implements JsonAble {
+  protected static Logger LOGGER = Logger
+      .getLogger("com.bitplan.sprinkler");
+  
   String name;
   String country;
   String lat;
@@ -45,21 +50,52 @@ public class LocationConfig implements JsonAble {
 
   }
 
+  /**
+   * get the location for this configuration
+   * 
+   * @return - the location
+   */
   public Location getLocation() {
-    Location location = new Location();
-    location.setId(id);
-    location.setName(name);
-    location.setCountry(country);
-    // @TODO set coordinates
-    Coord coord = new Coord();
-    location.setCoord(coord);
+    Location location = null;
+    try {
+      if (id != null && !(id==0)) {
+        location = Location.byId(id);
+      } else if (name != null && country!=null) {
+        location = Location.byName(name+"/"+country);
+      }
+    } catch (Throwable th) {
+      // TODO handle exception
+      String msg=String.format("could not find location: %s name: %s",id==null?"?":""+id,name==null?"?":name);
+      LOGGER.log(Level.WARNING, msg, th);
+    }
+    if (location == null) {
+      location = new Location();
+      location.setId(id);
+      location.setName(name);
+      location.setCountry(country);
+    }
+    //// @TODO set coordinates from DMS / search by DMS
+    // Coord coord = new Coord();
+    // location.setCoord(coord);
     return location;
   }
 
+  /**
+   * configure me from the given location
+   * 
+   * @param location
+   */
   public void fromLocation(Location location) {
+    if (location == null)
+      return;
     this.id = location.getId();
     this.name = location.getName();
     this.country = location.getCountry();
+    Coord coord = location.getCoord();
+    if (coord == null)
+      return;
+    this.lat = coord.getLatDMS();
+    this.lon = coord.getLonDMS();
   }
 
   @Override

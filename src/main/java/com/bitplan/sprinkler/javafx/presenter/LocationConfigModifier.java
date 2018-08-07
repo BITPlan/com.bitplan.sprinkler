@@ -27,7 +27,6 @@ import com.bitplan.gui.App;
 import com.bitplan.javafx.BaseModifier;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.sprinkler.Configuration;
-import com.bitplan.sprinkler.FritzBoxConfig;
 import com.bitplan.sprinkler.LocationConfig;
 
 import javafx.stage.Stage;
@@ -68,8 +67,13 @@ public class LocationConfigModifier extends BaseModifier<LocationConfig>{
     LocationConfig locationConfig=this.getModel();
     locationConfig.fromMap(this.getView().getValueMap());
     try {
+      // set the configurations location
       configuration.setLocation(locationConfig.getLocation());
       configuration.save();
+      // set back the locationConfig
+      locationConfig.fromLocation(configuration.getLocation());
+      // and show it
+      updateView();
     } catch (IOException e) {
       this.getExceptionHandler().handleException(e);
     }

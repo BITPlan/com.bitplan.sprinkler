@@ -95,9 +95,9 @@
 						},
 						{
 							"title": "id",
-							"format": "%12d",
+							"format": "%8d",
 							"labelSize": 10,
-							"fieldSize": 12,
+							"fieldSize": 8,
 							"type": "Long"
 						}
 					]

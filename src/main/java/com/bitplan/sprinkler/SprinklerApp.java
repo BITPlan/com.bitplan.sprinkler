@@ -98,19 +98,23 @@ public class SprinklerApp extends GenericApp {
           .getTabPane(SprinklerI18n.WEATHER_GROUP);
       if (weatherTabPane != null) {
         Tab tab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
-        WeatherService weatherService=sprinkler.getWeatherService();
+        WeatherService weatherService = sprinkler.getWeatherService();
         WeatherForecast forecast = weatherService.getWeatherForecast();
-        Location city=forecast.city;
-        String title=String.format("5 day Weather Forecast for %s/%s: %4.1f mm",city.getName(),city.getCountry(),forecast.totalPrecipitation(5*24));
-        WeatherPlot weatherPlot = new WeatherPlot(title,
-            "Date", "mm Rain", forecast);
-        Platform.runLater(() -> tab.setContent(weatherPlot.getBarChart()));
+        if (forecast != null) {
+          Location city = forecast.city;
+          String title = String.format(
+              "5 day Weather Forecast for %s/%s: %4.1f mm", city.getName(),
+              city.getCountry(), forecast.totalPrecipitation(5 * 24));
+          WeatherPlot weatherPlot = new WeatherPlot(title, "Date", "mm Rain",
+              forecast);
+          Platform.runLater(() -> tab.setContent(weatherPlot.getBarChart()));
+        }
       }
       /*
-      weatherTabPane.getSelectionModel().selectedItemProperty()
-          .addListener((ov, oldTab, newTab) -> {
-            System.err.println("changed to " + newTab.getId());
-          });
+       * weatherTabPane.getSelectionModel().selectedItemProperty()
+       * .addListener((ov, oldTab, newTab) -> {
+       * System.err.println("changed to " + newTab.getId());
+       * });
        */
       setupSettings();
       this.setActiveTabPane(SprinklerI18n.WEATHER_GROUP);
@@ -148,10 +152,12 @@ public class SprinklerApp extends GenericApp {
 
     GenericPanel locationConfigPanel = this.getPanels()
         .get(SprinklerI18n.LOCATION_FORM);
-    LocationConfig locationConfig=new LocationConfig();
+    LocationConfig locationConfig = new LocationConfig();
     locationConfig.fromLocation(sprinkler.configuration.location);
-    locationConfigPanel.setModifier(new LocationConfigModifier(this.stage,this.app,this,locationConfigPanel,locationConfig,sprinkler.configuration));
-    
+    locationConfigPanel
+        .setModifier(new LocationConfigModifier(this.stage, this.app, this,
+            locationConfigPanel, locationConfig, sprinkler.configuration));
+
     GenericPanel preferencesPanel = this.getPanels()
         .get(SprinklerI18n.PREFERENCES_FORM);
     com.bitplan.appconfig.Preferences preferences = com.bitplan.appconfig.Preferences

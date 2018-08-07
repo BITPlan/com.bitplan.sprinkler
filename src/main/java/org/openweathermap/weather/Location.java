@@ -40,15 +40,16 @@ public class Location {
   protected static Map<Long,Location> locationsByIdMap=new HashMap<Long,Location>();
   protected static Location[] locations;
   
-  long id;
+  Long id;
   String name;
   String country;
   Coord coord;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
-  public void setId(long id) {
+  
+  public void setId(Long id) {
     this.id = id;
   }
   

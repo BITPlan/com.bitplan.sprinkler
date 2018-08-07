@@ -115,7 +115,7 @@ public class Sprinkler extends Main {
 
   @Override
   public void work() throws Exception {
-    Translator.APPLICATION_PREFIX="sprinkler";
+    Translator.APPLICATION_PREFIX = "sprinkler";
     if (lang == null) {
       Preferences preferences = Preferences.getInstance();
       lang = preferences != null ? preferences.getLanguage().name() : "en";
@@ -129,22 +129,24 @@ public class Sprinkler extends Main {
     WeatherService weatherService = getWeatherService();
     if (weatherService != null) {
       WeatherForecast forecast = weatherService.getWeatherForecast();
-      System.out.println(String.format(
-          "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %4.1f mm",
-          forecast.city.getName(), forecast.city.getCountry(),
-          forecast.city.getId(), forecast.totalPrecipitation(5 * 24)));
-      if (rainforecast) {
-        for (Forecast threehours : forecast.list) {
-          double rain = 0.0;
-          if (threehours.rain != null)
-            rain = threehours.rain.mm;
-          System.out
-              .println(String.format("%s %4.1f mm", threehours.dt_txt, rain));
+      if (forecast != null) {
+        System.out.println(String.format(
+            "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %4.1f mm",
+            forecast.city.getName(), forecast.city.getCountry(),
+            forecast.city.getId(), forecast.totalPrecipitation(5 * 24)));
+        if (rainforecast) {
+          for (Forecast threehours : forecast.list) {
+            double rain = 0.0;
+            if (threehours.rain != null)
+              rain = threehours.rain.mm;
+            System.out
+                .println(String.format("%s %4.1f mm", threehours.dt_txt, rain));
+          }
         }
-      }
-      if (this.debug) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(forecast));
+        if (this.debug) {
+          Gson gson = new GsonBuilder().setPrettyPrinting().create();
+          System.out.println(gson.toJson(forecast));
+        }
       }
     }
     if (!nogui) {

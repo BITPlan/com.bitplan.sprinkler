@@ -120,7 +120,7 @@ public class TestCityList {
     }
     Location kndorf = Location.byName("Knickelsdorf/DE");
     assertNotNull(kndorf);
-    assertEquals(2887186, kndorf.getId());
+    assertEquals(new Long(2887186L), kndorf.getId());
     Coord coord = kndorf.getCoord();
     if (TestSuite.debug) {
       System.out.println(String.format("lat: %4.2f lon: %4.2f", coord.getLat(),
@@ -130,7 +130,7 @@ public class TestCityList {
     assertEquals(kndorf.getCoord(), kndorf2.getCoord());
 
     Location willich = Location.byName("Willich/DE");
-    assertEquals(2808559, willich.getId());
+    assertEquals(new Long(2808559), willich.getId());
 
     Location moscow = Location.byId(524901);
     assertEquals("Moscow", moscow.getName());

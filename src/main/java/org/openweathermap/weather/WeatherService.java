@@ -21,36 +21,43 @@
 package org.openweathermap.weather;
 
 /**
- * Weather Report from openweathermap.org
- * 
+ * access to openweathermap api for a given location
  * @author wf
  *
  */
-public class WeatherReport extends OpenWeatherMapApi {
-  /**
-   * members of the Weather report
-   */
-  public Coord coord;
-  public Weather[] weather;
-  public Main main;
-  public Clouds clouds;
-  public Rain rain;
-  public Wind wind;
-  public Sys sys;
-  public String base;
-  public long id;
-  public long dt;
-  public String name;
-  public long cod;
+public class WeatherService {
+  Location location;
   
   /**
-   * get a Weather report by location
+   * construct me for the given location
    * @param location
-   * @return - the weather report
    */
-  public static WeatherReport getByLocation(Location location) {
-    WeatherReport report=(WeatherReport) OpenWeatherMapApi.getByLocation(location, "weather", WeatherReport.class);
-    return report;
+  public WeatherService(Location location) {
+    this.location=location;
+  }
+
+  /**
+   * get my location
+   * @return my location
+   */
+  public Location getLocation() {
+    return location;
   }
   
+  /**
+   * get a weather report for my location
+   * @return
+   */
+  public WeatherReport getWeatherReport() {
+    return WeatherReport.getByLocation(location);
+  }
+  
+  /**
+   * get a weather forecast for my location
+   * @return
+   */
+  public WeatherForecast getWeatherForecast() {
+    return WeatherForecast.getByLocation(location);
+  }
+
 }

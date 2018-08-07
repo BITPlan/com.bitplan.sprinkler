@@ -60,8 +60,8 @@ public class TestConfiguration {
     assertEquals(loc3.getName(),loc2.getName());
     assertEquals("DE",loc3.getCountry()); 
     assertEquals(100,conf.getAreaSizeSquareMeter(),0.1);
-    assertEquals("07:30",conf.getEarliestSprinkleHour(),0.1);
-    assertEquals("20:30",conf.getLatestSprinkleHour(),0.01);
+    assertEquals("07:30",conf.getEarliestSprinkleHour());
+    assertEquals("20:30",conf.getLatestSprinkleHour());
     assertEquals(200,conf.getlEvaporationPerDay(),0.01);
     assertEquals(2,conf.getSprinklesPerDay());
     assertEquals(22.8,conf.getMmPerHour(),0.01);

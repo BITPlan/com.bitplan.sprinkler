@@ -22,17 +22,13 @@ package com.bitplan.sprinkler.javafx.presenter;
 
 import java.io.IOException;
 
-import com.bitplan.appconfig.Preferences;
-import com.bitplan.appconfig.Preferences.LangChoice;
 import com.bitplan.error.ExceptionHandler;
 import com.bitplan.gui.App;
-import com.bitplan.i18n.I18n;
-import com.bitplan.i18n.Translator;
 import com.bitplan.javafx.BaseModifier;
-import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
+import com.bitplan.sprinkler.Configuration;
 import com.bitplan.sprinkler.FritzBoxConfig;
-import com.bitplan.sprinkler.SprinklerI18n;
+import com.bitplan.sprinkler.LocationConfig;
 
 import javafx.stage.Stage;
 
@@ -43,8 +39,10 @@ import javafx.stage.Stage;
  *
  */
 @SuppressWarnings("restriction")
-public class FritzBoxConfigModifier extends BaseModifier<FritzBoxConfig>{
+public class LocationConfigModifier extends BaseModifier<LocationConfig>{
   
+  private Configuration configuration;
+
   /**
    * construct me
    * @param preferencesPanel 
@@ -52,10 +50,11 @@ public class FritzBoxConfigModifier extends BaseModifier<FritzBoxConfig>{
    * @param stage 
    * @param preferences
    */
-  public FritzBoxConfigModifier(Stage stage, App app, ExceptionHandler exceptionHandler,GenericPanel configPanel, FritzBoxConfig config) {
+  public LocationConfigModifier(Stage stage, App app, ExceptionHandler exceptionHandler,GenericPanel configPanel, LocationConfig locationConfig, Configuration configuration) {
     super.init(stage, app, exceptionHandler);
-    this.setModel(config);
+    this.setModel(locationConfig);
     this.setView(configPanel);
+    this.configuration=configuration;
     updateView();
   }
 
@@ -65,15 +64,16 @@ public class FritzBoxConfigModifier extends BaseModifier<FritzBoxConfig>{
   }
 
   @Override
-  public FritzBoxConfig updateModel() {
-    FritzBoxConfig config=this.getModel();
-    config.fromMap(this.getView().getValueMap());
+  public LocationConfig updateModel() {
+    LocationConfig locationConfig=this.getModel();
+    locationConfig.fromMap(this.getView().getValueMap());
     try {
-      config.save();
+      configuration.setLocation(locationConfig.getLocation());
+      configuration.save();
     } catch (IOException e) {
       this.getExceptionHandler().handleException(e);
     }
-    return config;
+    return locationConfig;
   }
 
 }

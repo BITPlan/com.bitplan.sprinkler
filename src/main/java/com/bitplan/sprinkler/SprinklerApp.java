@@ -22,7 +22,9 @@ package com.bitplan.sprinkler;
 
 import java.util.logging.Level;
 
+import org.openweathermap.weather.Location;
 import org.openweathermap.weather.WeatherForecast;
+import org.openweathermap.weather.WeatherService;
 
 import com.bitplan.gui.App;
 import com.bitplan.i18n.I18n;
@@ -33,6 +35,7 @@ import com.bitplan.javafx.TaskLaunch;
 import com.bitplan.sprinkler.javafx.WeatherPlot;
 import com.bitplan.sprinkler.javafx.presenter.ConfigurationModifier;
 import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
+import com.bitplan.sprinkler.javafx.presenter.LocationConfigModifier;
 import com.bitplan.sprinkler.javafx.presenter.PreferencesModifier;
 
 import javafx.application.Platform;
@@ -42,7 +45,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -87,21 +90,19 @@ public class SprinklerApp extends GenericApp {
     stage.setY(sceneBounds.getMinY());
     setMenuBar(createMenuBar(getScene(), app));
     showMenuBar(getScene(), getMenuBar(), true);
-    // FIXME - do we need this?
-    BorderPane mainPane = new BorderPane();
-    mainPane.setCenter(xyTabPane);
-    mainPane.prefHeightProperty().bind(getScene().heightProperty());
-    mainPane.prefWidthProperty().bind(getScene().widthProperty());
-
-    getRoot().getChildren().add(mainPane);
+    getRoot().getChildren().add(xyTabPane);
+    getRoot().setVgrow(xyTabPane, Priority.ALWAYS);
     setup(app);
     try {
       TabPane weatherTabPane = xyTabPane
           .getTabPane(SprinklerI18n.WEATHER_GROUP);
       if (weatherTabPane != null) {
         Tab tab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
-        WeatherForecast forecast = sprinkler.getWeatherForeCast();
-        WeatherPlot weatherPlot = new WeatherPlot("5 day Weather Forecast",
+        WeatherService weatherService=sprinkler.getWeatherService();
+        WeatherForecast forecast = weatherService.getWeatherForecast();
+        Location city=forecast.city;
+        String title=String.format("5 day Weather Forecast for %s/%s: %4.1f mm",city.getName(),city.getCountry(),forecast.totalPrecipitation(5*24));
+        WeatherPlot weatherPlot = new WeatherPlot(title,
             "Date", "mm Rain", forecast);
         Platform.runLater(() -> tab.setContent(weatherPlot.getBarChart()));
       }
@@ -112,6 +113,7 @@ public class SprinklerApp extends GenericApp {
           });
        */
       setupSettings();
+      this.setActiveTabPane(SprinklerI18n.WEATHER_GROUP);
     } catch (Throwable th) {
       this.handleException(th);
     }
@@ -144,6 +146,12 @@ public class SprinklerApp extends GenericApp {
         .get(SprinklerI18n.SPRINKLE_FORM);
     sprinklePanel.setEditable(true);
 
+    GenericPanel locationConfigPanel = this.getPanels()
+        .get(SprinklerI18n.LOCATION_FORM);
+    LocationConfig locationConfig=new LocationConfig();
+    locationConfig.fromLocation(sprinkler.configuration.location);
+    locationConfigPanel.setModifier(new LocationConfigModifier(this.stage,this.app,this,locationConfigPanel,locationConfig,sprinkler.configuration));
+    
     GenericPanel preferencesPanel = this.getPanels()
         .get(SprinklerI18n.PREFERENCES_FORM);
     com.bitplan.appconfig.Preferences preferences = com.bitplan.appconfig.Preferences

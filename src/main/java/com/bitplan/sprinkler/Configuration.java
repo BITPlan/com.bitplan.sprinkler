@@ -178,6 +178,9 @@ public class Configuration implements JsonAble {
     return jsonFile;
   }
   
+  /**
+   * save me
+   */
   public void save() throws IOException {
     File jsonFile=getJsonFile(confName);
     if (!jsonFile.getParentFile().isDirectory())
@@ -194,7 +197,8 @@ public class Configuration implements JsonAble {
   public void fromMap(Map<String, Object> map) {
     this.appid=(String) map.get("appid");
     // this.confName=(String) map.get("confName");
-    this.mmPerHour=Double.parseDouble((String)map.get("mmPerHour"));
+    this.mmPerHour=(Double)map.get("mmPerHour");
+    // @TODO change to double using a converter or at least at regexp to allow only proper entry
     this.latestSprinkleHour=(String)map.get("latestSprinkleHour");
     this.earliestSprinkleHour=(String)map.get("earliestSprinkleHour");
     this.areaSizeSquareMeter=(Integer)map.get("areaSizeSquareMeter");

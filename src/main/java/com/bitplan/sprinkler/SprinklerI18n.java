@@ -60,6 +60,7 @@ public class SprinklerI18n {
   public static final String WEATHER_HISTORY_FORM="WeatherHistoryForm"; //Weather History
   
   public static final String PREFERENCES_GROUP="PreferencesGroup"; //Preferences
+  public static final String LOCATION_FORM="LocationForm"; //Location
   public static final String SETTINGS_FORM="SettingsForm"; //Settings
   public static final String PREFERENCES_FORM="PreferencesForm"; //Preferences
   public static final String FRITZ_BOX_FORM="FritzBoxForm"; //FRITZ!Box

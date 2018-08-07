@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.OpenWeatherMapApi;
 import org.openweathermap.weather.WeatherForecast;
+import org.openweathermap.weather.WeatherService;
 
 import com.bitplan.i18n.Translator;
 import com.bitplan.javafx.SampleApp;
@@ -43,7 +44,7 @@ public class TestGUI {
   // prepare a LOGGER
   protected static Logger LOGGER = Logger.getLogger("com.bitplan.sprinkler");
 
-  static int SHOW_TIME = 16000;
+  static int SHOW_TIME = 4000;
 
   @Before
   public void initGUI() {
@@ -54,7 +55,8 @@ public class TestGUI {
   @Test
   public void testWeatherPlot() throws Exception {
     Sprinkler sprinkler=new Sprinkler();
-    WeatherForecast forecast=sprinkler.getWeatherForeCast();
+    WeatherService weatherService=sprinkler.getWeatherService();
+    WeatherForecast forecast=weatherService.getWeatherForecast();
     if (forecast!=null) {
       WeatherPlot weatherPlot = new WeatherPlot("5 day Weather Forecast",
           "Date", "mm Rain", forecast);

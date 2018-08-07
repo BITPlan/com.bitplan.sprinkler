@@ -24,18 +24,7 @@
 		{
 			"title": "Weather",
 			"icon": "cloud",
-			"forms": [
-				{
-					"title": "CurrentWeather",
-					"icon": "eye",
-					"readOnly": "true",
-					"fields": [
-						{
-							"title": "CurrentWeather",
-							"fieldKind": "Plot"
-						}
-					]
-				},
+			"forms": [	
 				{
 					"title": "WeatherForecast",
 					"icon": "hand_alt_right",
@@ -43,6 +32,17 @@
 					"fields": [
 						{
 							"title": "WeatherForecast",
+							"fieldKind": "Plot"
+						}
+					]
+				},
+				{
+					"title": "CurrentWeather",
+					"icon": "eye",
+					"readOnly": "true",
+					"fields": [
+						{
+							"title": "CurrentWeather",
 							"fieldKind": "Plot"
 						}
 					]
@@ -64,6 +64,44 @@
 			"title": "Preferences",
 			"icon": "cogs",
 			"forms": [
+			{
+					"title": "Location",
+					"icon": "map_marker",
+					"headerText": "Location",
+					"fields": [
+						{
+							"title": "name",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40
+						},
+						{
+							"title": "country",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 40
+						},
+						{
+							"title": "lat",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 30
+						},
+						{
+							"title": "lon",
+							"format": "%s",
+							"labelSize": 10,
+							"fieldSize": 30
+						},
+						{
+							"title": "id",
+							"format": "%12d",
+							"labelSize": 10,
+							"fieldSize": 12,
+							"type": "Long"
+						}
+					]
+				},
 				{
 					"title": "Settings",
 					"icon": "tint",

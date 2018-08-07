@@ -25,7 +25,9 @@ import org.openweathermap.weather.Forecast;
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.OpenWeatherMapApi;
 import org.openweathermap.weather.WeatherForecast;
+import org.openweathermap.weather.WeatherService;
 
+import com.bitplan.appconfig.Preferences;
 import com.bitplan.i18n.Translator;
 import com.bitplan.javafx.Main;
 import com.google.gson.Gson;
@@ -47,7 +49,7 @@ public class Sprinkler extends Main {
 
   @Option(name = "--lang", aliases = {
       "--language" }, usage = "language\nlanguage to use: de/en")
-  protected String lang = "en";
+  protected String lang = null;
 
   @Option(name = "-l", aliases = {
       "--location" }, usage = "location\nuse/lookup the given location name")
@@ -56,6 +58,8 @@ public class Sprinkler extends Main {
   @Option(name = "-n", aliases = {
       "--nogui" }, usage = "nogui\ndo not show the graphical user interfaces")
   protected boolean nogui = false;
+
+  Configuration configuration;
 
   @Override
   public String getSupportEMail() {
@@ -81,15 +85,17 @@ public class Sprinkler extends Main {
     if (!testMode)
       System.exit(1);
   }
-  
+
   /**
-   * get a weather Forecast for the default location
+   * get a weather Service for the default location
+   * 
    * @return
-   * @throws Exception 
+   * @throws Exception
    */
-  public WeatherForecast getWeatherForeCast() throws Exception {
-    Configuration configuration = Configuration.getConfiguration("default");
-    WeatherForecast forecast=null;
+  public WeatherService getWeatherService() throws Exception {
+    // @TODO - cleanup side effect
+    configuration = Configuration.getConfiguration("default");
+    WeatherService service = null;
     if (configuration == null) {
       error(String.format(
           "There is no configuration file %s yet.\nYou might want to create one as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
@@ -102,23 +108,29 @@ public class Sprinkler extends Main {
           error("Could not find location " + locationName);
       }
       OpenWeatherMapApi.enableProduction(configuration.appid);
-      forecast = WeatherForecast.getByLocation(location); 
+      service = new WeatherService(location);
     }
-    return forecast;
+    return service;
   }
 
   @Override
   public void work() throws Exception {
+    Translator.APPLICATION_PREFIX="sprinkler";
+    if (lang == null) {
+      Preferences preferences = Preferences.getInstance();
+      lang = preferences != null ? preferences.getLanguage().name() : "en";
+    }
     Translator.initialize("sprinkler", lang);
     if (this.showVersion || this.debug)
       showVersion();
     if (this.showHelp) {
       showHelp();
     }
-    WeatherForecast forecast=getWeatherForeCast();
-    if (forecast!=null) {
+    WeatherService weatherService = getWeatherService();
+    if (weatherService != null) {
+      WeatherForecast forecast = weatherService.getWeatherForecast();
       System.out.println(String.format(
-          "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %3.1f mm",
+          "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %4.1f mm",
           forecast.city.getName(), forecast.city.getCountry(),
           forecast.city.getId(), forecast.totalPrecipitation(5 * 24)));
       if (rainforecast) {

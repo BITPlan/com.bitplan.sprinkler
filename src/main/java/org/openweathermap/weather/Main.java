@@ -27,9 +27,9 @@ package org.openweathermap.weather;
  *
  */
 public class Main {
-  double temp;
-  double pressure;
-  double humidity;
-  double temp_min;
-  double temp_max;
+  public double temp;
+  public double pressure;
+  public double humidity;
+  public double temp_min;
+  public double temp_max;
 }

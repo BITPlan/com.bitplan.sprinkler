@@ -24,6 +24,7 @@ import java.util.logging.Level;
 
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.WeatherForecast;
+import org.openweathermap.weather.WeatherReport;
 import org.openweathermap.weather.WeatherService;
 
 import com.bitplan.fritzbox.Device;
@@ -39,6 +40,7 @@ import com.bitplan.javafx.GenericControl;
 import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
+import com.bitplan.sprinkler.javafx.CurrentWeatherPane;
 import com.bitplan.sprinkler.javafx.WeatherPlot;
 import com.bitplan.sprinkler.javafx.presenter.ConfigurationModifier;
 import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
@@ -115,8 +117,9 @@ public class SprinklerApp extends GenericApp {
       TabPane weatherTabPane = xyTabPane
           .getTabPane(SprinklerI18n.WEATHER_GROUP);
       if (weatherTabPane != null) {
-        Tab tab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
         WeatherService weatherService = sprinkler.getWeatherService();
+        // create the weather Forecast
+        Tab forecastTab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
         WeatherForecast forecast = weatherService.getWeatherForecast();
         if (forecast != null) {
           Location city = forecast.city;
@@ -125,8 +128,14 @@ public class SprinklerApp extends GenericApp {
               forecast.totalPrecipitation(5 * 24));
           WeatherPlot weatherPlot = new WeatherPlot(title, "Date", "mm Rain",
               forecast);
-          Platform.runLater(() -> tab.setContent(weatherPlot.getBarChart()));
+          Platform.runLater(() -> forecastTab.setContent(weatherPlot.getBarChart()));
         }
+        Tab weatherTab = xyTabPane.getTab(SprinklerI18n.CURRENT_WEATHER_FORM);
+        WeatherReport report = weatherService.getWeatherReport();
+        if (report!=null) {
+          Platform.runLater(() -> weatherTab.setContent(new CurrentWeatherPane(report)));
+        }
+        
       }
       setupSprinklerOnOff();
 

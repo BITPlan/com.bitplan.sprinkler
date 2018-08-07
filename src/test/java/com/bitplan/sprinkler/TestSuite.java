@@ -25,7 +25,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TestDebug.class,TestCityList.class, 
-    TestConfiguration.class, TestWeatherReport.class, TestGUI.class
+    TestConfiguration.class, TestWeatherReport.class, TestGUI.class, TestHelpPages.class
     })
 /**
  * TestSuite

@@ -24,14 +24,14 @@ import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openweathermap.weather.Location;
-import org.openweathermap.weather.OpenWeatherMapApi;
 import org.openweathermap.weather.WeatherForecast;
+import org.openweathermap.weather.WeatherReport;
 import org.openweathermap.weather.WeatherService;
 
 import com.bitplan.i18n.Translator;
 import com.bitplan.javafx.SampleApp;
 import com.bitplan.javafx.WaitableApp;
+import com.bitplan.sprinkler.javafx.CurrentWeatherPane;
 import com.bitplan.sprinkler.javafx.WeatherPlot;
 
 /**
@@ -62,6 +62,21 @@ public class TestGUI {
           "Date", "mm Rain", forecast);
       SampleApp sampleApp = new SampleApp("WeatherPlot",
           weatherPlot.getBarChart());
+      sampleApp.show();
+      sampleApp.waitOpen();
+      Thread.sleep(SHOW_TIME);
+      sampleApp.close();
+    }
+  }
+  
+  @Test
+  public void testCurrentWeatherPane() throws Exception {
+    Sprinkler sprinkler=new Sprinkler();
+    WeatherService weatherService=sprinkler.getWeatherService();
+    WeatherReport report=weatherService.getWeatherReport();
+    if (report!=null) {
+      SampleApp sampleApp = new SampleApp("WeatherPlot",
+          new CurrentWeatherPane(report));
       sampleApp.show();
       sampleApp.waitOpen();
       Thread.sleep(SHOW_TIME*4);

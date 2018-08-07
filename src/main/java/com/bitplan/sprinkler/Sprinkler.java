@@ -61,6 +61,8 @@ public class Sprinkler extends Main {
 
   Configuration configuration;
 
+  SprinklerApp gApp;
+
   @Override
   public String getSupportEMail() {
     return "support@bitplan.com";
@@ -150,7 +152,7 @@ public class Sprinkler extends Main {
       }
     }
     if (!nogui) {
-      SprinklerApp gApp = SprinklerApp.getInstance(this);
+      gApp = SprinklerApp.getInstance(this);
       gApp.show();
       gApp.waitOpen();
       gApp.waitClose();

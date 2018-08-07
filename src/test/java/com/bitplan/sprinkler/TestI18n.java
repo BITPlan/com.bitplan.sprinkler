@@ -20,9 +20,14 @@
  */
 package com.bitplan.sprinkler;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.bitplan.gui.App;
+import com.bitplan.i18n.I18n;
+import com.bitplan.i18n.Translator;
 
 /**
  * Test the Internationalization
@@ -36,6 +41,7 @@ public class TestI18n extends com.bitplan.i18n.TestI18n {
   {
     TestI18n.show=true;
   }
+  
   /**
    * configure the app
    */
@@ -53,5 +59,12 @@ public class TestI18n extends com.bitplan.i18n.TestI18n {
   @Override
   public String getI18nName() {
     return "sprinkler";
+  }
+  
+  @Test
+  public void testForecast(){
+    Translator.initialize("sprinkler", "de");
+    String text=I18n.get(SprinklerI18n.WEATHER_FORECAST,5,"Knickelsdorf","DE",27.9);
+    assertEquals("5 Tage Wettervorhersage für Knickelsdorf/DE: 27,9 mm",text);
   }
 }

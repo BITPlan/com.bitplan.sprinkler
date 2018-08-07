@@ -26,12 +26,21 @@ import org.openweathermap.weather.Location;
 import org.openweathermap.weather.WeatherForecast;
 import org.openweathermap.weather.WeatherService;
 
+import com.bitplan.fritzbox.Device;
+import com.bitplan.fritzbox.DeviceList;
+import com.bitplan.fritzbox.FritzBoxSession;
+import com.bitplan.fritzbox.FritzBoxSessionImpl;
+import com.bitplan.fritzbox.FritzboxImpl;
+import com.bitplan.fritzbox.HomeAutomation;
+import com.bitplan.fritzbox.HomeAutomationImpl;
 import com.bitplan.gui.App;
 import com.bitplan.i18n.I18n;
 import com.bitplan.javafx.GenericApp;
+import com.bitplan.javafx.GenericControl;
 import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
+import com.bitplan.javafx.XYTabPane;
 import com.bitplan.sprinkler.javafx.WeatherPlot;
 import com.bitplan.sprinkler.javafx.presenter.ConfigurationModifier;
 import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
@@ -42,6 +51,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -67,7 +77,15 @@ public class SprinklerApp extends GenericApp {
 
   String title;
   private Sprinkler sprinkler;
+  private String ain; // FritzBox device ain
 
+  /**
+   * create the Sprinkler application
+   * 
+   * @param app
+   * @param sprinkler
+   * @param resourcePath
+   */
   public SprinklerApp(App app, Sprinkler sprinkler, String resourcePath) {
     super(app, sprinkler, resourcePath);
     this.sprinkler = sprinkler;
@@ -102,9 +120,9 @@ public class SprinklerApp extends GenericApp {
         WeatherForecast forecast = weatherService.getWeatherForecast();
         if (forecast != null) {
           Location city = forecast.city;
-          String title = String.format(
-              "5 day Weather Forecast for %s/%s: %4.1f mm", city.getName(),
-              city.getCountry(), forecast.totalPrecipitation(5 * 24));
+          String title = I18n.get(SprinklerI18n.WEATHER_FORECAST, 5,
+              city.getName(), city.getCountry(),
+              forecast.totalPrecipitation(5 * 24));
           WeatherPlot weatherPlot = new WeatherPlot(title, "Date", "mm Rain",
               forecast);
           Platform.runLater(() -> tab.setContent(weatherPlot.getBarChart()));
@@ -116,12 +134,54 @@ public class SprinklerApp extends GenericApp {
        * System.err.println("changed to " + newTab.getId());
        * });
        */
+      setupSprinklerOnOff();
+
+      // setup the setting modifiers
       setupSettings();
       this.setActiveTabPane(SprinklerI18n.WEATHER_GROUP);
     } catch (Throwable th) {
       this.handleException(th);
     }
     stage.show();
+  }
+
+  /**
+   * setup the Sprinkler handling
+   * @throws Exception
+   */
+  private void setupSprinklerOnOff() throws Exception {
+    GenericControl sprinklerOnOff = this.controls.get("on");
+    if (sprinklerOnOff != null) {
+      final CheckBox onoffbox = sprinklerOnOff.getCheckBox();
+      FritzBoxConfig fritzBoxConfig = FritzBoxConfig.getInstance();
+      if (fritzBoxConfig == null)
+        onoffbox.setDisable(true);
+      else {
+        onoffbox.setOnAction((ActionEvent e) -> {
+          try {
+            LOGGER.log(Level.INFO, "switch power on "+fritzBoxConfig.deviceName+": " + onoffbox.isSelected());
+            FritzBoxSession fritzBoxSession = FritzBoxSessionImpl.getInstance();
+            if (fritzBoxSession != null) {
+              // @TODO move to com.bitplan.fritzbox as getAinForName()
+              final HomeAutomation homeAutomation = new HomeAutomationImpl(
+                  fritzBoxSession);
+              if (ain == null) {
+                DeviceList deviceList = homeAutomation.getDeviceListInfos();
+                for (Device device : deviceList.devices) {
+                  if (fritzBoxConfig.deviceName.equals(device.name))
+                    ain=device.getAin();
+                }
+              }
+              if (ain!=null) {
+                homeAutomation.setSwitchOnOff(ain, onoffbox.isSelected());
+              }
+            }
+          } catch (Exception e1) {
+            handleException(e1);
+          }
+        });
+      }
+    }
   }
 
   /**

@@ -75,4 +75,5 @@ public class SprinklerI18n {
   
   public static final String ADDRESS_ALREADY_IN_USE="addressAlreadyInUse"; //address already in use
   public static final String NETWORK_IS_UNREACHABLE="networkIsUnreachable"; //network is unreachable
+  public static final String WEATHER_FORECAST = "MultiDayWeatherForecast";
 }

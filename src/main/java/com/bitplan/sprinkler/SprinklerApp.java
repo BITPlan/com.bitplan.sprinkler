@@ -41,6 +41,7 @@ import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
 import com.bitplan.sprinkler.javafx.CurrentWeatherPane;
+import com.bitplan.sprinkler.javafx.SprinklerPane;
 import com.bitplan.sprinkler.javafx.WeatherPlot;
 import com.bitplan.sprinkler.javafx.presenter.ConfigurationModifier;
 import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
@@ -76,7 +77,6 @@ public class SprinklerApp extends GenericApp {
 
   String title;
   private Sprinkler sprinkler;
-  private String ain; // FritzBox device ain
 
   /**
    * create the Sprinkler application
@@ -128,16 +128,23 @@ public class SprinklerApp extends GenericApp {
               forecast.totalPrecipitation(5 * 24));
           WeatherPlot weatherPlot = new WeatherPlot(title, "Date", "mm Rain",
               forecast);
-          Platform.runLater(() -> forecastTab.setContent(weatherPlot.getBarChart()));
+          Platform.runLater(
+              () -> forecastTab.setContent(weatherPlot.getBarChart()));
         }
         Tab weatherTab = xyTabPane.getTab(SprinklerI18n.CURRENT_WEATHER_FORM);
         WeatherReport report = weatherService.getWeatherReport();
-        if (report!=null) {
-          Platform.runLater(() -> weatherTab.setContent(new CurrentWeatherPane(report)));
+        if (report != null) {
+          Platform.runLater(
+              () -> weatherTab.setContent(new CurrentWeatherPane(report)));
         }
-        
+
       }
-      setupSprinklerOnOff();
+      Tab sprinklerTab = xyTabPane.getTab(SprinklerI18n.SPRINKLE_FORM);
+      if (sprinklerTab != null) {
+        SprinklerPane sprinklerPane=new SprinklerPane(SprinkleHistory.getInstance(),this);
+        Platform.runLater(()-> sprinklerTab.setContent(sprinklerPane));
+      }
+     
 
       // setup the setting modifiers
       setupSettings();
@@ -148,45 +155,7 @@ public class SprinklerApp extends GenericApp {
     stage.show();
   }
 
-  /**
-   * setup the Sprinkler handling
-   * @throws Exception
-   */
-  private void setupSprinklerOnOff() throws Exception {
-    GenericControl sprinklerOnOff = this.controls.get("on");
-    if (sprinklerOnOff != null) {
-      final CheckBox onoffbox = sprinklerOnOff.getCheckBox();
-      FritzBoxConfig fritzBoxConfig = FritzBoxConfig.getInstance();
-      if (fritzBoxConfig == null)
-        onoffbox.setDisable(true);
-      else {
-        onoffbox.setOnAction((ActionEvent e) -> {
-          try {
-            LOGGER.log(Level.INFO, "switch power on "+fritzBoxConfig.deviceName+": " + onoffbox.isSelected());
-            FritzBoxSession fritzBoxSession = FritzBoxSessionImpl.getInstance();
-            if (fritzBoxSession != null) {
-              // @TODO move to com.bitplan.fritzbox as getAinForName()
-              final HomeAutomation homeAutomation = new HomeAutomationImpl(
-                  fritzBoxSession);
-              if (ain == null) {
-                DeviceList deviceList = homeAutomation.getDeviceListInfos();
-                for (Device device : deviceList.devices) {
-                  if (fritzBoxConfig.deviceName.equals(device.name))
-                    ain=device.getAin();
-                }
-              }
-              if (ain!=null) {
-                homeAutomation.setSwitchOnOff(ain, onoffbox.isSelected());
-              }
-            }
-          } catch (Exception e1) {
-            handleException(e1);
-          }
-        });
-      }
-    }
-  }
-
+  
   /**
    * get the instance for the sprinkler app
    * 

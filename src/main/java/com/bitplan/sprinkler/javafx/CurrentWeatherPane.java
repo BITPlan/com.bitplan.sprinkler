@@ -20,7 +20,6 @@
  */
 package com.bitplan.sprinkler.javafx;
 
-import java.nio.file.attribute.PosixFilePermission;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,12 +36,8 @@ import eu.hansolo.medusa.Gauge.NeedleSize;
 import eu.hansolo.medusa.GaugeBuilder;
 import eu.hansolo.medusa.GaugeDesign;
 import eu.hansolo.medusa.GaugeDesign.GaugeBackground;
-import eu.hansolo.medusa.Section;
 import eu.hansolo.medusa.TickLabelLocation;
-import eu.hansolo.medusa.TickMarkType;
 import javafx.geometry.Pos;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 
 /**
  * a Weather Dashboard

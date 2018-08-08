@@ -38,7 +38,7 @@ public class FritzBoxConfig implements JsonAble {
   String username;
   String password;
   String password2;
-  String deviceName;
+  private String deviceName;
   transient Fritzbox fritzbox;
   
   @Override
@@ -52,7 +52,7 @@ public class FritzBoxConfig implements JsonAble {
     this.username = (String) map.get("username");
     this.password = (String) map.get("password");
     this.password2 = (String) map.get("password2");
-    this.deviceName = (String) map.get("deviceName");
+    this.setDeviceName((String) map.get("deviceName"));
   }
   
   static FritzBoxConfig instance;
@@ -70,6 +70,14 @@ public class FritzBoxConfig implements JsonAble {
       }
     }
     return instance;
+  }
+
+  public String getDeviceName() {
+    return deviceName;
+  }
+
+  public void setDeviceName(String deviceName) {
+    this.deviceName = deviceName;
   }
 
 }

@@ -78,7 +78,7 @@ public class WeatherForecast extends OpenWeatherMapApi {
    */
   public static WeatherForecast getByLocation(Location location) {
     WeatherForecast forecast = (WeatherForecast) OpenWeatherMapApi
-        .getByLocation(location, "forecast", WeatherForecast.class);
+        .getByLocation(location, "forecast","", WeatherForecast.class);
     return forecast;
   }
 }

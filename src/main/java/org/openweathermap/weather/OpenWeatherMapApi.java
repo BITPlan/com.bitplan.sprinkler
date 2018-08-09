@@ -59,16 +59,19 @@ public class OpenWeatherMapApi {
   }
 
   /**
-   * get the weather report for the given location
-   * 
-   * @param location
-   * @return - the weather report / forecast and so on
+   * get the type of weather API result for the given location
+   * @param location - including the id
+   * @param type - weather current or history
+   * @param params - mostly empty has e.g. type and start and end
+   * @param clazz - corresponding org.openweathermap.weather class for which and instance is to be returned
+   * e.g. WeatherReport, WeatherForecast or WeatherHistory
+   * @return - the result
    */
-  public static OpenWeatherMapApi getByLocation(Location location, String type, Class<? extends OpenWeatherMapApi> clazz) {
+  public static OpenWeatherMapApi getByLocation(Location location, String type, String params,Class<? extends OpenWeatherMapApi> clazz) {
     long id = location.getId();
     String url = String.format(
-        "%s/data/2.5/%s?id=%d&appid=%s%s",
-        baseurl,type,id, appid,units);
+        "%s/data/2.5/%s?id=%d&appid=%s%s%s",
+        baseurl,type,id, appid,units,params);
     try {
       String json = JsonUtil.read(url);
       if (debug)

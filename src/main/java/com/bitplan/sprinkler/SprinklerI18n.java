@@ -76,5 +76,11 @@ public class SprinklerI18n {
   public static final String ADDRESS_ALREADY_IN_USE="addressAlreadyInUse"; //address already in use
   public static final String NETWORK_IS_UNREACHABLE="networkIsUnreachable"; //network is unreachable
   public static final String WEATHER_FORECAST = "MultiDayWeatherForecast";
-  public static String SPRINKLER_BEGIN="Sprinkler.Begin";
+  public static final String WEATHER_HISTORY = "WeatherHistory";
+  public static final String ON = "on";
+  public static final String OFF = "off"; 
+  public static final String SPRINKLER_BEGIN="Sprinkler.Begin";
+  public static final String SPRINKLER_END="Sprinkler.End";
+  public static final String SPRINKLER_TIME="Sprinkler.Time";
+  public static final String WATCH_TIME = "watchTime";
 }

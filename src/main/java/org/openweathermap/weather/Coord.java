@@ -24,6 +24,7 @@ import gov.nasa.worldwind.geom.Angle;
 
 /**
  * coordinate
+ * 
  * @author wf
  *
  */
@@ -32,44 +33,81 @@ public class Coord {
   double lon;
   private transient Angle latangle;
   private transient Angle lonangle;
-  
+
+  /**
+   * construct me from a latitude and longitude
+   * 
+   * @param lat
+   * @param lon
+   */
+  public Coord(Double lat, Double lon) {
+    this.lat = lat;
+    this.lon = lon;
+    init();
+  }
+
   public double getLat() {
     return lat;
   }
+
   public void setLat(double lat) {
     this.lat = lat;
   }
+
   public double getLon() {
     return lon;
   }
+
   public void setLon(double lon) {
     this.lon = lon;
   }
-  
+
   public void init() {
     latangle = Angle.fromDegreesLatitude(Math.abs(lat));
     lonangle = Angle.fromDegreesLongitude(Math.abs(lon));
   }
-  
+
   public String getLatDMS() {
-    if (latangle==null)
+    if (latangle == null)
       init();
-    String latDMS=String.format("%s %s",latangle.toFormattedDMSString(), lat >= 0.0 ? "N" : "S");
+    String latDMS = String.format("%s %s", latangle.toFormattedDMSString(),
+        lat >= 0.0 ? "N" : "S");
     return latDMS;
   }
-  
+
   public String getLonDMS() {
-    if (lonangle==null)
+    if (lonangle == null)
       init();
-    String lonDMS=String.format("%s %s",lonangle.toFormattedDMSString(), lon >= 0.0 ? "E" : "W");
+    String lonDMS = String.format("%s %s", lonangle.toFormattedDMSString(),
+        lon >= 0.0 ? "E" : "W");
     return lonDMS;
   }
-  
+
+  /**
+   * get the distance to another coordinate
+   * see https://stackoverflow.com/a/123305/1497139
+   * 
+   * @param other
+   * @return the distance in km
+   */
+  public double distance(Coord other) {
+    double earthRadius = 6371; // km
+    double dLat = Math.toRadians(other.lat - lat);
+    double dLng = Math.toRadians(other.lon - lon);
+    double sindLat = Math.sin(dLat / 2);
+    double sindLng = Math.sin(dLng / 2);
+    double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+        * Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(other.lat));
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    double dist = earthRadius * c;
+    return dist;
+  }
+
   /**
    * return the GEO coordinates
    */
   public String toString() {
-    String dmsString = getLatDMS()+getLonDMS();
+    String dmsString = getLatDMS() + getLonDMS();
     return dmsString;
   }
 }

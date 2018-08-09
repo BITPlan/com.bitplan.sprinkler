@@ -24,19 +24,13 @@ import java.util.logging.Level;
 
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.WeatherForecast;
+import org.openweathermap.weather.WeatherHistory;
 import org.openweathermap.weather.WeatherReport;
 import org.openweathermap.weather.WeatherService;
 
-import com.bitplan.fritzbox.Device;
-import com.bitplan.fritzbox.DeviceList;
-import com.bitplan.fritzbox.FritzBoxSession;
-import com.bitplan.fritzbox.FritzBoxSessionImpl;
-import com.bitplan.fritzbox.HomeAutomation;
-import com.bitplan.fritzbox.HomeAutomationImpl;
 import com.bitplan.gui.App;
 import com.bitplan.i18n.I18n;
 import com.bitplan.javafx.GenericApp;
-import com.bitplan.javafx.GenericControl;
 import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.javafx.TaskLaunch;
@@ -48,14 +42,16 @@ import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
 import com.bitplan.sprinkler.javafx.presenter.LocationConfigModifier;
 import com.bitplan.sprinkler.javafx.presenter.PreferencesModifier;
 
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -118,11 +114,11 @@ public class SprinklerApp extends GenericApp {
           .getTabPane(SprinklerI18n.WEATHER_GROUP);
       if (weatherTabPane != null) {
         WeatherService weatherService = sprinkler.getWeatherService();
+        Location city = weatherService.getLocation();
         // create the weather Forecast
         Tab forecastTab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
         WeatherForecast forecast = weatherService.getWeatherForecast();
         if (forecast != null) {
-          Location city = forecast.city;
           String title = I18n.get(SprinklerI18n.WEATHER_FORECAST, 5,
               city.getName(), city.getCountry(),
               forecast.totalPrecipitation(5 * 24));
@@ -130,6 +126,21 @@ public class SprinklerApp extends GenericApp {
               forecast);
           Platform.runLater(
               () -> forecastTab.setContent(weatherPlot.getBarChart()));
+        }
+        Tab historyTab = xyTabPane.getTab(SprinklerI18n.WEATHER_HISTORY_FORM);
+        WeatherHistory history = weatherService.getWeatherHistory();
+        if (history != null) {
+          String title = I18n.get(SprinklerI18n.WEATHER_HISTORY, 5,
+              city.getName(), city.getCountry(),
+              history.totalPrecipitation(5 * 24));
+          WeatherPlot weatherHistoryPlot = new WeatherPlot(title, "Date", "mm Rain",
+              history);
+          Platform.runLater(
+              () -> historyTab.setContent(weatherHistoryPlot.getBarChart()));
+        } else {
+          Label msgLabel=new Label("appid not valid for history data");
+          Platform.runLater(
+              () -> historyTab.setContent(msgLabel));
         }
         Tab weatherTab = xyTabPane.getTab(SprinklerI18n.CURRENT_WEATHER_FORM);
         WeatherReport report = weatherService.getWeatherReport();
@@ -141,10 +152,9 @@ public class SprinklerApp extends GenericApp {
       }
       Tab sprinklerTab = xyTabPane.getTab(SprinklerI18n.SPRINKLE_FORM);
       if (sprinklerTab != null) {
-        SprinklerPane sprinklerPane=new SprinklerPane(SprinkleHistory.getInstance(),this);
+        SprinklerPane sprinklerPane=new SprinklerPane(SprinkleHistory.getInstance(),sprinkler.configuration,this);
         Platform.runLater(()-> sprinklerTab.setContent(sprinklerPane));
       }
-     
 
       // setup the setting modifiers
       setupSettings();

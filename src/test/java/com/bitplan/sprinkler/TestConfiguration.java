@@ -47,9 +47,7 @@ public class TestConfiguration {
     conf.setMmPerHour(22.8); // 2280 l per hour
     Configuration conf2=new Configuration();
     Location loc2=new Location();
-    Coord coord=new Coord();
-    coord.setLat(50.94);
-    coord.setLon(6.958);
+    Coord coord=new Coord(50.94,6.958);
     loc2.setCoord(coord);
     loc2.setName("Krefeld");
     loc2.setCountry("DE");

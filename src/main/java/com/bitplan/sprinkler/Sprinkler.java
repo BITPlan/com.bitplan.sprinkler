@@ -118,8 +118,8 @@ public class Sprinkler extends Main {
   @Override
   public void work() throws Exception {
     Translator.APPLICATION_PREFIX = "sprinkler";
+    Preferences preferences = Preferences.getInstance();
     if (lang == null) {
-      Preferences preferences = Preferences.getInstance();
       lang = preferences != null ? preferences.getLanguage().name() : "en";
     }
     Translator.initialize("sprinkler", lang);
@@ -127,6 +127,9 @@ public class Sprinkler extends Main {
       showVersion();
     if (this.showHelp) {
       showHelp();
+    }
+    if (preferences!=null) {
+      OpenWeatherMapApi.debug=preferences.getDebug();
     }
     WeatherService weatherService = getWeatherService();
     if (weatherService != null) {

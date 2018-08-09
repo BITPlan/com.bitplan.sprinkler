@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.Weather;
 import org.openweathermap.weather.WeatherForecast;
+import org.openweathermap.weather.WeatherHistory;
 import org.openweathermap.weather.WeatherReport;
 
 import com.google.gson.Gson;
@@ -71,6 +72,7 @@ public class TestWeatherReport {
   public void testWeatherForecast() throws Exception {
     //TestSuite.debug=true;
     Location moscow=Location.byId(524901);
+    assertNotNull("Moscow should be found",moscow);
     WeatherForecast.debug=TestSuite.debug;
     WeatherForecast forecast=WeatherForecast.getByLocation(moscow);
     assertNotNull(forecast);
@@ -82,6 +84,22 @@ public class TestWeatherReport {
     assertEquals("Moscow",forecast.city.getName());
     assertEquals(40,forecast.list.length);
     // assertEquals(2.645,forecast.totalPrecipitation(3),0.001);
+  }
+  
+  @Test
+  public void testWeatherHistory() throws Exception {
+    TestSuite.debug=true;
+    Location london=Location.byId(2643743);
+    assertNotNull("london should be found",london);
+    assertEquals("London",london.getName());
+    assertEquals("GB",london.getCountry());
+    WeatherHistory history=WeatherHistory.getByLocation(london);
+    assertNotNull(history);
+    if (TestSuite.debug) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+      System.out.println(gson.toJson(history));
+    }
+    assertEquals(3,history.list.length);
   }
 
 }

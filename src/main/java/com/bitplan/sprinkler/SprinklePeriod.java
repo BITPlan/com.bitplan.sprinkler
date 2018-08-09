@@ -37,15 +37,15 @@ public class SprinklePeriod implements JsonAble {
   
   public static enum SprinkleSource{Rain,Sprinkler};
   // when sprinkling started
-  Date start;
+  public Date start;
   // when sprinkling stopped
-  Date stop;
+  public Date stop;
   // how many mm of rain equivalent where applied
-  Double mm;
+  public Double mm;
   // pump energy consumed for this sprinkle period
-  Double kWh;
+  public Double kWh;
   // the source of this sprinkling
-  SprinkleSource source;
+  public SprinkleSource source;
   /**
    * 
    * @param dateStr
@@ -63,6 +63,9 @@ public class SprinklePeriod implements JsonAble {
     this.source=source;
   }
   
+  public SprinklePeriod() {
+  }
+
   @Override
   public void reinit() {
     

@@ -20,37 +20,14 @@
  */
 package org.openweathermap.weather;
 
-/**
- * Weather Report from openweathermap.org
- * 
- * @author wf
- *
- */
-public class WeatherReport extends OpenWeatherMapApi {
+public class WeatherHistory extends WeatherForecast {
   /**
-   * members of the Weather report
-   */
-  public Coord coord;
-  public Weather[] weather;
-  public Main main;
-  public Clouds clouds;
-  public Rain rain;
-  public Wind wind;
-  public Sys sys;
-  public String base;
-  public long id;
-  public long dt;
-  public String name;
-  public long cod;
-  
-  /**
-   * get a Weather report by location
+   * get a Weather history by location
    * @param location
-   * @return - the weather report
+   * @return - the weather history
    */
-  public static WeatherReport getByLocation(Location location) {
-    WeatherReport report=(WeatherReport) OpenWeatherMapApi.getByLocation(location, "weather","",WeatherReport.class);
-    return report;
+  public static WeatherHistory getByLocation(Location location) {
+    WeatherHistory history=(WeatherHistory) OpenWeatherMapApi.getByLocation(location, "history/city","&type=hour",WeatherHistory.class);
+    return history;
   }
-  
 }

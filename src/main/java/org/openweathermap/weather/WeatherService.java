@@ -46,7 +46,7 @@ public class WeatherService {
   
   /**
    * get a weather report for my location
-   * @return
+   * @return the weather report for my location
    */
   public WeatherReport getWeatherReport() {
     return WeatherReport.getByLocation(location);
@@ -54,10 +54,18 @@ public class WeatherService {
   
   /**
    * get a weather forecast for my location
-   * @return
+   * @return the weather forecast for my location
    */
   public WeatherForecast getWeatherForecast() {
     return WeatherForecast.getByLocation(location);
+  }
+
+  /**
+   * get a weather history for my location
+   * @return the weather history for my location
+   */
+  public WeatherHistory getWeatherHistory() {
+    return WeatherHistory.getByLocation(location);
   }
 
 }

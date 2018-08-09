@@ -133,12 +133,17 @@ public class Location {
   
   /**
    * get a location by Id
-   * @param Id - the id to l ook for
+   * @param Id - the id to look for
    * @return the location
    * @throws Exception 
    */
   public static Location byId(long Id) throws Exception {
     Location location=getLocationsById().get(Id);
     return location;
+  }
+  
+  public String toString() {
+    String text=String.format("%s/%s%s", name,country,coord==null?"":":"+coord.toString());
+    return text;
   }
 }

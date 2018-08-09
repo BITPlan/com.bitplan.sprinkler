@@ -67,6 +67,11 @@ public class SprinkleHistory implements JsonAble {
       }
     });
   }
+  
+  public void add(SprinklePeriod period) {
+    this.sprinklePeriods.add(period);
+    sortByStart();
+  }
 
   @Override
   public void reinit() {

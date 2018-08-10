@@ -106,7 +106,7 @@ public class CurrentWeatherPane extends ConstrainedGridPane {
       
       windSpeedGauge = LcdGauge.createGauge(I18n.get("wind speed"),
           I18n.get("km/h"));
-      windSpeedGauge.setValue(report.wind.speed);
+      windSpeedGauge.setValue(report.wind.speed*3.6); // m/s to kmh
       
       temperatureGauge = LcdGauge.createGauge(I18n.get("temperature"),
           I18n.get("°C"));

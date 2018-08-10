@@ -207,7 +207,7 @@ public class SprinklerPane extends HBox {
 
     if (onOffButton != null) {
       FritzBoxConfig fritzBoxConfig = FritzBoxConfig.getInstance();
-      if (fritzBoxConfig == null)
+      if (fritzBoxConfig == null || fritzBoxConfig.getDeviceName()==null)
         onOffButton.setDisable(true);
       else {
         FritzBoxSession fritzBoxSession = FritzBoxSessionImpl.getInstance();

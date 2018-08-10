@@ -28,6 +28,7 @@ import org.openweathermap.weather.WeatherForecast;
 import org.openweathermap.weather.WeatherService;
 
 import com.bitplan.appconfig.Preferences;
+import com.bitplan.appconfig.Preferences.LangChoice;
 import com.bitplan.i18n.Translator;
 import com.bitplan.javafx.Main;
 import com.google.gson.Gson;
@@ -119,8 +120,9 @@ public class Sprinkler extends Main {
   public void work() throws Exception {
     Translator.APPLICATION_PREFIX = "sprinkler";
     Preferences preferences = Preferences.getInstance();
-    if (lang == null) {
-      lang = preferences != null ? preferences.getLanguage().name() : "en";
+    if (lang == null && preferences!=null) {
+      LangChoice langChoice = preferences.getLanguage();
+      lang = langChoice!=null && !LangChoice.notSet.equals(langChoice)?langChoice.name() : "en";
     }
     Translator.initialize("sprinkler", lang);
     if (this.showVersion || this.debug)

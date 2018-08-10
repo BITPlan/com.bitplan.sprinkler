@@ -22,17 +22,11 @@ package com.bitplan.sprinkler.javafx.presenter;
 
 import java.io.IOException;
 
-import com.bitplan.appconfig.Preferences;
-import com.bitplan.appconfig.Preferences.LangChoice;
 import com.bitplan.error.ExceptionHandler;
 import com.bitplan.gui.App;
-import com.bitplan.i18n.I18n;
-import com.bitplan.i18n.Translator;
 import com.bitplan.javafx.BaseModifier;
-import com.bitplan.javafx.GenericDialog;
 import com.bitplan.javafx.GenericPanel;
 import com.bitplan.sprinkler.FritzBoxConfig;
-import com.bitplan.sprinkler.SprinklerI18n;
 
 import javafx.stage.Stage;
 

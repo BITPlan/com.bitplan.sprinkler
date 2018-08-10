@@ -45,6 +45,8 @@ public class TestDWD {
    */
   @Test
   public void testWFS() throws Exception {
+    
+    TestSuite.debug=true;
     WFS.debug=TestSuite.debug;
     Location location = Location.byName("Knickelsdorf/DE");
     if (TestSuite.debug)

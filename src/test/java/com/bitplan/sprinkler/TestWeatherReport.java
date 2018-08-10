@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.openweathermap.weather.Location;
+import org.openweathermap.weather.OpenWeatherMapApi;
 import org.openweathermap.weather.Weather;
 import org.openweathermap.weather.WeatherForecast;
 import org.openweathermap.weather.WeatherHistory;
@@ -43,6 +44,7 @@ public class TestWeatherReport {
 
   @Test
   public void testWeatherReport() throws Exception {
+    OpenWeatherMapApi.debug=true;
     Location location=Location.byName("Cairns/AU");
     WeatherReport.debug=TestSuite.debug;
     WeatherReport report=WeatherReport.getByLocation(location);

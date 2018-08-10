@@ -145,6 +145,37 @@
 							"fieldSize": 6
 						},
 						{
+							"title": "pumpPower",
+							"hint": "power of Pump/Watt",
+							"format": "%5.0f",
+							"labelSize": 20,
+							"fieldSize": 13,
+							"type": "Double"
+						},
+						{
+							"title": "waterPrice",
+							"hint": "price of water per m³",
+							"format": "%10.2f",
+							"labelSize": 20,
+							"fieldSize": 13,
+							"type": "Double"
+						},
+						{
+							"title": "energyPrice",
+							"hint": "price of energy per kWh",
+							"format": "%10.2f",
+							"labelSize": 20,
+							"fieldSize": 13,
+							"type": "Double"
+						},
+						{
+							"title": "currency",
+							"hint": "the currency for your prices",
+							"format": "%s",
+							"labelSize": 20,
+							"fieldSize": 2
+						},
+						{
 							"title": "appid",
 							"format": "%s",
 							"labelSize": 10,

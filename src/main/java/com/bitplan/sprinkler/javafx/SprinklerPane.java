@@ -75,6 +75,8 @@ public class SprinklerPane extends HBox {
   private Gauge sprinklerLevel;
   private Gauge energyGauge;
   private Gauge waterGauge;
+  private Gauge energyCostGauge;
+  private Gauge waterCostGauge;
 
   /**
    * get a clock for the given title (to be internationalized)
@@ -111,24 +113,28 @@ public class SprinklerPane extends HBox {
     this.exceptionHandler = exceptionHandler;
     // add a normal running clock
     clock = getClock(SprinklerI18n.WATCH_TIME, true, true);
-    startTimeClock = getClock(SprinklerI18n.SPRINKLER_BEGIN, false, false);
+    startTimeClock = getClock(SprinklerI18n.SPRINKLER__BEGIN, false, false);
     startTimeClock.setTime(0);
     startTimeClock.setVisible(false);
-    stopTimeClock = getClock(SprinklerI18n.SPRINKLER_END, false, false);
+    stopTimeClock = getClock(SprinklerI18n.SPRINKLER__END, false, false);
     stopTimeClock.setTime(0);
     stopTimeClock.setVisible(false);
-    stopWatch = new JFXStopWatch(I18n.get(SprinklerI18n.SPRINKLER_TIME));
+    stopWatch = new JFXStopWatch(I18n.get(SprinklerI18n.SPRINKLER__TIME));
     stopWatch.halt();
     stopWatch.reset();
     // kwH
-    energyGauge = LcdGauge.createGauge("SprinklerEnergy", "kWh");
+    energyGauge = LcdGauge.createGauge("SprinklerEnergy", "kWh"); // TODO i18n
     energyGauge.setDecimals(3);
+    energyCostGauge=LcdGauge.createGauge("Energy cost", configuration.getCurrency());
+    energyCostGauge.setDecimals(2);
     // m3
     waterGauge = LcdGauge.createGauge("Water", "m³");
     waterGauge.setDecimals(3);
+    waterCostGauge=LcdGauge.createGauge("Water cost", configuration.getCurrency());
+    waterCostGauge.setDecimals(2);
     // Sprinkler Level
     this.sprinklerLevel = GaugeBuilder.create().unit("mm").maxValue(30)
-        .skinType(SkinType.LINEAR).title("mm rain equivalent").build(); // @TODO
+        .skinType(SkinType.LINEAR).title("mm rain equivalent").build(); // TODO
                                                                         // i18n
     // On / Off Button
     onOffButton = new ToggleSwitch(I18n.get(SprinklerI18n.ON));
@@ -153,6 +159,7 @@ public class SprinklerPane extends HBox {
     vbox2.getChildren().add(clock);
     vbox2.getChildren().add(startTimeClock);
     vbox2.getChildren().add(this.energyGauge);
+    vbox2.getChildren().add(this.energyCostGauge);
     this.getChildren().add(vbox2);
     VBox vbox3 = new VBox();
     // this.add(stopWatch.get(), 1, 1);
@@ -160,6 +167,7 @@ public class SprinklerPane extends HBox {
     vbox3.getChildren().add(stopWatch.get());
     vbox3.getChildren().add(stopTimeClock);
     vbox3.getChildren().add(this.waterGauge);
+    vbox3.getChildren().add(this.waterCostGauge);
     this.getChildren().add(vbox3);
     VBox vbox4 = new VBox();
     vbox4.getChildren().add(sprinklerLevel);
@@ -169,16 +177,20 @@ public class SprinklerPane extends HBox {
     // fixColumnSizes(2, 50, 50);
     // react on updates
     this.stopWatch.get().timeProperty().addListener((arg, oldVal, newVal) -> {
-      double secs = newVal.toInstant().getEpochSecond();
-      double mm=secs*configuration.getMmPerHour()/3600.0;
-      double m3=mm*configuration.getAreaSizeSquareMeter()/1000.0;
-      double kWh=0.0;
-      
+     
       Platform.runLater(
           () -> {
+            double secs = newVal.toInstant().getEpochSecond();
+            double mm=secs*configuration.getMmPerHour()/3600.0;
+            double m3=mm*configuration.getAreaSizeSquareMeter()/1000.0;
+            double waterCost=m3*configuration.getWaterPrice();
+            double kWh=secs*configuration.getPumpPower()/3600.0/1000.0;
+            double energyCost=kWh*configuration.getEnergyPrice();
             sprinklerLevel.setValue(mm);
             waterGauge.setValue(m3);
             energyGauge.setValue(kWh);
+            waterCostGauge.setValue(waterCost);
+            energyCostGauge.setValue(energyCost);
             // System.out.println(String.format("%4.1f mm 8.3f m³ 8.3f kWh",mm,m3,kWh));
           });
     });
@@ -233,8 +245,10 @@ public class SprinklerPane extends HBox {
                 sprinklePeriod.stop = Date
                     .from(stopTimeClock.getTime().toInstant());
                 sprinklePeriod.source = SprinkleSource.Sprinkler;
-                sprinkleHistory.add(sprinklePeriod);
-                sprinkleHistory.save();
+                if (sprinkleHistory!=null) {
+                  sprinkleHistory.add(sprinklePeriod);
+                  sprinkleHistory.save();
+                }
                 onOffButton.setText(I18n.get(SprinklerI18n.ON));
               }
             }

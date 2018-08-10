@@ -119,7 +119,7 @@ public class SprinklerApp extends GenericApp {
         Tab forecastTab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
         WeatherForecast forecast = weatherService.getWeatherForecast();
         if (forecast != null) {
-          String title = I18n.get(SprinklerI18n.WEATHER_FORECAST, 5,
+          String title = I18n.get(SprinklerI18n.MULTI_DAY_WEATHER_FORECAST, 5,
               city.getName(), city.getCountry(),
               forecast.totalPrecipitation(5 * 24));
           WeatherPlot weatherPlot = new WeatherPlot(title, "Date", "mm Rain",

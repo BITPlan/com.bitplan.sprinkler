@@ -57,6 +57,10 @@ public class Configuration implements JsonAble {
   String latestSprinkleHour;
   Integer sprinklesPerDay;
   Double lEvaporationPerDay;
+  private Double pumpPower;
+  private Double waterPrice;
+  private Double energyPrice;
+  private String currency;
   String confName="default";
 
   public String getAppid() {
@@ -145,6 +149,62 @@ public class Configuration implements JsonAble {
     this.lEvaporationPerDay = lEvaporationPerDay;
   }
 
+  /**
+   * @return the waterPrice
+   */
+  public Double getWaterPrice() {
+    return waterPrice;
+  }
+
+  /**
+   * @param waterPrice the waterPrice to set
+   */
+  public void setWaterPrice(Double waterPrice) {
+    this.waterPrice = waterPrice;
+  }
+
+  /**
+   * @return the energyPrice
+   */
+  public Double getEnergyPrice() {
+    return energyPrice;
+  }
+
+  /**
+   * @param energyPrice the energyPrice to set
+   */
+  public void setEnergyPrice(Double energyPrice) {
+    this.energyPrice = energyPrice;
+  }
+
+  /**
+   * @return the pumpPower
+   */
+  public Double getPumpPower() {
+    return pumpPower;
+  }
+
+  /**
+   * @param pumpPower the pumpPower to set
+   */
+  public void setPumpPower(Double pumpPower) {
+    this.pumpPower = pumpPower;
+  }
+
+  /**
+   * @return the currency
+   */
+  public String getCurrency() {
+    return currency;
+  }
+
+  /**
+   * @param currency the currency to set
+   */
+  public void setCurrency(String currency) {
+    this.currency = currency;
+  }
+
   static String appName = "sprinkler";
 
   /**
@@ -203,5 +263,9 @@ public class Configuration implements JsonAble {
     this.earliestSprinkleHour=(String)map.get("earliestSprinkleHour");
     this.areaSizeSquareMeter=(Integer)map.get("areaSizeSquareMeter");
     this.soilType=SoilType.valueOf((String)map.get("soilType"));
+    this.setPumpPower((Double)map.get("pumpPower"));
+    this.setWaterPrice((Double)map.get("waterPrice")); 
+    this.setEnergyPrice((Double)map.get("energyPrice"));
+    this.setCurrency((String)map.get("currency"));
   }
 }

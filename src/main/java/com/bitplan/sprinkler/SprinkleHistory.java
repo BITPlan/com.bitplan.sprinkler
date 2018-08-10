@@ -42,6 +42,9 @@ public class SprinkleHistory implements JsonAble {
   String name = null;
   List<SprinklePeriod> sprinklePeriods;
 
+  // make gson happy
+  public SprinkleHistory() {}
+  
   /**
    * construct me from a name and an array of periods
    * 

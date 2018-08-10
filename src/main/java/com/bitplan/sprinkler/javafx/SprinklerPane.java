@@ -123,13 +123,15 @@ public class SprinklerPane extends HBox {
     stopWatch.halt();
     stopWatch.reset();
     // kwH
-    energyGauge = LcdGauge.createGauge("SprinklerEnergy", "kWh"); // TODO i18n
-    energyGauge.setDecimals(3);
+    //energyGauge = LcdGauge.createGauge("SprinklerEnergy", "kWh"); // TODO i18n
+    energyGauge = LcdGauge.createGauge("Energy", "Wh"); // TODO i18n
+    energyGauge.setDecimals(0);
+   
     energyCostGauge=LcdGauge.createGauge("Energy cost", configuration.getCurrency());
     energyCostGauge.setDecimals(2);
     // m3
-    waterGauge = LcdGauge.createGauge("Water", "m³");
-    waterGauge.setDecimals(3);
+    waterGauge = LcdGauge.createGauge("Water", "l");
+    waterGauge.setDecimals(0);
     waterCostGauge=LcdGauge.createGauge("Water cost", configuration.getCurrency());
     waterCostGauge.setDecimals(2);
     // Sprinkler Level
@@ -177,21 +179,21 @@ public class SprinklerPane extends HBox {
     // fixColumnSizes(2, 50, 50);
     // react on updates
     this.stopWatch.get().timeProperty().addListener((arg, oldVal, newVal) -> {
-     
+      final double secs = newVal.toInstant().getEpochSecond();
+      final double mm=secs*configuration.getMmPerHour()/3600.0;
+      final double m3=mm*configuration.getAreaSizeSquareMeter()/1000.0;
+      final double waterCost=m3*configuration.getWaterPrice();
+      final double kWh=secs*configuration.getPumpPower()/3600.0/1000.0;
+      final double energyCost=kWh*configuration.getEnergyPrice();
+      System.out.println(String.format("%.1f mm %.3f m³/%.2f %s %.3f kWh/%.2f %s",mm,m3,waterCost,configuration.getCurrency(),kWh,energyCost,configuration.getCurrency()));
+ 
       Platform.runLater(
           () -> {
-            double secs = newVal.toInstant().getEpochSecond();
-            double mm=secs*configuration.getMmPerHour()/3600.0;
-            double m3=mm*configuration.getAreaSizeSquareMeter()/1000.0;
-            double waterCost=m3*configuration.getWaterPrice();
-            double kWh=secs*configuration.getPumpPower()/3600.0/1000.0;
-            double energyCost=kWh*configuration.getEnergyPrice();
             sprinklerLevel.setValue(mm);
-            waterGauge.setValue(m3);
-            energyGauge.setValue(kWh);
+            waterGauge.setValue(m3*1000.0);
             waterCostGauge.setValue(waterCost);
             energyCostGauge.setValue(energyCost);
-            // System.out.println(String.format("%4.1f mm 8.3f m³ 8.3f kWh",mm,m3,kWh));
+            energyGauge.setValue(kWh*1000.0);
           });
     });
   }

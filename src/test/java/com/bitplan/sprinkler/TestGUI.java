@@ -50,6 +50,7 @@ public class TestGUI {
   public void initGUI() {
     WaitableApp.toolkitInit();
     Translator.initialize("sprinkler", "en");
+    Sprinkler.testMode=true; // avoid System.exit
   }
 
   @Test

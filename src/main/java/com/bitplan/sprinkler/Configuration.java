@@ -30,8 +30,6 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import org.openweathermap.weather.Location;
 
-import com.bitplan.appconfig.Preferences;
-import com.bitplan.fritzbox.FritzboxImpl;
 import com.bitplan.json.JsonAble;
 import com.bitplan.util.JsonUtil;
 import com.google.gson.Gson;

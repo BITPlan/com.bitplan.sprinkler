@@ -36,8 +36,14 @@ import eu.hansolo.medusa.Gauge.NeedleSize;
 import eu.hansolo.medusa.GaugeBuilder;
 import eu.hansolo.medusa.GaugeDesign;
 import eu.hansolo.medusa.GaugeDesign.GaugeBackground;
+import eu.hansolo.medusa.Marker.MarkerType;
+import eu.hansolo.medusa.LcdDesign;
+import eu.hansolo.medusa.LcdFont;
+import eu.hansolo.medusa.Marker;
 import eu.hansolo.medusa.TickLabelLocation;
+import eu.hansolo.medusa.TickMarkType;
 import javafx.geometry.Pos;
+import javafx.scene.paint.Color;
 
 /**
  * a Weather Dashboard
@@ -67,19 +73,21 @@ public class CurrentWeatherPane extends ConstrainedGridPane {
   public CurrentWeatherPane(WeatherReport report) {
     // LcdFont lcdFont=LcdFont.STANDARD;
     // LcdDesign lcdDesign=LcdDesign.SECTIONS;
+    //Marker north=new Marker(0.0,"North",Color.BLUE,MarkerType.TRIANGLE);
+    //Marker east=new Marker(90.0,"E",Color.BLUE,MarkerType.STANDARD);
     if (report != null) {
       windGauge = GaugeBuilder.create()
-          .autoScale(false)
           .angleRange(360)
           .startAngle(180.0)
           .tickLabelDecimals(0)
           .decimals(0)
-          .majorTickSpace(90.0)
           .minorTickSpace(22.5)
           .minValue(0)
-          .maxValue(360.0)
-          .autoScale(false)
-          .animated(true)
+          .maxValue(359.999)
+          .tickLabelsVisible(true)
+          //.markers(north,east,new Marker(180.0,"S"),new Marker(270.0,"W"))
+          //.markersVisible(true)
+          //.animated(true)
           //.shadowsEnabled(true)
           //.sectionsVisible(true)
           //.sections(
@@ -88,17 +96,21 @@ public class CurrentWeatherPane extends ConstrainedGridPane {
           // )
           //.majorTickMarkColor(Color.rgb(241, 161, 71))
           // .minorTickMarkColor(Color.rgb(0, 175, 248))
-          // .majorTickMarkType(TickMarkType.TRAPEZOID)
+          .majorTickMarkType(TickMarkType.TRAPEZOID)
           //.mediumTickMarkType(TickMarkType.DOT)
           //.minorTickMarkType(TickMarkType.LINE)
-          .tickLabelLocation(TickLabelLocation.INSIDE).title(I18n.get("Wind"))
-          .unit(I18n.get("degree")).lcdDesign(LcdGauge.lcdDesign)
-          //.lcdVisible(true).lcdFont(LcdGauge.lcdFont)
+          .tickLabelLocation(TickLabelLocation.INSIDE)
+          .title(I18n.get("Wind"))
+          .unit(I18n.get("degree"))
+          .lcdDesign(LcdDesign.STANDARD)
+          .lcdVisible(false)
+          .lcdFont(LcdFont.DIGITAL)
           .knobType(KnobType.METAL)
           .innerShadowEnabled(true)
           .needleSize(NeedleSize.THICK)
+          .autoScale(false)
           .build();
-
+      windGauge.setMajorTickSpace(45);
       windGauge.setValue(report.wind.deg);
       
       framedWindGauge = new FGauge(windGauge, GaugeDesign.SHINY_METAL,

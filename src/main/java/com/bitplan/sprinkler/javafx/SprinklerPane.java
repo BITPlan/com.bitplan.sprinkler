@@ -136,7 +136,7 @@ public class SprinklerPane extends HBox {
     waterCostGauge.setDecimals(2);
     // Sprinkler Level
     this.sprinklerLevel = GaugeBuilder.create().unit("mm").maxValue(30)
-        .skinType(SkinType.LINEAR).title(SprinklerI18n.MM_RAIN_EQUIVALENT).build(); 
+        .skinType(SkinType.LINEAR).title(I18n.get(SprinklerI18n.MM_RAIN_EQUIVALENT)).build(); 
     // On / Off Button
     onOffButton = new ToggleSwitch(I18n.get(SprinklerI18n.ON));
     onOffButton.setStyle("-fx-font-size: 45;");

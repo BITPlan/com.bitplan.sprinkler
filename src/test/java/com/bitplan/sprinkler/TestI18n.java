@@ -62,9 +62,10 @@ public class TestI18n extends com.bitplan.i18n.TestI18n {
   }
   
   @Test
-  public void testForecast(){
+  public void testSpecial(){
     Translator.initialize("sprinkler", "de");
-    String text=I18n.get(SprinklerI18n.MULTI_DAY_WEATHER_FORECAST,5,"Knickelsdorf","DE",27.9);
+    String text=I18n.get(SprinklerI18n.MULTI_DAY_WEATHER_FORECAST,5,"Knickelsdorf","DE",27.91);
     assertEquals("5 Tage Wettervorhersage für Knickelsdorf/DE: 27,9 mm",text);
+    assertEquals("mm Regenersatz",I18n.get(SprinklerI18n.MM_RAIN_EQUIVALENT));
   }
 }

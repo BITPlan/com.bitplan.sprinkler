@@ -20,8 +20,6 @@
  */
 package com.bitplan.sprinkler;
 
-import java.util.Map;
-
 import com.bitplan.fritzbox.Fritzbox;
 import com.bitplan.fritzbox.FritzboxImpl;
 import com.bitplan.json.JsonAble;
@@ -43,20 +41,6 @@ public class FritzBoxConfig implements JsonAble {
   
   // makes gson happy
   public FritzBoxConfig() {};
-  
-  @Override
-  public void reinit() {
-
-  }
-
-  @Override
-  public void fromMap(Map<String, Object> map) {
-    this.url = (String) map.get("url");
-    this.username = (String) map.get("username");
-    this.password = (String) map.get("password");
-    this.password2 = (String) map.get("password2");
-    this.setDeviceName((String) map.get("deviceName"));
-  }
   
   static FritzBoxConfig instance;
   /**

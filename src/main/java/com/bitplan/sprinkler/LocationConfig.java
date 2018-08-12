@@ -54,11 +54,6 @@ public class LocationConfig implements JsonAble {
     this.id = id;
   }
 
-  @Override
-  public void reinit() {
-
-  }
-
   /**
    * get the location for this configuration
    * 
@@ -113,16 +108,6 @@ public class LocationConfig implements JsonAble {
       return;
     this.lat = coord.getLatDMS();
     this.lon = coord.getLonDMS();
-  }
-
-  @Override
-  public void fromMap(Map<String, Object> map) {
-    this.name = (String) map.get("name");
-    this.country = (String) map.get("country");
-    this.lat = (String) map.get("lat");
-    this.lon = (String) map.get("long");
-    this.setId((Long)map.get("id"));
-    this.dwdid = (Long) map.get("dwdid");
   }
 
 }

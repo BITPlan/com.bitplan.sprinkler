@@ -245,25 +245,4 @@ public class Configuration implements JsonAble {
       jsonFile.getParentFile().mkdirs();
     FileUtils.writeStringToFile(jsonFile, this.asJson(),"UTF-8");
   }
-
-  @Override
-  public void reinit() {
-    
-  }
-
-  @Override
-  public void fromMap(Map<String, Object> map) {
-    this.appid=(String) map.get("appid");
-    // this.confName=(String) map.get("confName");
-    this.mmPerHour=(Double)map.get("mmPerHour");
-    // @TODO change to double using a converter or at least at regexp to allow only proper entry
-    this.latestSprinkleHour=(String)map.get("latestSprinkleHour");
-    this.earliestSprinkleHour=(String)map.get("earliestSprinkleHour");
-    this.areaSizeSquareMeter=(Integer)map.get("areaSizeSquareMeter");
-    this.soilType=SoilType.valueOf((String)map.get("soilType"));
-    this.setPumpPower((Double)map.get("pumpPower"));
-    this.setWaterPrice((Double)map.get("waterPrice")); 
-    this.setEnergyPrice((Double)map.get("energyPrice"));
-    this.setCurrency((String)map.get("currency"));
-  }
 }

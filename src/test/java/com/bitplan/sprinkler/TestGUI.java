@@ -60,9 +60,9 @@ public class TestGUI {
     WeatherForecast forecast=weatherService.getWeatherForecast();
     if (forecast!=null) {
       WeatherPlot weatherPlot = new WeatherPlot("5 day Weather Forecast",
-          "Date", "mm Rain", forecast);
+          "Date", "mm Rain",forecast.city.toString(), forecast);
       SampleApp sampleApp = new SampleApp("WeatherPlot",
-          weatherPlot.getBarChart());
+          weatherPlot.getChart("BarChart"));
       sampleApp.show();
       sampleApp.waitOpen();
       Thread.sleep(SHOW_TIME);

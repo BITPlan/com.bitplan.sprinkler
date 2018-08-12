@@ -21,15 +21,23 @@
 package com.bitplan.sprinkler;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.bitplan.json.JsonAble;
 import com.bitplan.json.JsonManager;
 import com.bitplan.json.JsonManagerImpl;
+
+import de.dwd.geoserver.DWDStation;
+import de.dwd.geoserver.WFS;
+import de.dwd.geoserver.WFS.Feature;
+import de.dwd.geoserver.WFS.WFSResponse;
 
 /**
  * keep tracke of the sprinkle periods
@@ -40,7 +48,16 @@ import com.bitplan.json.JsonManagerImpl;
 public class SprinkleHistory implements JsonAble {
 
   String name = null;
-  List<SprinklePeriod> sprinklePeriods;
+  private List<SprinklePeriod> sprinklePeriods=new ArrayList<SprinklePeriod>();
+  private Map<Date,SprinklePeriod> sprinklePeriodByDate=new TreeMap<Date,SprinklePeriod>();
+  
+  public List<SprinklePeriod> getSprinklePeriods() {
+    return sprinklePeriods;
+  }
+
+  public void setSprinklePeriods(List<SprinklePeriod> sprinklePeriods) {
+    this.sprinklePeriods = sprinklePeriods;
+  }
 
   // make gson happy
   public SprinkleHistory() {}
@@ -53,7 +70,7 @@ public class SprinkleHistory implements JsonAble {
    */
   public SprinkleHistory(String pName, SprinklePeriod... periods) {
     this.name = pName;
-    sprinklePeriods = Arrays.asList(periods);
+    setSprinklePeriods(Arrays.asList(periods));
     sortByStart();
   }
 
@@ -61,7 +78,7 @@ public class SprinkleHistory implements JsonAble {
    * sort the sprinklePeriods by start date
    */
   public void sortByStart() {
-    Collections.sort(sprinklePeriods, new Comparator<SprinklePeriod>() {
+    Collections.sort(getSprinklePeriods(), new Comparator<SprinklePeriod>() {
       @Override
       public int compare(SprinklePeriod lhs, SprinklePeriod rhs) {
         long diffmsecs = (lhs.start == null ? 0 : lhs.start.getTime())
@@ -71,21 +88,38 @@ public class SprinkleHistory implements JsonAble {
     });
   }
   
+  /**
+   * return the total precipitation
+   * @param hours
+   * @return - the sum
+   */
+  public Double totalPrecipitation(int hours) {
+    double total=0.0;
+    for (SprinklePeriod period:sprinklePeriods)
+      total+=period.mm;
+    return total;
+  }
+  
   public void add(SprinklePeriod period) {
-    this.sprinklePeriods.add(period);
+    this.getSprinklePeriods().add(period);
+    this.sprinklePeriodByDate.put(period.start, period);
     sortByStart();
   }
 
   @Override
   public void reinit() {
     sortByStart();
+    this.sprinklePeriodByDate.clear();
+    for (SprinklePeriod period:sprinklePeriods) {
+      sprinklePeriodByDate.put(period.start, period);
+    }
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public void fromMap(Map<String, Object> map) {
     this.name = (String) map.get("name");
-    this.sprinklePeriods = (List<SprinklePeriod>) map.get("sprinklePeriods");
+    this.setSprinklePeriods((List<SprinklePeriod>) map.get("sprinklePeriods"));
   }
 
   @Override
@@ -108,4 +142,24 @@ public class SprinkleHistory implements JsonAble {
     }
     return instance;
   }
+
+  /**
+   * get a response for the given station
+   * @param dwdStation
+   * @throws Exception
+   */
+  public void addFromDWDStation(DWDStation dwdStation) throws Exception {
+    reinit();
+    WFSResponse wfsresponse = WFS.getRainHistory(dwdStation);
+    for (Feature feature:wfsresponse.features) {
+      SprinklePeriod period=new SprinklePeriod();
+      period.source=SprinklePeriod.SprinkleSource.Rain;
+      period.mm=feature.properties.PRECIPITATION;
+      period.start=feature.properties.getDate();
+      period.stop=new Date(period.start.getTime()+60000*60*12);
+      if (!this.sprinklePeriodByDate.containsKey(period.start))
+        add(period);
+    }
+  }
+
 }

@@ -22,6 +22,7 @@ package com.bitplan.sprinkler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.logging.Logger;
 
@@ -29,6 +30,7 @@ import org.junit.Test;
 import org.openweathermap.weather.Coord;
 import org.openweathermap.weather.Location;
 
+import de.dwd.geoserver.DWDStation;
 import de.dwd.geoserver.WFS;
 import de.dwd.geoserver.WFS.Feature;
 import de.dwd.geoserver.WFS.WFSResponse;
@@ -45,9 +47,8 @@ public class TestDWD {
    */
   @Test
   public void testWFS() throws Exception {
-    
-    TestSuite.debug=true;
-    WFS.debug=TestSuite.debug;
+    TestSuite.debug = true;
+    WFS.debug = TestSuite.debug;
     Location location = Location.byName("Knickelsdorf/DE");
     if (TestSuite.debug)
       System.out.println(location.toString());
@@ -65,8 +66,53 @@ public class TestDWD {
         System.out
             .println(String.format("\t%s", feature.properties.toString()));
       }
-    String dusId = wfsresponse.getClosestId(coord);
-    assertEquals(dusId, "1078");
+    DWDStation dusStation = wfsresponse.getClosestStation(coord);
+    assertEquals("Düsseldorf(1078) - 18,6 km   51° 17’ 45.60” N   6° 46’  6.96” E", dusStation.toString());
+  }
+  
+  @Test
+  public void testRainHistoryFromDWDStation() throws Exception {
+    WFS.debug=true;
+    Coord duscoord=new Coord(51.296,6.7686);
+    DWDStation dusStation=new DWDStation("1078","Düsseldorf",duscoord,18.6);
+    WFSResponse wfsResponse=WFS.getRainHistory(dusStation);
+    assertNotNull(wfsResponse);
+    assertEquals(3,wfsResponse.totalFeatures);
+  }
+
+  @Test
+  public void testClosestDWDStations() throws Exception {
+    boolean debug = false;
+    WFS.debug = debug;
+    String names[] = { "Koeln/DE", "Muenchen/DE", "Hamburg/DE", "Regensburg/DE",
+        "Aachen/DE", "Puttgarden/DE", "Glasgow/GB", "Chicago/US" };
+    String expected[] = {
+        "Köln-Bonn(2667) - 16,4 km   50° 51’ 52.56” N   7°  9’ 27.00” E",
+        "München-Flughafen(1262) - 29,3 km   48° 20’ 51.72” N  11° 48’ 47.88” E",
+        "Hamburg-Fuhlsbüttel(1975) - 9,3 km   53° 37’ 59.52” N   9° 59’ 17.16” E",
+        "Regensburg(4104) - 3,1 km   49°  2’ 32.64” N  12°  6’  7.56” E",
+        "Aachen-Orsbach(15000) - 4,8 km   50° 47’ 53.88” N   6°  1’ 27.84” E",
+        "Fehmarn(5516) - 10,6 km   54° 31’ 42.24” N  11°  3’ 37.80” E", null,
+        null };
+    int i = 0;
+    for (String name : names) {
+      Location location = Location.byName(name);
+      if (location != null) {
+        if (debug)
+          System.out.println(location.toString());
+        WFSResponse wfsresponse = WFS.getRainHistory(location.getCoord(), 0.5);
+        DWDStation dwdStation = wfsresponse
+            .getClosestStation(location.getCoord());
+        if (dwdStation != null && debug)
+          System.out.println("\t" + dwdStation.toString());
+        if (dwdStation!=null)
+          assertEquals(expected[i], dwdStation.toString());
+        else
+          assertNull(expected[i]);
+        i++;
+      } else
+        System.err.println("" + name + " not found");
+    }
   }
 
 }

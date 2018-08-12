@@ -20,11 +20,16 @@
  */
 package com.bitplan.sprinkler;
 
-import static org.junit.Assert.*;
-import static com.bitplan.sprinkler.SprinklePeriod.SprinkleSource;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
+import org.openweathermap.weather.Coord;
 
 import com.bitplan.i18n.Translator;
+import com.bitplan.sprinkler.SprinklePeriod.SprinkleSource;
+
+import de.dwd.geoserver.DWDStation;
 
 /**
  * test the sprinkler history
@@ -46,14 +51,25 @@ public class TestSprinkleHistory {
     TestSuite.debug=true;
  
     SprinkleHistory sprinkleHistory=new SprinkleHistory(null,period3,period2,period1);
-    assertEquals(3,sprinkleHistory.sprinklePeriods.size());
+    assertEquals(3,sprinkleHistory.getSprinklePeriods().size());
     if (TestSuite.debug)
-    for (SprinklePeriod sprinklePeriod:sprinkleHistory.sprinklePeriods) {
+    for (SprinklePeriod sprinklePeriod:sprinkleHistory.getSprinklePeriods()) {
       System.out.println(sprinklePeriod);
       System.out.println(sprinkleHistory.getJsonFile().getPath());
     }
     sprinkleHistory.save();
     assertTrue(sprinkleHistory.getJsonFile().getPath().endsWith("SprinkleHistory.json"));
+  }
+  
+  @Test
+  public void testSprinkleHistoryFromDWD() throws Exception {
+    SprinkleHistory history=new SprinkleHistory();
+    Coord duscoord=new Coord(51.296,6.7686);
+    DWDStation dusStation=new DWDStation("1078","Düsseldorf",duscoord,18.6);
+    history.addFromDWDStation(dusStation);
+    assertEquals(3,history.getSprinklePeriods().size());
+    history.addFromDWDStation(dusStation);
+    assertEquals(3,history.getSprinklePeriods().size());
   }
 
 }

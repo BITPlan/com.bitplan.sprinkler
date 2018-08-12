@@ -76,14 +76,17 @@ public class LocationConfigModifier extends BaseModifier<LocationConfig>{
       prevLocation.fromMap(prevValues);
       if (!prevLocation.getFullName().equals(locationConfig.getFullName())) {
         locationConfig.setId(0L);
+        locationConfig.dwdid="";
+        locationConfig.dwdStation="";
       }
       configuration.setLocation(locationConfig.getLocation());
       configuration.save();
       // set back the locationConfig
+      // FIXME - we need the DWD Station stored somewhere ...
       locationConfig.fromLocation(configuration.getLocation());
       // and show it
       updateView();
-    } catch (IOException e) {
+    } catch (Exception e) {
       this.getExceptionHandler().handleException(e);
     }
     return locationConfig;

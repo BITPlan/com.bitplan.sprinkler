@@ -106,8 +106,13 @@
 							"format": "%8d",
 							"labelSize": 10,
 							"fieldSize": 8,
-							"hint": "Deutscher Wetterdienst id of location - will be looked up",
-							"type": "Long"
+							"hint": "Deutscher Wetterdienst id of location - will be looked up"
+						},
+						{
+							"title": "dwdStation",
+							"labelSize": 15,
+							"fieldSize": 70,
+							"hint": "DWD Station"
 						}
 					]
 				},

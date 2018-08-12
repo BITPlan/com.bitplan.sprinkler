@@ -20,6 +20,11 @@
  */
 package de.dwd.geoserver;
 
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,24 +65,26 @@ public class WFS {
     public List<Feature> features;
 
     /**
-     * get the id of the closest point
+     * get the DWD Station closest to the given coordinate
      * 
      * @param coord
-     * @return - the closest point
+     * @return - the closest DWD Station
      */
-    public String getClosestId(Coord coord) {
-      String resultId = null;
+    public DWDStation getClosestStation(Coord coord) {
+      DWDStation station = null;
       if (totalFeatures > 0) {
-        Map<Double, String> distanceMap = new TreeMap<Double, String>();
+        Map<Double, DWDStation> distanceMap = new TreeMap<Double, DWDStation>();
         for (Feature feature : features) {
           double distance = feature.geometry.getCoord().distance(coord);
-          String id = feature.properties.ID;
-          distanceMap.put(distance, id);
+          DWDStation fstation = new DWDStation(feature.properties.ID,
+              feature.properties.NAME, feature.geometry.getCoord(), distance);
+          distanceMap.put(distance, fstation);
         }
-        Entry<Double, String> first = distanceMap.entrySet().iterator().next();
-        resultId = first.getValue();
+        Entry<Double, DWDStation> first = distanceMap.entrySet().iterator()
+            .next();
+        station = first.getValue();
       }
-      return resultId;
+      return station;
     }
   }
 
@@ -113,10 +120,11 @@ public class WFS {
     }
   }
 
+  static final DateFormat isoDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
   public class Property {
     String ID;
     String NAME;
-    Double PRECIPITATION;
+    public Double PRECIPITATION;
     String M_DATE;
     Double[] bbox;
 
@@ -128,6 +136,28 @@ public class WFS {
           NAME, PRECIPITATION, M_DATE, corner1.toString(), corner2.toString());
       return text;
     }
+    
+    public Date getDate() throws ParseException {
+      return isoDateFormat.parse(M_DATE);
+    }
+  }
+
+  /**
+   * get the URI builder for the DWD geo service
+   * 
+   * @return - the URI builder
+   */
+  public static URIBuilder getGeoServiceURIBuilder() {
+    URIBuilder builder = new URIBuilder();
+    builder.setScheme("https");
+    builder.setHost("maps.dwd.de");
+    builder.setPath("geoserver/dwd/ows");
+    builder.addParameter("service", "WFS");
+    builder.addParameter("version", version);
+    builder.addParameter("request", "GetFeature");
+    builder.addParameter("typeName", "dwd:RBSN_RR"); // _RR = Niederschlag _FF=Wind _VPGB - potentielle Verdunstung
+    builder.addParameter("outputFormat", "application/json");
+    return builder;
   }
 
   /**
@@ -141,20 +171,22 @@ public class WFS {
    */
   public static WFSResponse getRainHistory(Coord coord, double boxMargin)
       throws Exception {
-    URIBuilder builder = new URIBuilder();
-    builder.setScheme("https");
-    builder.setHost("maps.dwd.de");
-    builder.setPath("geoserver/dwd/ows");
-    builder.addParameter("service", "WFS");
-    builder.addParameter("version", version);
-    builder.addParameter("request", "GetFeature");
-    builder.addParameter("typeName", "dwd:RBSN_RR");
-    builder.addParameter("outputFormat", "application/json");
+    URIBuilder builder = getGeoServiceURIBuilder();
     builder.addParameter("bbox",
-        String.format(Locale.ENGLISH, "%5.2f,%5.2f,%5.2f,%5.2f",
+        String.format(Locale.ENGLISH, "%10.5f,%10.5f,%10.5f,%10.5f",
             coord.getLat() - boxMargin, coord.getLon() - boxMargin,
             coord.getLat() + boxMargin, coord.getLon() + boxMargin));
+    WFSResponse wfsresponse = fromURIBuilder(builder);
+    return wfsresponse;
+  }
 
+  /**
+   * get a WFS response for the given builder
+   * @param builder
+   * @return the WFS response
+   * @throws Exception 
+   */
+  public static WFSResponse fromURIBuilder(URIBuilder builder) throws Exception {
     String url = builder.build().toString();
     if (debug)
       LOGGER.log(Level.INFO, url);
@@ -165,5 +197,15 @@ public class WFS {
     Gson gson = new Gson();
     WFSResponse wfsresponse = gson.fromJson(json, WFSResponse.class);
     return wfsresponse;
+  }
+
+  /**
+   * get the rain history for the given station id
+   * @param dwdid
+   * @return - the rain history
+   * @throws Exception
+   */
+  public static WFSResponse getRainHistory(DWDStation dwdStation) throws Exception {
+    return getRainHistory(dwdStation.coord,0.01);
   }
 }

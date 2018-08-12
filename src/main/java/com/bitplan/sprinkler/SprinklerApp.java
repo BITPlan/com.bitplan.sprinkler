@@ -24,7 +24,6 @@ import java.util.logging.Level;
 
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.WeatherForecast;
-import org.openweathermap.weather.WeatherHistory;
 import org.openweathermap.weather.WeatherReport;
 import org.openweathermap.weather.WeatherService;
 
@@ -42,7 +41,6 @@ import com.bitplan.sprinkler.javafx.presenter.FritzBoxConfigModifier;
 import com.bitplan.sprinkler.javafx.presenter.LocationConfigModifier;
 import com.bitplan.sprinkler.javafx.presenter.PreferencesModifier;
 
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Rectangle2D;
@@ -51,7 +49,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -122,25 +119,31 @@ public class SprinklerApp extends GenericApp {
           String title = I18n.get(SprinklerI18n.MULTI_DAY_WEATHER_FORECAST, 5,
               city.getName(), city.getCountry(),
               forecast.totalPrecipitation(5 * 24));
-          WeatherPlot weatherPlot = new WeatherPlot(title, "Date", "mm Rain",
-              forecast);
+          WeatherPlot<String,Number> weatherPlot = new WeatherPlot<String,Number>(title, "Date", "mm Rain",
+              city.toString(), forecast);
           Platform.runLater(
-              () -> forecastTab.setContent(weatherPlot.getBarChart()));
+              () -> forecastTab.setContent(weatherPlot.getChart("BarChart")));
         }
         Tab historyTab = xyTabPane.getTab(SprinklerI18n.WEATHER_HISTORY_FORM);
-        WeatherHistory history = weatherService.getWeatherHistory();
+        // WeatherHistory history = weatherService.getWeatherHistory();
+        SprinkleHistory history = SprinkleHistory.getInstance();
+        // FIXME - this calls out to the DWD WFS weather service which might be
+        // slow ...
+        LocationConfig locationConfig = new LocationConfig();
+        locationConfig.fromLocation(sprinkler.configuration.getLocation());
+        if (locationConfig.theDwdStation != null)
+          history.addFromDWDStation(locationConfig.theDwdStation);
         if (history != null) {
           String title = I18n.get(SprinklerI18n.WEATHER_HISTORY, 5,
               city.getName(), city.getCountry(),
               history.totalPrecipitation(5 * 24));
-          WeatherPlot weatherHistoryPlot = new WeatherPlot(title, "Date", "mm Rain",
-              history);
+          WeatherPlot<Number,Number> weatherHistoryPlot = new WeatherPlot<Number,Number>(title, "Date",
+              "mm Rain", city.toString(), history);
           Platform.runLater(
-              () -> historyTab.setContent(weatherHistoryPlot.getBarChart()));
+              () -> historyTab.setContent(weatherHistoryPlot.getChart("LineChart")));
         } else {
-          Label msgLabel=new Label("appid not valid for history data");
-          Platform.runLater(
-              () -> historyTab.setContent(msgLabel));
+          Label msgLabel = new Label("appid not valid for history data");
+          Platform.runLater(() -> historyTab.setContent(msgLabel));
         }
         Tab weatherTab = xyTabPane.getTab(SprinklerI18n.CURRENT_WEATHER_FORM);
         WeatherReport report = weatherService.getWeatherReport();
@@ -152,8 +155,9 @@ public class SprinklerApp extends GenericApp {
       }
       Tab sprinklerTab = xyTabPane.getTab(SprinklerI18n.SPRINKLE_FORM);
       if (sprinklerTab != null) {
-        SprinklerPane sprinklerPane=new SprinklerPane(SprinkleHistory.getInstance(),sprinkler.configuration,this);
-        Platform.runLater(()-> sprinklerTab.setContent(sprinklerPane));
+        SprinklerPane sprinklerPane = new SprinklerPane(
+            SprinkleHistory.getInstance(), sprinkler.configuration, this);
+        Platform.runLater(() -> sprinklerTab.setContent(sprinklerPane));
       }
 
       // setup the setting modifiers
@@ -165,7 +169,6 @@ public class SprinklerApp extends GenericApp {
     stage.show();
   }
 
-  
   /**
    * get the instance for the sprinkler app
    * 

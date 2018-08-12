@@ -20,7 +20,6 @@
  */
 package com.bitplan.sprinkler;
 
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +27,10 @@ import org.openweathermap.weather.Coord;
 import org.openweathermap.weather.Location;
 
 import com.bitplan.json.JsonAble;
+
+import de.dwd.geoserver.DWDStation;
+import de.dwd.geoserver.WFS;
+import de.dwd.geoserver.WFS.WFSResponse;
 
 /**
  * Location Configuration
@@ -44,7 +47,9 @@ public class LocationConfig implements JsonAble {
   String lat;
   String lon;
   private Long id;
-  Long dwdid;
+  public String dwdid;
+  public String dwdStation;
+  DWDStation theDwdStation;
 
   public Long getId() {
     return id;
@@ -96,8 +101,9 @@ public class LocationConfig implements JsonAble {
    * configure me from the given location
    * 
    * @param location
+   * @throws Exception 
    */
-  public void fromLocation(Location location) {
+  public void fromLocation(Location location) throws Exception {
     if (location == null)
       return;
     this.setId(location.getId());
@@ -108,6 +114,13 @@ public class LocationConfig implements JsonAble {
       return;
     this.lat = coord.getLatDMS();
     this.lon = coord.getLonDMS();
+    WFSResponse wfsresponse = WFS.getRainHistory(location.getCoord(), 0.5);
+    theDwdStation = wfsresponse
+        .getClosestStation(location.getCoord());
+    if (theDwdStation!=null) {
+      this.dwdid=theDwdStation.id;
+      this.dwdStation=theDwdStation.toString();
+    }
   }
 
 }

@@ -78,10 +78,22 @@ public class SprinklerI18n {
   public static final String MULTI_DAY_WEATHER_FORECAST="MultiDayWeatherForecast"; //{0} Tage Wettervorhersage für {1}/{2}: {3} mm
   // public static final String WEATHER_FORECAST = "MultiDayWeatherForecast";
   public static final String WEATHER_HISTORY = "WeatherHistory";
-  public static final String ON = "on";
-  public static final String OFF = "off"; 
+  public static final String ON = "On";
+  public static final String OFF = "Off"; 
   public static final String SPRINKLER__BEGIN="Sprinkler.Begin";
   public static final String SPRINKLER__END="Sprinkler.End";
   public static final String SPRINKLER__TIME="Sprinkler.Time";
   public static final String WATCH_TIME = "watchTime";
+  public static final String WIND_DIRECTION = "windDirection";
+  public static final String WIND_DEGREE = "windDegree";
+  public static final String WIND_SPEED = "windSpeed";
+  public static final String MIN_TEMPERATURE = "minTemperature";
+  public static final String MAX_TEMPERATURE = "maxTemperature";
+  public static final String TEMPERATURE = "Temperature";
+  public static final String RAIN = "Rain";
+  public static final String ENERGY = "Energy";
+  public static final String ENERGY_COST = "EnergyCost";
+  public static final String WATER = "Water";
+  public static final String WATER_COST = "WaterCost";
+  public static final String MM_RAIN_EQUIVALENT = "mmRainEquivalent";
 }

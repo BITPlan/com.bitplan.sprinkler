@@ -123,21 +123,20 @@ public class SprinklerPane extends HBox {
     stopWatch.halt();
     stopWatch.reset();
     // kwH
-    //energyGauge = LcdGauge.createGauge("SprinklerEnergy", "kWh"); // TODO i18n
-    energyGauge = LcdGauge.createGauge("Energy", "Wh"); // TODO i18n
+    //energyGauge = LcdGauge.createGauge("SprinklerEnergy", "kWh"); 
+    energyGauge = LcdGauge.createGauge(SprinklerI18n.ENERGY, "Wh"); 
     energyGauge.setDecimals(0);
    
-    energyCostGauge=LcdGauge.createGauge("Energy cost", configuration.getCurrency());
+    energyCostGauge=LcdGauge.createGauge(SprinklerI18n.ENERGY_COST, configuration.getCurrency());
     energyCostGauge.setDecimals(2);
     // m3
-    waterGauge = LcdGauge.createGauge("Water", "l");
+    waterGauge = LcdGauge.createGauge(SprinklerI18n.WATER, "l");
     waterGauge.setDecimals(0);
-    waterCostGauge=LcdGauge.createGauge("Water cost", configuration.getCurrency());
+    waterCostGauge=LcdGauge.createGauge(SprinklerI18n.WATER_COST, configuration.getCurrency());
     waterCostGauge.setDecimals(2);
     // Sprinkler Level
     this.sprinklerLevel = GaugeBuilder.create().unit("mm").maxValue(30)
-        .skinType(SkinType.LINEAR).title("mm rain equivalent").build(); // TODO
-                                                                        // i18n
+        .skinType(SkinType.LINEAR).title(SprinklerI18n.MM_RAIN_EQUIVALENT).build(); 
     // On / Off Button
     onOffButton = new ToggleSwitch(I18n.get(SprinklerI18n.ON));
     onOffButton.setStyle("-fx-font-size: 45;");

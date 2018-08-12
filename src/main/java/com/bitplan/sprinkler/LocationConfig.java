@@ -43,7 +43,16 @@ public class LocationConfig implements JsonAble {
   String country;
   String lat;
   String lon;
-  Long id;
+  private Long id;
+  Long dwdid;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   @Override
   public void reinit() {
@@ -58,19 +67,19 @@ public class LocationConfig implements JsonAble {
   public Location getLocation() {
     Location location = null;
     try {
-      if (id != null && !(id==0)) {
-        location = Location.byId(id);
+      if (getId() != null && !(getId()==0)) {
+        location = Location.byId(getId());
       } else if (name != null && country!=null) {
-        location = Location.byName(name+"/"+country);
+        location = Location.byName(getFullName());
       }
     } catch (Throwable th) {
       // TODO handle exception
-      String msg=String.format("could not find location: %s name: %s",id==null?"?":""+id,name==null?"?":name);
+      String msg=String.format("could not find location: %s name: %s",getId()==null?"?":""+getId(),name==null?"?":name);
       LOGGER.log(Level.WARNING, msg, th);
     }
     if (location == null) {
       location = new Location();
-      location.setId(id);
+      location.setId(getId());
       location.setName(name);
       location.setCountry(country);
     }
@@ -78,6 +87,14 @@ public class LocationConfig implements JsonAble {
     // Coord coord = new Coord();
     // location.setCoord(coord);
     return location;
+  }
+  
+  /**
+   * get the full name of the location
+   * @return - the fullname
+   */
+  public String getFullName() {
+    return name+"/"+country;
   }
 
   /**
@@ -88,7 +105,7 @@ public class LocationConfig implements JsonAble {
   public void fromLocation(Location location) {
     if (location == null)
       return;
-    this.id = location.getId();
+    this.setId(location.getId());
     this.name = location.getName();
     this.country = location.getCountry();
     Coord coord = location.getCoord();
@@ -104,7 +121,8 @@ public class LocationConfig implements JsonAble {
     this.country = (String) map.get("country");
     this.lat = (String) map.get("lat");
     this.lon = (String) map.get("long");
-    this.id = (Long) map.get("id");
+    this.setId((Long)map.get("id"));
+    this.dwdid = (Long) map.get("dwdid");
   }
 
 }

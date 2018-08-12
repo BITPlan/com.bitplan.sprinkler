@@ -98,6 +98,15 @@
 							"format": "%8d",
 							"labelSize": 10,
 							"fieldSize": 8,
+							"hint": "openweathermap.org id of location - will be looked up",
+							"type": "Long"
+						},
+						{
+							"title": "dwdid",
+							"format": "%8d",
+							"labelSize": 10,
+							"fieldSize": 8,
+							"hint": "Deutscher Wetterdienst id of location - will be looked up",
 							"type": "Long"
 						}
 					]

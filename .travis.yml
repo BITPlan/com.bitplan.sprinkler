@@ -4,6 +4,7 @@
 # https://github.com/travis-ci/travis-ci/issues/3701
 # https://github.com/travis-ci/travis-ci/issues/5176
 sudo: required
+dist: precise
 before_script:
   - sudo apt-get update
   - sudo apt-get install lib32z1 lib32ncurses5 

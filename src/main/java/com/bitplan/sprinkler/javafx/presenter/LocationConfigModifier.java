@@ -21,6 +21,7 @@
 package com.bitplan.sprinkler.javafx.presenter;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.bitplan.error.ExceptionHandler;
 import com.bitplan.gui.App;
@@ -41,6 +42,7 @@ import javafx.stage.Stage;
 public class LocationConfigModifier extends BaseModifier<LocationConfig>{
   
   private Configuration configuration;
+  private Map<String, Object> prevValues;
 
   /**
    * construct me
@@ -59,7 +61,8 @@ public class LocationConfigModifier extends BaseModifier<LocationConfig>{
 
   @Override
   public void updateView() {
-    this.getView().setValues(this.getModel().asMap());
+    prevValues=this.getModel().asMap();
+    this.getView().setValues(prevValues);
   }
 
   @Override
@@ -68,6 +71,12 @@ public class LocationConfigModifier extends BaseModifier<LocationConfig>{
     locationConfig.fromMap(this.getView().getValueMap());
     try {
       // set the configurations location
+      // check whether a different location was specified
+      LocationConfig prevLocation = new LocationConfig();
+      prevLocation.fromMap(prevValues);
+      if (!prevLocation.getFullName().equals(locationConfig.getFullName())) {
+        locationConfig.setId(0L);
+      }
       configuration.setLocation(locationConfig.getLocation());
       configuration.save();
       // set back the locationConfig

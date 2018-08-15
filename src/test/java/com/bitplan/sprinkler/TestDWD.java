@@ -23,6 +23,7 @@ package com.bitplan.sprinkler;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
 
@@ -30,10 +31,14 @@ import org.junit.Test;
 import org.openweathermap.weather.Coord;
 import org.openweathermap.weather.Location;
 
+import com.bitplan.radolan.ImageViewer;
+
 import de.dwd.geoserver.DWDStation;
 import de.dwd.geoserver.WFS;
 import de.dwd.geoserver.WFS.Feature;
 import de.dwd.geoserver.WFS.WFSResponse;
+import de.dwd.radolan.Radolan;
+import javafx.scene.image.Image;
 
 public class TestDWD {
 
@@ -54,7 +59,7 @@ public class TestDWD {
       System.out.println(location.toString());
     Coord coord = location.getCoord();
     assertNotNull(coord);
-    WFSResponse wfsresponse = WFS.getRainHistory(coord, 0.5);
+    WFSResponse wfsresponse = WFS.getHistory(WFS.WFSType.RR,coord, 0.5);
     assertNotNull(wfsresponse);
     assertEquals("FeatureCollection", wfsresponse.type);
     assertEquals(9, wfsresponse.totalFeatures);
@@ -70,11 +75,25 @@ public class TestDWD {
     assertEquals("Düsseldorf(1078) - 18,6 km   51° 17’ 45.60” N   6° 46’  6.96” E", dusStation.toString());
   }
   
+  public DWDStation getDUSStation() {
+    Coord duscoord=new Coord(51.296,6.7686);
+    DWDStation dusStation=new DWDStation("1078","Düsseldorf",duscoord,18.6);
+    return dusStation;
+  }
+  
+  @Test
+  public void testEvaporationHistoryFromDWDStation() throws Exception {
+    WFS.debug=true;
+    DWDStation dusStation=getDUSStation();
+    WFSResponse wfsResponse=WFS.getEvaporationHistory(dusStation);
+    assertNotNull(wfsResponse);
+    assertTrue(wfsResponse.totalFeatures>0);
+  }
+  
   @Test
   public void testRainHistoryFromDWDStation() throws Exception {
     WFS.debug=true;
-    Coord duscoord=new Coord(51.296,6.7686);
-    DWDStation dusStation=new DWDStation("1078","Düsseldorf",duscoord,18.6);
+    DWDStation dusStation=getDUSStation();
     WFSResponse wfsResponse=WFS.getRainHistory(dusStation);
     assertNotNull(wfsResponse);
     assertEquals(3,wfsResponse.totalFeatures);
@@ -84,10 +103,12 @@ public class TestDWD {
   public void testClosestDWDStations() throws Exception {
     boolean debug = false;
     WFS.debug = debug;
-    String names[] = { "Koeln/DE", "Muenchen/DE", "Hamburg/DE", "Regensburg/DE",
+    String names[] = { "Knickelsdorf/DE","Koeln/DE", "Bochum/DE", "Muenchen/DE", "Hamburg/DE", "Regensburg/DE",
         "Aachen/DE", "Puttgarden/DE", "Glasgow/GB", "Chicago/US" };
     String expected[] = {
+        "Düsseldorf(1078) - 18,6 km   51° 17’ 45.60” N   6° 46’  6.96” E",
         "Köln-Bonn(2667) - 16,4 km   50° 51’ 52.56” N   7°  9’ 27.00” E",
+        "Essen-Bredeney(1303) - 19,4 km   51° 24’ 14.76” N   6° 58’  3.72” E",
         "München-Flughafen(1262) - 29,3 km   48° 20’ 51.72” N  11° 48’ 47.88” E",
         "Hamburg-Fuhlsbüttel(1975) - 9,3 km   53° 37’ 59.52” N   9° 59’ 17.16” E",
         "Regensburg(4104) - 3,1 km   49°  2’ 32.64” N  12°  6’  7.56” E",
@@ -95,24 +116,47 @@ public class TestDWD {
         "Fehmarn(5516) - 10,6 km   54° 31’ 42.24” N  11°  3’ 37.80” E", null,
         null };
     int i = 0;
+    debug=true;
     for (String name : names) {
       Location location = Location.byName(name);
       if (location != null) {
         if (debug)
           System.out.println(location.toString());
-        WFSResponse wfsresponse = WFS.getRainHistory(location.getCoord(), 0.5);
+        WFSResponse wfsresponse = WFS.getHistory(WFS.WFSType.RR,location.getCoord(), 0.5);
         DWDStation dwdStation = wfsresponse
             .getClosestStation(location.getCoord());
-        if (dwdStation != null && debug)
-          System.out.println("\t" + dwdStation.toString());
-        if (dwdStation!=null)
+        if (dwdStation != null && debug) {
+          System.out.println("  " + dwdStation.toString());
+        }
+        if (dwdStation!=null) {
           assertEquals(expected[i], dwdStation.toString());
+          SprinkleHistory history=new SprinkleHistory();
+          history.addFromDWDStation(dwdStation);
+          for (SprinklePeriod period:history.getSprinklePeriods()) {
+            System.out.println("    " +period.toString());
+          }
+        }
         else
           assertNull(expected[i]);
         i++;
       } else
         System.err.println("" + name + " not found");
     }
+  }
+ 
+  
+  @SuppressWarnings("restriction")
+  @Test
+  public void testRadolan() throws Throwable {
+    Radolan radolan=new Radolan("https://opendata.dwd.de/weather/radar/radolan/rw/raa01-rw_10000-latest-dwd---bin");
+    //"https://opendata.dwd.de/weather/radar/radolan/sf/raa01-sf_10000-latest-dwd---bin"
+    System.out.println(radolan.header);
+    assertTrue(radolan.bytes.length>900*900*2);
+    Image radarImage=radolan.getImage();
+    ImageViewer.image=radarImage;
+    ImageViewer.setRotate(90.0);
+    String [] args= {};
+    ImageViewer.main(args);
   }
 
 }

@@ -37,7 +37,7 @@ import com.bitplan.sprinkler.Configuration;
 import com.bitplan.sprinkler.FritzBoxConfig;
 import com.bitplan.sprinkler.SprinkleHistory;
 import com.bitplan.sprinkler.SprinklePeriod;
-import com.bitplan.sprinkler.SprinklePeriod.SprinkleSource;
+import com.bitplan.sprinkler.SprinklePeriod.IrrigationEffect;
 import com.bitplan.sprinkler.SprinklerI18n;
 
 import eu.hansolo.LcdGauge;
@@ -245,7 +245,7 @@ public class SprinklerPane extends HBox {
                     .from(startTimeClock.getTime().toInstant());
                 sprinklePeriod.stop = Date
                     .from(stopTimeClock.getTime().toInstant());
-                sprinklePeriod.source = SprinkleSource.Sprinkler;
+                sprinklePeriod.source = IrrigationEffect.Sprinkler;
                 if (sprinkleHistory!=null) {
                   sprinkleHistory.add(sprinklePeriod);
                   sprinkleHistory.save();

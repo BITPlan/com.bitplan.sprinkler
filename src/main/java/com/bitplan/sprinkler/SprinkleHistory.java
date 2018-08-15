@@ -33,6 +33,7 @@ import java.util.TreeMap;
 import com.bitplan.json.JsonAble;
 import com.bitplan.json.JsonManager;
 import com.bitplan.json.JsonManagerImpl;
+import com.bitplan.sprinkler.SprinklePeriod.IrrigationEffect;
 
 import de.dwd.geoserver.DWDStation;
 import de.dwd.geoserver.WFS;
@@ -144,6 +145,23 @@ public class SprinkleHistory implements JsonAble {
   }
 
   /**
+   * add a SprinklePeriod based on the given parameters
+   * @param source
+   * @param start
+   * @param mm
+   * @param mins
+   */
+  public void addPeriod(SprinklePeriod.IrrigationEffect source,Date start,Double mm, int mins) {
+    SprinklePeriod period=new SprinklePeriod();
+    period.source=source;
+    period.mm=mm;
+    period.start=start;
+    period.stop=new Date(period.start.getTime()+60000*mins);
+    if (!this.sprinklePeriodByDate.containsKey(period.start))
+      add(period);
+  }
+  
+  /**
    * get a response for the given station
    * @param dwdStation
    * @throws Exception
@@ -152,14 +170,12 @@ public class SprinkleHistory implements JsonAble {
     reinit();
     WFSResponse wfsresponse = WFS.getRainHistory(dwdStation);
     for (Feature feature:wfsresponse.features) {
-      SprinklePeriod period=new SprinklePeriod();
-      period.source=SprinklePeriod.SprinkleSource.Rain;
-      period.mm=feature.properties.PRECIPITATION;
-      period.start=feature.properties.getDate();
-      period.stop=new Date(period.start.getTime()+60000*60*12);
-      if (!this.sprinklePeriodByDate.containsKey(period.start))
-        add(period);
+      addPeriod(IrrigationEffect.Rain,feature.properties.getDate(),feature.properties.PRECIPITATION,24*60);
     }
+    wfsresponse=WFS.getEvaporationHistory(dwdStation);
+    for (Feature feature:wfsresponse.features) {
+      addPeriod(IrrigationEffect.Evaporation,feature.properties.getDate(),feature.properties.EVAPORATION,24*60);
+    }   
   }
 
 }

@@ -114,7 +114,7 @@ public class LocationConfig implements JsonAble {
       return;
     this.lat = coord.getLatDMS();
     this.lon = coord.getLonDMS();
-    WFSResponse wfsresponse = WFS.getRainHistory(location.getCoord(), 0.5);
+    WFSResponse wfsresponse = WFS.getHistory(WFS.WFSType.RR,location.getCoord(), 0.5);
     theDwdStation = wfsresponse
         .getClosestStation(location.getCoord());
     if (theDwdStation!=null) {

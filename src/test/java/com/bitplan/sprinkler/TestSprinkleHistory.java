@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.openweathermap.weather.Coord;
 
 import com.bitplan.i18n.Translator;
-import com.bitplan.sprinkler.SprinklePeriod.SprinkleSource;
+import com.bitplan.sprinkler.SprinklePeriod.IrrigationEffect;
 
 import de.dwd.geoserver.DWDStation;
 
@@ -41,9 +41,9 @@ public class TestSprinkleHistory {
   @Test
   public void testSprinkleHistory() throws Exception {
     Translator.initialize("sprinkler", "en");
-    SprinklePeriod period1=new SprinklePeriod("2018-08-05 08:03",30,11.4,0.7,SprinkleSource.Sprinkler);
-    SprinklePeriod period2=new SprinklePeriod("2018-08-07 20:22",20,6.7,0.47,SprinkleSource.Sprinkler);
-    SprinklePeriod period3=new SprinklePeriod("2018-08-08 04:30",90,9.8,0,SprinkleSource.Rain);
+    SprinklePeriod period1=new SprinklePeriod("2018-08-05 08:03",30,11.4,0.7,IrrigationEffect.Sprinkler);
+    SprinklePeriod period2=new SprinklePeriod("2018-08-07 20:22",20,6.7,0.47,IrrigationEffect.Sprinkler);
+    SprinklePeriod period3=new SprinklePeriod("2018-08-08 04:30",90,9.8,0,IrrigationEffect.Rain);
     
     assertEquals(11.4,period1.mm,0.01);
     assertEquals(0.7,period1.kWh,0.01);

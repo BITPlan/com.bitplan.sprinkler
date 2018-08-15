@@ -20,7 +20,6 @@
  */
 package de.dwd.geoserver;
 
-import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +51,7 @@ public class WFS {
   public static boolean debug = false;
   // prepare a LOGGER
   protected static Logger LOGGER = Logger.getLogger("de.dwd.geoserver");
+  public enum WFSType{RR,FF,VPGB};
 
   /**
    * Json WFS response decoding
@@ -125,6 +125,7 @@ public class WFS {
     String ID;
     String NAME;
     public Double PRECIPITATION;
+    public Double EVAPORATION;
     String M_DATE;
     Double[] bbox;
 
@@ -132,8 +133,8 @@ public class WFS {
       Coord corner1 = new Coord(bbox[1], bbox[0]);
       Coord corner2 = new Coord(bbox[3], bbox[2]);
       String text = String.format(
-          "id: %s name: %s precipitation: %5.1f mm, mdate: %s, bbox: %s-%s", ID,
-          NAME, PRECIPITATION, M_DATE, corner1.toString(), corner2.toString());
+          "id: %s name: %s precipitation: %5.1f mm, evaporation: %5.1f mm, mdate: %s, bbox: %s-%s", ID,
+          NAME, PRECIPITATION,EVAPORATION,M_DATE, corner1.toString(), corner2.toString());
       return text;
     }
     
@@ -147,7 +148,7 @@ public class WFS {
    * 
    * @return - the URI builder
    */
-  public static URIBuilder getGeoServiceURIBuilder() {
+  public static URIBuilder getGeoServiceURIBuilder(WFSType wfsType) {
     URIBuilder builder = new URIBuilder();
     builder.setScheme("https");
     builder.setHost("maps.dwd.de");
@@ -155,13 +156,13 @@ public class WFS {
     builder.addParameter("service", "WFS");
     builder.addParameter("version", version);
     builder.addParameter("request", "GetFeature");
-    builder.addParameter("typeName", "dwd:RBSN_RR"); // _RR = Niederschlag _FF=Wind _VPGB - potentielle Verdunstung
+    builder.addParameter("typeName", "dwd:RBSN_"+wfsType.toString()); // _RR = Niederschlag _FF=Wind _VPGB - potentielle Verdunstung
     builder.addParameter("outputFormat", "application/json");
     return builder;
   }
 
   /**
-   * get the rain history for a given coordinate
+   * get the history for a given coordinate and WFSType
    * 
    * @param coord
    * @param boxMargin
@@ -169,9 +170,9 @@ public class WFS {
    * @return a WFS Response
    * @throws Exception
    */
-  public static WFSResponse getRainHistory(Coord coord, double boxMargin)
+  public static WFSResponse getHistory(WFSType wfsType,Coord coord, double boxMargin)
       throws Exception {
-    URIBuilder builder = getGeoServiceURIBuilder();
+    URIBuilder builder = getGeoServiceURIBuilder(wfsType);
     builder.addParameter("bbox",
         String.format(Locale.ENGLISH, "%10.5f,%10.5f,%10.5f,%10.5f",
             coord.getLat() - boxMargin, coord.getLon() - boxMargin,
@@ -206,6 +207,16 @@ public class WFS {
    * @throws Exception
    */
   public static WFSResponse getRainHistory(DWDStation dwdStation) throws Exception {
-    return getRainHistory(dwdStation.coord,0.01);
+    return getHistory(WFSType.RR,dwdStation.coord,0.01);
+  }
+
+  /**
+   * get the Evaporation History
+   * @param dwdStation
+   * @return the evaporation history
+   * @throws Exception 
+   */
+  public static WFSResponse getEvaporationHistory(DWDStation dwdStation) throws Exception {
+    return getHistory(WFSType.VPGB,dwdStation.coord,0.01);
   }
 }

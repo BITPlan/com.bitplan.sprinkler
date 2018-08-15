@@ -79,6 +79,11 @@
 			<artifactId>com.bitplan.fritzbox</artifactId>
 			<version>0.0.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.bitplan.radolan</groupId>
+			<artifactId>com.bitplan.radolan</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 		<!-- TestI18n dependency -->
 		<dependency>
 			<groupId>com.bitplan.gui</groupId>

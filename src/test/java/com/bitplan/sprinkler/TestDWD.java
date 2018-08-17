@@ -31,14 +31,10 @@ import org.junit.Test;
 import org.openweathermap.weather.Coord;
 import org.openweathermap.weather.Location;
 
-import com.bitplan.radolan.ImageViewer;
-
 import de.dwd.geoserver.DWDStation;
 import de.dwd.geoserver.WFS;
 import de.dwd.geoserver.WFS.Feature;
 import de.dwd.geoserver.WFS.WFSResponse;
-import de.dwd.radolan.Radolan;
-import javafx.scene.image.Image;
 
 public class TestDWD {
 
@@ -142,21 +138,6 @@ public class TestDWD {
       } else
         System.err.println("" + name + " not found");
     }
-  }
- 
-  
-  @SuppressWarnings("restriction")
-  @Test
-  public void testRadolan() throws Throwable {
-    Radolan radolan=new Radolan("https://opendata.dwd.de/weather/radar/radolan/rw/raa01-rw_10000-latest-dwd---bin");
-    //"https://opendata.dwd.de/weather/radar/radolan/sf/raa01-sf_10000-latest-dwd---bin"
-    System.out.println(radolan.header);
-    assertTrue(radolan.bytes.length>900*900*2);
-    Image radarImage=radolan.getImage();
-    ImageViewer.image=radarImage;
-    ImageViewer.setRotate(90.0);
-    String [] args= {};
-    ImageViewer.main(args);
   }
 
 }

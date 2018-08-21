@@ -58,7 +58,6 @@ import javafx.stage.Stage;
  * @author wf
  *
  */
-@SuppressWarnings("restriction")
 public class SprinklerApp extends GenericApp {
   public static final String RESOURCE_PATH = "com/bitplan/sprinkler/gui";
   public static final String SPRINKLER_APP_PATH = RESOURCE_PATH
@@ -109,8 +108,8 @@ public class SprinklerApp extends GenericApp {
     try {
       TabPane weatherTabPane = xyTabPane
           .getTabPane(SprinklerI18n.WEATHER_GROUP);
-      if (weatherTabPane != null) {
-        WeatherService weatherService = sprinkler.getWeatherService();
+      WeatherService weatherService = sprinkler.getWeatherService();
+      if (weatherTabPane != null && weatherService != null) {
         Location city = weatherService.getLocation();
         // create the weather Forecast
         Tab forecastTab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
@@ -119,8 +118,8 @@ public class SprinklerApp extends GenericApp {
           String title = I18n.get(SprinklerI18n.MULTI_DAY_WEATHER_FORECAST, 5,
               city.getName(), city.getCountry(),
               forecast.totalPrecipitation(5 * 24));
-          WeatherPlot<String,Number> weatherPlot = new WeatherPlot<String,Number>(title, "Date", "mm Rain",
-              city.toString(), forecast);
+          WeatherPlot<String, Number> weatherPlot = new WeatherPlot<String, Number>(
+              title, "Date", "mm Rain", city.toString(), forecast);
           Platform.runLater(
               () -> forecastTab.setContent(weatherPlot.getChart("BarChart")));
         }
@@ -137,10 +136,10 @@ public class SprinklerApp extends GenericApp {
           String title = I18n.get(SprinklerI18n.WEATHER_HISTORY, 5,
               city.getName(), city.getCountry(),
               history.totalPrecipitation(5 * 24));
-          WeatherPlot<Number,Number> weatherHistoryPlot = new WeatherPlot<Number,Number>(title, "Date",
-              "mm Rain", city.toString(), history);
-          Platform.runLater(
-              () -> historyTab.setContent(weatherHistoryPlot.getChart("LineChart")));
+          WeatherPlot<Number, Number> weatherHistoryPlot = new WeatherPlot<Number, Number>(
+              title, "Date", "mm Rain", city.toString(), history);
+          Platform.runLater(() -> historyTab
+              .setContent(weatherHistoryPlot.getChart("LineChart")));
         } else {
           Label msgLabel = new Label("appid not valid for history data");
           Platform.runLater(() -> historyTab.setContent(msgLabel));

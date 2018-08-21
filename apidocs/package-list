@@ -1,0 +1,6 @@
+com.bitplan.sprinkler
+com.bitplan.sprinkler.javafx
+com.bitplan.sprinkler.javafx.presenter
+com.bitplan.util
+de.dwd.geoserver
+org.openweathermap.weather

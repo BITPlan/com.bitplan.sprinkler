@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>SprinklerPane xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../apidocs/com/bitplan/sprinkler/javafx/SprinklerPane.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> * Copyright (c) 2018 BITPlan GmbH</em>
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_javadoccomment"> * <a href="http://www.bitplan.co" target="alexandria_uri">http://www.bitplan.co</a>m</em>
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * This file is part of the Opensource project at:</em>
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * https://github.com/BITPlan/com.bitplan.sprinkler</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * you may not use this file except in compliance with the License.</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> *     <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * Unless required by applicable law or agreed to in writing, software</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</em>
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> * See the License for the specific language governing permissions and</em>
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment"> * limitations under the License.</em>
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">package</strong> com.bitplan.sprinkler.javafx;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> java.util.Date;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.util.logging.Level;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.logging.Logger;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.controlsfx.control.ToggleSwitch;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.bitplan.error.ExceptionHandler;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> com.bitplan.fritzbox.FritzBoxSession;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> com.bitplan.fritzbox.FritzBoxSessionImpl;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.bitplan.fritzbox.HomeAutomationImpl;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.bitplan.i18n.I18n;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> com.bitplan.i18n.Translator;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> com.bitplan.javafx.JFXStopWatch;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> com.bitplan.sprinkler.Configuration;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> com.bitplan.sprinkler.FritzBoxConfig;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> com.bitplan.sprinkler.SprinkleHistory;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> com.bitplan.sprinkler.SprinklePeriod;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> com.bitplan.sprinkler.SprinklePeriod.IrrigationEffect;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> com.bitplan.sprinkler.SprinklerI18n;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.LcdGauge;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.medusa.Clock;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.medusa.Clock.ClockSkinType;
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.medusa.ClockBuilder;
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.medusa.Gauge;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.medusa.Gauge.SkinType;
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.medusa.GaugeBuilder;
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <strong class="jxr_keyword">import</strong> eu.hansolo.medusa.LcdDesign;
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <strong class="jxr_keyword">import</strong> javafx.application.Platform;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">import</strong> javafx.geometry.Pos;
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <strong class="jxr_keyword">import</strong> javafx.scene.layout.HBox;
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <strong class="jxr_keyword">import</strong> javafx.scene.layout.VBox;
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment"> * pane for the sprinkler</em>
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment"> * @author wf</em>
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  @SuppressWarnings(<span class="jxr_string">"restriction"</span>)
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/bitplan/sprinkler/javafx/SprinklerPane.html">SprinklerPane</a> <strong class="jxr_keyword">extends</strong> HBox {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> Logger LOGGER = Logger
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>        .getLogger(<span class="jxr_string">"com.bitplan.sprinkler.javafx"</span>);
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../com/bitplan/sprinkler/SprinkleHistory.html">SprinkleHistory</a> sprinkleHistory;
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>    <strong class="jxr_keyword">private</strong> JFXStopWatch stopWatch;
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>    <strong class="jxr_keyword">private</strong> ToggleSwitch onOffButton;
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>    <strong class="jxr_keyword">private</strong> ExceptionHandler exceptionHandler;
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>    <strong class="jxr_keyword">private</strong> String ain; <em class="jxr_comment">// FritzBox device ain</em>
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>    <strong class="jxr_keyword">private</strong> HomeAutomationImpl homeAutomation;
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>    <strong class="jxr_keyword">private</strong> Clock startTimeClock;
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>    <strong class="jxr_keyword">private</strong> Clock clock;
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>    <strong class="jxr_keyword">private</strong> Clock stopTimeClock;
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>    <strong class="jxr_keyword">private</strong> Gauge sprinklerLevel;
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>    <strong class="jxr_keyword">private</strong> Gauge energyGauge;
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>    <strong class="jxr_keyword">private</strong> Gauge waterGauge;
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>    <strong class="jxr_keyword">private</strong> Gauge energyCostGauge;
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>    <strong class="jxr_keyword">private</strong> Gauge waterCostGauge;
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>  
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">   * get a clock for the given title (to be internationalized)</em>
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">   * @param i18nTitle</em>
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">   * @return - the clock</em>
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>    <strong class="jxr_keyword">protected</strong> Clock getClock(String i18nTitle, <strong class="jxr_keyword">boolean</strong> dateVisible,
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>        <strong class="jxr_keyword">boolean</strong> running) {
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      String title = I18n.get(i18nTitle);
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      Clock lClock = ClockBuilder.create().skinType(ClockSkinType.LCD)
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          .lcdDesign(LcdDesign.GRAY).title(title).titleVisible(<strong class="jxr_keyword">true</strong>)
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          .secondsVisible(<strong class="jxr_keyword">true</strong>).alarmsEnabled(false).dateVisible(dateVisible)
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>          .autoNightMode(<strong class="jxr_keyword">true</strong>).running(running)
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>          .locale(Translator.getCurrentLocale()).build();
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">return</strong> lClock;
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>    }
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>  
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">   * create a Pane for the current Sprinkler Period</em>
+<a class="jxr_linenumber" name="L100" href="#L100">100</a> <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">   * @param sprinkleHistory</em>
+<a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">   *          - the history having all Sprinkler Periods</em>
+<a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">   * @param configuration</em>
+<a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">   *          -the configuration to use</em>
+<a class="jxr_linenumber" name="L105" href="#L105">105</a> <em class="jxr_javadoccomment">   * @param exceptionHandler</em>
+<a class="jxr_linenumber" name="L106" href="#L106">106</a> <em class="jxr_javadoccomment">   *          - the handler for exceptions</em>
+<a class="jxr_linenumber" name="L107" href="#L107">107</a> <em class="jxr_javadoccomment">   * @throws Exception</em>
+<a class="jxr_linenumber" name="L108" href="#L108">108</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../com/bitplan/sprinkler/javafx/SprinklerPane.html">SprinklerPane</a>(<a href="../../../../com/bitplan/sprinkler/SprinkleHistory.html">SprinkleHistory</a> sprinkleHistory,
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>       <a href="../../../../com/bitplan/sprinkler/Configuration.html">Configuration</a> configuration, ExceptionHandler exceptionHandler)
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>       <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">this</strong>.sprinkleHistory = sprinkleHistory;
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>     <strong class="jxr_keyword">this</strong>.exceptionHandler = exceptionHandler;
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>     <em class="jxr_comment">// add a normal running clock</em>
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>     clock = getClock(SprinklerI18n.WATCH_TIME, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>     startTimeClock = getClock(SprinklerI18n.SPRINKLER__BEGIN, false, false);
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>     startTimeClock.setTime(0);
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>     startTimeClock.setVisible(false);
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>     stopTimeClock = getClock(SprinklerI18n.SPRINKLER__END, false, false);
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>     stopTimeClock.setTime(0);
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>     stopTimeClock.setVisible(false);
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>     stopWatch = <strong class="jxr_keyword">new</strong> JFXStopWatch(I18n.get(SprinklerI18n.SPRINKLER__TIME));
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>     stopWatch.halt();
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>     stopWatch.reset();
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>     <em class="jxr_comment">// kwH</em>
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <em class="jxr_comment">//energyGauge = LcdGauge.createGauge("SprinklerEnergy", "kWh"); </em>
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>     energyGauge = LcdGauge.createGauge(SprinklerI18n.ENERGY, <span class="jxr_string">"Wh"</span>); 
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>     energyGauge.setDecimals(0);
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>    
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>     energyCostGauge=LcdGauge.createGauge(SprinklerI18n.ENERGY_COST, configuration.getCurrency());
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>     energyCostGauge.setDecimals(2);
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>     <em class="jxr_comment">// m3</em>
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>     waterGauge = LcdGauge.createGauge(SprinklerI18n.WATER, <span class="jxr_string">"l"</span>);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>     waterGauge.setDecimals(0);
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>     waterCostGauge=LcdGauge.createGauge(SprinklerI18n.WATER_COST, configuration.getCurrency());
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     waterCostGauge.setDecimals(2);
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>     <em class="jxr_comment">// Sprinkler Level</em>
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>     <strong class="jxr_keyword">this</strong>.sprinklerLevel = GaugeBuilder.create().unit(<span class="jxr_string">"mm"</span>).maxValue(30)
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         .skinType(SkinType.LINEAR).title(I18n.get(SprinklerI18n.MM_RAIN_EQUIVALENT)).build(); 
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>     <em class="jxr_comment">// On / Off Button</em>
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>     onOffButton = <strong class="jxr_keyword">new</strong> ToggleSwitch(I18n.get(SprinklerI18n.ON));
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     onOffButton.setStyle(<span class="jxr_string">"-fx-font-size: 45;"</span>);
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> 
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>     <em class="jxr_comment">// use vboxes for each row</em>
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>     VBox vbox1 = <strong class="jxr_keyword">new</strong> VBox();
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>     vbox1.getChildren().add(onOffButton);
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     vbox1.setAlignment(Pos.CENTER);
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>     <em class="jxr_comment">// vbox.setStyle("-fx-content-display: center");</em>
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <em class="jxr_comment">// make the button same size as clock</em>
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     vbox1.prefWidthProperty().bind(clock.widthProperty());
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     vbox1.prefHeightProperty().bind(clock.heightProperty());
+<a class="jxr_linenumber" name="L152" href="#L152">152</a> 
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>     setupSprinklerOnOff();
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>     <em class="jxr_comment">// ConstrainedGridPane replacement with vboxes</em>
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">this</strong>.getChildren().add(vbox1);
+<a class="jxr_linenumber" name="L156" href="#L156">156</a> 
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>     VBox vbox2 = <strong class="jxr_keyword">new</strong> VBox();
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>     <em class="jxr_comment">// this.add(clock, 0, 1);</em>
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>     <em class="jxr_comment">// this.add(startTimeClock, 0, 2);</em>
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>     vbox2.getChildren().add(clock);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>     vbox2.getChildren().add(startTimeClock);
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>     vbox2.getChildren().add(<strong class="jxr_keyword">this</strong>.energyGauge);
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     vbox2.getChildren().add(<strong class="jxr_keyword">this</strong>.energyCostGauge);
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>     <strong class="jxr_keyword">this</strong>.getChildren().add(vbox2);
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>     VBox vbox3 = <strong class="jxr_keyword">new</strong> VBox();
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <em class="jxr_comment">// this.add(stopWatch.get(), 1, 1);</em>
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <em class="jxr_comment">// this.add(stopTimeClock, 1, 2);</em>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>     vbox3.getChildren().add(stopWatch.get());
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>     vbox3.getChildren().add(stopTimeClock);
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>     vbox3.getChildren().add(<strong class="jxr_keyword">this</strong>.waterGauge);
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>     vbox3.getChildren().add(<strong class="jxr_keyword">this</strong>.waterCostGauge);
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>     <strong class="jxr_keyword">this</strong>.getChildren().add(vbox3);
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>     VBox vbox4 = <strong class="jxr_keyword">new</strong> VBox();
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>     vbox4.getChildren().add(sprinklerLevel);
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <em class="jxr_comment">// this.add(sprinklerLevel, 1, 0);</em>
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">this</strong>.getChildren().add(vbox4);
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>     <em class="jxr_comment">// fixRowSizes(2, 30, 35, 35);</em>
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>     <em class="jxr_comment">// fixColumnSizes(2, 50, 50);</em>
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>     <em class="jxr_comment">// react on updates</em>
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>     <strong class="jxr_keyword">this</strong>.stopWatch.get().timeProperty().addListener((arg, oldVal, newVal) -&gt; {
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> secs = newVal.toInstant().getEpochSecond();
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> mm=secs*configuration.getMmPerHour()/3600.0;
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> m3=mm*configuration.getAreaSizeSquareMeter()/1000.0;
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> waterCost=m3*configuration.getWaterPrice();
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> kWh=secs*configuration.getPumpPower()/3600.0/1000.0;
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> energyCost=kWh*configuration.getEnergyPrice();
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>       System.out.println(String.format(<span class="jxr_string">"%.1f mm %.3f m³/%.2f %s %.3f kWh/%.2f %s"</span>,mm,m3,waterCost,configuration.getCurrency(),kWh,energyCost,configuration.getCurrency()));
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>  
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>       Platform.runLater(
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>           () -&gt; {
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             sprinklerLevel.setValue(mm);
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>             waterGauge.setValue(m3*1000.0);
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>             waterCostGauge.setValue(waterCost);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>             energyCostGauge.setValue(energyCost);
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>             energyGauge.setValue(kWh*1000.0);
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>           });
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>     });
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>   }
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> 
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L201" href="#L201">201</a> <em class="jxr_javadoccomment">   * setup the Sprinkler handling</em>
+<a class="jxr_linenumber" name="L202" href="#L202">202</a> <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> <em class="jxr_javadoccomment">   * @throws Exception</em>
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L205" href="#L205">205</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> setupSprinklerOnOff() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L206" href="#L206">206</a> 
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>     <strong class="jxr_keyword">if</strong> (onOffButton != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>       <a href="../../../../com/bitplan/sprinkler/FritzBoxConfig.html">FritzBoxConfig</a> fritzBoxConfig = FritzBoxConfig.getInstance();
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>       <strong class="jxr_keyword">if</strong> (fritzBoxConfig == <strong class="jxr_keyword">null</strong> || fritzBoxConfig.getDeviceName()==<strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>         onOffButton.setDisable(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>       <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>         FritzBoxSession fritzBoxSession = FritzBoxSessionImpl.getInstance();
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <strong class="jxr_keyword">if</strong> (fritzBoxSession != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>           homeAutomation = <strong class="jxr_keyword">new</strong> HomeAutomationImpl(fritzBoxSession);
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>           <strong class="jxr_keyword">if</strong> (ain == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>             ain = homeAutomation.getAinForName(fritzBoxConfig.getDeviceName());
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>             <strong class="jxr_keyword">if</strong> (ain != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>               <strong class="jxr_keyword">boolean</strong> state = homeAutomation.getSwitchState(ain);
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>               onOffButton.setSelected(state);
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>             }
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>           }
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         }
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         onOffButton.selectedProperty().addListener(l -&gt; {
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>           <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>             LOGGER.log(Level.INFO,
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>                 <span class="jxr_string">"switch power on "</span> + fritzBoxConfig.getDeviceName() + <span class="jxr_string">": "</span>
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>                     + onOffButton.isSelected());
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>             <strong class="jxr_keyword">if</strong> (ain != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>               homeAutomation.setSwitchOnOff(ain, onOffButton.isSelected());
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>               <strong class="jxr_keyword">if</strong> (onOffButton.isSelected()) {
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>                 Date now = <strong class="jxr_keyword">new</strong> Date();
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>                 startTimeClock.setTimeMs(now.getTime());
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>                 startTimeClock.setVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>                 stopTimeClock.setTime(0);
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>                 stopTimeClock.setVisible(false);
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>                 stopWatch.start();
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>                 onOffButton.setText(I18n.get(SprinklerI18n.OFF));
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>               } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>                 Date now = <strong class="jxr_keyword">new</strong> Date();
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>                 stopTimeClock.setTimeMs(now.getTime());
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>                 stopTimeClock.setVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 stopWatch.halt();
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>                 <a href="../../../../com/bitplan/sprinkler/SprinklePeriod.html">SprinklePeriod</a> sprinklePeriod = <strong class="jxr_keyword">new</strong> <a href="../../../../com/bitplan/sprinkler/SprinklePeriod.html">SprinklePeriod</a>();
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>                 sprinklePeriod.start = Date
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>                     .from(startTimeClock.getTime().toInstant());
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>                 sprinklePeriod.stop = Date
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>                     .from(stopTimeClock.getTime().toInstant());
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>                 sprinklePeriod.source = IrrigationEffect.Sprinkler;
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>                 <strong class="jxr_keyword">if</strong> (sprinkleHistory!=<strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>                   sprinkleHistory.add(sprinklePeriod);
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>                   sprinkleHistory.save();
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>                 }
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>                 onOffButton.setText(I18n.get(SprinklerI18n.ON));
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>               }
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>             }
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>           } <strong class="jxr_keyword">catch</strong> (Exception e1) {
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             exceptionHandler.handleException(e1);
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>           }
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>         });
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>       }
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>     }
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>   }
+<a class="jxr_linenumber" name="L263" href="#L263">263</a> }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2018 <a href="http://www.bitplan.com">BITPlan GmbH</a>. All rights reserved.</div>
+</body>
+</html>

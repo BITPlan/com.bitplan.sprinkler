@@ -18,7 +18,7 @@
 	</ciManagement>
 	<properties>
 		<!-- for parent pom to work -->
-		<github.project>com.bitplan.javafx</github.project>
+		<github.project>com.bitplan.sprinkler</github.project>
 		<!-- for readme generation -->
 		<documentation.wiki>http://www.bitplan.com/Sprinkler</documentation.wiki>
 		<!-- JUnit unit testing framework -->

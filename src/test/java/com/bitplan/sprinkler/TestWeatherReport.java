@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openweathermap.weather.Location;
 import org.openweathermap.weather.OpenWeatherMapApi;
@@ -42,6 +43,14 @@ import com.google.gson.GsonBuilder;
  */
 public class TestWeatherReport {
 
+  @BeforeClass 
+  /**
+   * make sure we run in demo mode - e.g. to get dummy history data
+   */
+  public static void enableDemo() {
+    OpenWeatherMapApi.enableDemo();
+  }
+  
   @Test
   public void testWeatherReport() throws Exception {
     OpenWeatherMapApi.debug=true;
@@ -96,7 +105,7 @@ public class TestWeatherReport {
     assertEquals("London",london.getName());
     assertEquals("GB",london.getCountry());
     WeatherHistory history=WeatherHistory.getByLocation(london);
-    assertNotNull(history);
+    assertNotNull("history for London should be available",history);
     if (TestSuite.debug) {
       Gson gson = new GsonBuilder().setPrettyPrinting().create();
       System.out.println(gson.toJson(history));

@@ -38,12 +38,14 @@ public class OpenWeatherMapApi {
   // set to true to debug
   public static boolean debug=false;
 
-  // base url of the weather api service (sample mode)
-  protected static String baseurl="https://samples.openweathermap.org";
+  public static final String DEMO_URL="https://samples.openweathermap.org"; // (example mode)
+  // base URL of the weather API service 
+  protected static String baseurl=DEMO_URL;
 
   // appid - sample mode
   // you might want to call enableProduction to use the production/non - sample version of the api
-  public static String appid="b6907d289e10d714a6e88b30761fae22";
+  public static final String DEMO_ID="b6907d289e10d714a6e88b30761fae22";
+  public static String appid=DEMO_ID;
   
   // units - in sample mode this parameter is empty
   public static String units="";
@@ -56,6 +58,12 @@ public class OpenWeatherMapApi {
     appid=pAppid;
     baseurl="https://api.openweathermap.org";
     units="&units=metric";
+  }
+  
+  public static void enableDemo() {
+    baseurl=DEMO_URL;
+    appid=DEMO_ID;
+    units="";
   }
 
   /**

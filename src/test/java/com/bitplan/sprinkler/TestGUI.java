@@ -44,7 +44,7 @@ public class TestGUI {
   // prepare a LOGGER
   protected static Logger LOGGER = Logger.getLogger("com.bitplan.sprinkler");
 
-  static int SHOW_TIME = 4000;
+  static int SHOW_TIME = 3000;
 
   @Before
   public void initGUI() {
@@ -80,7 +80,7 @@ public class TestGUI {
           new CurrentWeatherPane(report));
       sampleApp.show();
       sampleApp.waitOpen();
-      Thread.sleep(SHOW_TIME*4);
+      Thread.sleep(SHOW_TIME);
       sampleApp.close();
     }
   }

@@ -1,11 +1,38 @@
-# com.bitplan.sprinkler
-software for sprinkler / irrigation system based on weather and other parameters
+### com.bitplan.javafx
+[software for sprinkler / water irrigation system based on weather and other parameters](http://www.bitplan.com/Sprinkler) 
 
-### Project
-[![Build Status](https://travis-ci.org/BITPlan/com.bitplan.sprinkler.svg?branch=master)](https://travis-ci.org/BITPlan/com.bitplan.sprinkler)
+[![Travis (.org)](https://img.shields.io/travis/BITPlan/com.bitplan.javafx.svg)](https://travis-ci.org/BITPlan/com.bitplan.javafx)
+[![Maven Central](https://img.shields.io/maven-central/v/com.bitplan.sprinkler/com.bitplan.sprinkler.svg)](https://search.maven.org/artifact/com.bitplan.sprinkler/com.bitplan.sprinkler/0.0.1/jar)
+[![GitHub issues](https://img.shields.io/github/issues/BITPlan/com.bitplan.javafx.svg)](https://github.com/BITPlan/com.bitplan.javafx/issues)
+[![GitHub issues](https://img.shields.io/github/issues-closed/BITPlan/com.bitplan.javafx.svg)](https://github.com/BITPlan/com.bitplan.javafx/issues/?q=is%3Aissue+is%3Aclosed)
+[![GitHub](https://img.shields.io/github/license/BITPlan/com.bitplan.javafx.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
 
-# Links
-* http://www.bitplan.com/index.php/Sprinkler
+### Documentation
+* [Wiki](http://www.bitplan.com/Sprinkler)
+* [com.bitplan.javafx Project pages](https://BITPlan.github.io/com.bitplan.sprinkler)
+* [Javadoc](https://BITPlan.github.io/com.bitplan.sprinkler/apidocs/index.html)
+* [Test-Report](https://BITPlan.github.io/com.bitplan.sprinkler/surefire-report.html)
 
+### Maven dependency
+
+Maven dependency
+```xml
+<dependency>
+  <groupId>com.bitplan.sprinkler</groupId>
+  <artifactId>com.bitplan.sprinkler</artifactId>
+  <version>0.0.1</version>
+</dependency>
+```
+
+[Current release at repo1.maven.org](http://repo1.maven.org/maven2/com/bitplan/sprinkler/com.bitplan.sprinkler/0.0.1/)
+
+### How to build
+```
+git clone https://github.com/BITPlan/com.bitplan.javafx
+cd com.bitplan.javafx
+mvn install
+```
 # History
 * 2018-08-02 Configuration and Location
+* 2018-08-20 0.0.1 first release

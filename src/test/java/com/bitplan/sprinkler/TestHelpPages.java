@@ -42,7 +42,6 @@ import javafx.stage.Stage;
  * @author wf
  *
  */
-@SuppressWarnings("restriction")
 public class TestHelpPages {
   boolean debug = true;
 
@@ -113,6 +112,7 @@ public class TestHelpPages {
   @Test
   public void testTabs() throws Exception {
     WaitableApp.toolkitInit();
+    WaitableApp.testMode=true;
     TaskLaunch.start(() -> startSprinkler());
     while (sprinkler == null || sprinkler.gApp == null)
       Thread.sleep(10);

@@ -20,8 +20,15 @@
  */
 package de.dwd.geoserver;
 
+import java.util.Locale;
+
 import org.openweathermap.weather.Coord;
 
+/**
+ * a weather station of Deutscher Wetterdienst
+ * @author wf
+ *
+ */
 public class DWDStation {
   String name;
   public String id;
@@ -36,7 +43,7 @@ public class DWDStation {
   }
 
   public String toString() {
-    String text = String.format("%s(%s) - %.1f km %s", name, id, distance,
+    String text = String.format(Locale.GERMAN,"%s(%s) - %.1f km %s", name, id, distance,
         coord.toString());
     return text;
   }

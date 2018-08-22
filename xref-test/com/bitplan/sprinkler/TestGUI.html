@@ -48,61 +48,59 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * @author wf</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/bitplan/sprinkler/TestGUI.html">TestGUI</a> {
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <em class="jxr_comment">// prepare a LOGGER</em>
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> Logger LOGGER = Logger.getLogger(<span class="jxr_string">"com.bitplan.sprinkler"</span>);
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/bitplan/sprinkler/TestGUI.html">TestGUI</a> <strong class="jxr_keyword">extends</strong> <a href="../../../com/bitplan/sprinkler/BaseTest.html">BaseTest</a> {
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>   
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">int</strong> SHOW_TIME = 3000;
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">int</strong> SHOW_TIME = 3000;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>    @Before
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> initGUI() {
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      WaitableApp.toolkitInit();
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      Translator.initialize(<span class="jxr_string">"sprinkler"</span>, <span class="jxr_string">"en"</span>);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      Sprinkler.testMode=<strong class="jxr_keyword">true</strong>; <em class="jxr_comment">// avoid System.exit</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>    }
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>    @Test
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testWeatherPlot() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      Sprinkler sprinkler=<strong class="jxr_keyword">new</strong> Sprinkler();
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      WeatherService weatherService=sprinkler.getWeatherService();
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      WeatherForecast forecast=weatherService.getWeatherForecast();
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>      <strong class="jxr_keyword">if</strong> (forecast!=<strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>        WeatherPlot weatherPlot = <strong class="jxr_keyword">new</strong> WeatherPlot(<span class="jxr_string">"5 day Weather Forecast"</span>,
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>            <span class="jxr_string">"Date"</span>, <span class="jxr_string">"mm Rain"</span>,forecast.city.toString(), forecast);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>        SampleApp sampleApp = <strong class="jxr_keyword">new</strong> SampleApp(<span class="jxr_string">"WeatherPlot"</span>,
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>            weatherPlot.getChart(<span class="jxr_string">"BarChart"</span>));
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>        sampleApp.show();
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>        sampleApp.waitOpen();
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>        Thread.sleep(SHOW_TIME);
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>        sampleApp.close();
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>      }
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>    }
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>    
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>    @Test
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCurrentWeatherPane() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      Sprinkler sprinkler=<strong class="jxr_keyword">new</strong> Sprinkler();
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>      WeatherService weatherService=sprinkler.getWeatherService();
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>      WeatherReport report=weatherService.getWeatherReport();
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">if</strong> (report!=<strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>        SampleApp sampleApp = <strong class="jxr_keyword">new</strong> SampleApp(<span class="jxr_string">"WeatherPlot"</span>,
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>            <strong class="jxr_keyword">new</strong> CurrentWeatherPane(report));
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>        sampleApp.show();
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>        sampleApp.waitOpen();
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>        Thread.sleep(SHOW_TIME);
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>        sampleApp.close();
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>      }
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>    }
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>  
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>    @Test
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGUI() <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>      SprinklerApp gApp = SprinklerApp.getInstance(<strong class="jxr_keyword">new</strong> Sprinkler());
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>      gApp.show();
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>      gApp.waitOpen();
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      Thread.sleep(SHOW_TIME);
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>      gApp.close();
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>    }
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>  
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>  }
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>    @Before
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> initGUI() {
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      WaitableApp.toolkitInit();
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      Translator.initialize(<span class="jxr_string">"sprinkler"</span>, <span class="jxr_string">"en"</span>);
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      Sprinkler.testMode=<strong class="jxr_keyword">true</strong>; <em class="jxr_comment">// avoid System.exit</em>
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>    }
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>    @Test
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testWeatherPlot() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      Sprinkler sprinkler=<strong class="jxr_keyword">new</strong> Sprinkler();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      WeatherService weatherService=sprinkler.getWeatherService();
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      WeatherForecast forecast=weatherService.getWeatherForecast();
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">if</strong> (forecast!=<strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>        WeatherPlot weatherPlot = <strong class="jxr_keyword">new</strong> WeatherPlot(<span class="jxr_string">"5 day Weather Forecast"</span>,
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>            <span class="jxr_string">"Date"</span>, <span class="jxr_string">"mm Rain"</span>,forecast.city.toString(), forecast);
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>        SampleApp sampleApp = <strong class="jxr_keyword">new</strong> SampleApp(<span class="jxr_string">"WeatherPlot"</span>,
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>            weatherPlot.getChart(<span class="jxr_string">"BarChart"</span>));
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>        sampleApp.show();
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>        sampleApp.waitOpen();
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>        Thread.sleep(SHOW_TIME);
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>        sampleApp.close();
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>      }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>    }
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>    
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>    @Test
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCurrentWeatherPane() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      Sprinkler sprinkler=<strong class="jxr_keyword">new</strong> Sprinkler();
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      WeatherService weatherService=sprinkler.getWeatherService();
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      WeatherReport report=weatherService.getWeatherReport();
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">if</strong> (report!=<strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>        SampleApp sampleApp = <strong class="jxr_keyword">new</strong> SampleApp(<span class="jxr_string">"WeatherPlot"</span>,
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>            <strong class="jxr_keyword">new</strong> CurrentWeatherPane(report));
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>        sampleApp.show();
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>        sampleApp.waitOpen();
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>        Thread.sleep(SHOW_TIME);
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>        sampleApp.close();
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      }
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>    }
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>    @Test
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGUI() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      SprinklerApp gApp = SprinklerApp.getInstance(<strong class="jxr_keyword">new</strong> Sprinkler());
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      gApp.show();
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      gApp.waitOpen();
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>      Thread.sleep(SHOW_TIME);
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      gApp.close();
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>    }
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>  
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2018 <a href="http://www.bitplan.com">BITPlan GmbH</a>. All rights reserved.</div>

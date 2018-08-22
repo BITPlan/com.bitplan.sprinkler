@@ -129,9 +129,11 @@ public class SprinklerApp extends GenericApp {
         // FIXME - this calls out to the DWD WFS weather service which might be
         // slow ...
         LocationConfig locationConfig = new LocationConfig();
-        locationConfig.fromLocation(sprinkler.configuration.getLocation());
-        if (locationConfig.theDwdStation != null)
-          history.addFromDWDStation(locationConfig.theDwdStation);
+        if (sprinkler.configuration!=null) {
+          locationConfig.fromLocation(sprinkler.configuration.getLocation());
+          if (locationConfig.theDwdStation != null)
+            history.addFromDWDStation(locationConfig.theDwdStation);
+        }
         if (history != null) {
           String title = I18n.get(SprinklerI18n.WEATHER_HISTORY, 5,
               city.getName(), city.getCountry(),

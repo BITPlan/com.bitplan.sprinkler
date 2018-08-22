@@ -40,10 +40,8 @@ import com.bitplan.sprinkler.javafx.WeatherPlot;
  * @author wf
  *
  */
-public class TestGUI {
-  // prepare a LOGGER
-  protected static Logger LOGGER = Logger.getLogger("com.bitplan.sprinkler");
-
+public class TestGUI extends BaseTest {
+ 
   static int SHOW_TIME = 3000;
 
   @Before

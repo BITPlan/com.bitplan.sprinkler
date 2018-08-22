@@ -36,6 +36,11 @@ import de.dwd.geoserver.WFS;
 import de.dwd.geoserver.WFS.Feature;
 import de.dwd.geoserver.WFS.WFSResponse;
 
+/**
+ * test Open data services of Deutscher Wetterdienst
+ * @author wf
+ *
+ */
 public class TestDWD {
 
   // prepare a LOGGER

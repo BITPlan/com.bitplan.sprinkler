@@ -59,7 +59,6 @@ import javafx.scene.layout.VBox;
  * @author wf
  *
  */
-@SuppressWarnings("restriction")
 public class SprinklerPane extends HBox {
   protected static Logger LOGGER = Logger
       .getLogger("com.bitplan.sprinkler.javafx");

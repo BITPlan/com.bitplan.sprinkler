@@ -98,21 +98,29 @@ public class Sprinkler extends Main {
   public WeatherService getWeatherService() throws Exception {
     // @TODO - cleanup side effect
     configuration = Configuration.getConfiguration("default");
+    Location location = null;
     WeatherService service = null;
     if (configuration == null) {
-      error(String.format(
-          "There is no configuration file %s yet.\nYou might want to create one as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
-          Configuration.getJsonFile("default").getPath()));
+      if (!testMode)
+        error(String.format(
+            "There is no configuration file %s yet.\nYou might want to create one as outlined in http://wiki.bitplan.com/index.php/Sprinkler#Configuration",
+            Configuration.getJsonFile("default").getPath()));
+      else {
+        configuration=new Configuration();
+        location=Location.byName("Willich/DE");
+        configuration.setLocation(location);
+      }
     } else {
-      Location location = configuration.getLocation();
+      location = configuration.getLocation();
       if (locationName != null) {
         location = Location.byName(locationName);
         if (location == null)
           error("Could not find location " + locationName);
       }
       OpenWeatherMapApi.enableProduction(configuration.appid);
-      service = new WeatherService(location);
     }
+    if (location != null)
+      service = new WeatherService(location);
     return service;
   }
 
@@ -120,9 +128,11 @@ public class Sprinkler extends Main {
   public void work() throws Exception {
     Translator.APPLICATION_PREFIX = "sprinkler";
     Preferences preferences = Preferences.getInstance();
-    if (lang == null && preferences!=null) {
+    if (lang == null && preferences != null) {
       LangChoice langChoice = preferences.getLanguage();
-      lang = langChoice!=null && !LangChoice.notSet.equals(langChoice)?langChoice.name() : "en";
+      lang = langChoice != null && !LangChoice.notSet.equals(langChoice)
+          ? langChoice.name()
+          : "en";
     }
     Translator.initialize("sprinkler", lang);
     if (this.showVersion || this.debug)
@@ -130,8 +140,8 @@ public class Sprinkler extends Main {
     if (this.showHelp) {
       showHelp();
     }
-    if (preferences!=null) {
-      OpenWeatherMapApi.debug=preferences.getDebug();
+    if (preferences != null) {
+      OpenWeatherMapApi.debug = preferences.getDebug();
     }
     WeatherService weatherService = getWeatherService();
     if (weatherService != null) {

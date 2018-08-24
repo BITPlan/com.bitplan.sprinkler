@@ -13,7 +13,6 @@
 * [com.bitplan.sprinkler Project pages](https://BITPlan.github.io/com.bitplan.sprinkler)
 * [Javadoc](https://BITPlan.github.io/com.bitplan.sprinkler/apidocs/index.html)
 * [Test-Report](https://BITPlan.github.io/com.bitplan.sprinkler/surefire-report.html)
-
 ### Maven dependency
 
 Maven dependency

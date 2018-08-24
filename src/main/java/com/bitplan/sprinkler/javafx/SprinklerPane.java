@@ -59,7 +59,6 @@ import javafx.scene.layout.VBox;
  * @author wf
  *
  */
-@SuppressWarnings("restriction")
 public class SprinklerPane extends HBox {
   protected static Logger LOGGER = Logger
       .getLogger("com.bitplan.sprinkler.javafx");
@@ -219,6 +218,7 @@ public class SprinklerPane extends HBox {
               onOffButton.setSelected(state);
             }
           }
+          fritzBoxSession.close();
         }
         onOffButton.selectedProperty().addListener(l -> {
           try {
@@ -226,7 +226,13 @@ public class SprinklerPane extends HBox {
                 "switch power on " + fritzBoxConfig.getDeviceName() + ": "
                     + onOffButton.isSelected());
             if (ain != null) {
-              homeAutomation.setSwitchOnOff(ain, onOffButton.isSelected());
+              // get a new session
+              FritzBoxSession lfritzBoxSession = FritzBoxSessionImpl.getInstance();
+              if (lfritzBoxSession != null) {
+                homeAutomation = new HomeAutomationImpl(lfritzBoxSession);
+                homeAutomation.setSwitchOnOff(ain, onOffButton.isSelected());
+              }
+              lfritzBoxSession.close();
               if (onOffButton.isSelected()) {
                 Date now = new Date();
                 startTimeClock.setTimeMs(now.getTime());

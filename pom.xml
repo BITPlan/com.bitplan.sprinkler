@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.bitplan.pom</groupId>
 		<artifactId>com.bitplan.pom</artifactId>
-		<version>0.0.6</version>
+		<version>0.0.17</version>
 		<relativePath>../com.bitplan.pom/pom.xml</relativePath>
 	</parent>
 	<groupId>com.bitplan.sprinkler</groupId>
@@ -169,8 +169,8 @@
 								<initialHeapSize>256</initialHeapSize>
 								<maxHeapSize>3000</maxHeapSize>
 							</jre>
-							<!-- <splash> <file>${project.basedir}/src/main/build/Sunflower.bmp</file> 
-								<waitForWindow>true</waitForWindow> <timeout>60</timeout> <timeoutErr>true</timeoutErr> 
+							<!-- <splash> <file>${project.basedir}/src/main/build/Sunflower.bmp</file>
+								<waitForWindow>true</waitForWindow> <timeout>60</timeout> <timeoutErr>true</timeoutErr>
 								</splash> -->
 							<versionInfo>
 								<fileVersion>0.${project.version}</fileVersion>
@@ -188,7 +188,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- http://kosalads.blogspot.de/2013/04/maven-copy-artifact-in-to-separate.html 
+			<!-- http://kosalads.blogspot.de/2013/04/maven-copy-artifact-in-to-separate.html
 				https://stackoverflow.com/a/16862404/1497139 -->
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>

@@ -7,8 +7,8 @@ language: java
 # to avoid Unsupported major.minor version 52.0 we need to specify the JDK to be used
 # https://stackoverflow.com/a/40208648/1497139
 #jdk: oraclejdk8
-#jdk: openjdk8
-jdk: openjdk9
+jdk: openjdk8
+#jdk: openjdk9
 
 # support for headless Swing tests and other gui stuff
 # see https://docs.travis-ci.com/user/gui-and-headless-browsers/ 
@@ -16,7 +16,7 @@ jdk: openjdk9
 # as of  2017-08 precise is only available as an option
 #
 # uncomment the following lines to use xvfb with precise
-#dist: precise
+dist: xenial
 #before_script:
 #  - "export DISPLAY=:99.0"
 #  - "sh -e /etc/init.d/xvfb start"
@@ -48,5 +48,5 @@ addons:
   apt:
     packages:
 #     - oracle-java8-installer
-#     - openjfx 
+      - openjfx 
       - xvfb

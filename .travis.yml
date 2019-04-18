@@ -6,7 +6,9 @@ language: java
 #  
 # to avoid Unsupported major.minor version 52.0 we need to specify the JDK to be used
 # https://stackoverflow.com/a/40208648/1497139
-jdk: oraclejdk8
+#jdk: oraclejdk8
+jdk: openjdk8
+
 # support for headless Swing tests and other gui stuff
 # see https://docs.travis-ci.com/user/gui-and-headless-browsers/ 
 # 

@@ -20,12 +20,20 @@
  */
 package de.dwd.geoserver;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.openweathermap.weather.Coord;
 
+import de.dwd.geoserver.WFS.Feature;
+import de.dwd.geoserver.WFS.Property;
+import de.dwd.geoserver.WFS.WFSResponse;
+import de.dwd.geoserver.WFS.WFSType;
+
 /**
  * a weather station of Deutscher Wetterdienst
+ * 
  * @author wf
  *
  */
@@ -35,6 +43,14 @@ public class DWDStation {
   Coord coord;
   Double distance;
 
+  /**
+   * Construct a station of Deutscher Wetterdienst
+   * 
+   * @param id
+   * @param name
+   * @param coord
+   * @param distance
+   */
   public DWDStation(String id, String name, Coord coord, double distance) {
     this.id = id;
     this.name = name;
@@ -42,9 +58,49 @@ public class DWDStation {
     this.distance = distance;
   }
 
+  /**
+   * construct me from a feature with the given distance
+   * 
+   * @param feature
+   * @param distance
+   */
+  public DWDStation(Feature feature, double distance) {
+    this(feature.properties.ID, feature.properties.NAME,
+        feature.geometry.getCoord(), distance);
+  }
+
+  /**
+   * construct me from a feature
+   * 
+   * @param feature
+   */
+  public DWDStation(Feature feature) {
+    this(feature, 0.0);
+  }
+
   public String toString() {
-    String text = String.format(Locale.GERMAN,"%s(%s) - %.1f km %s", name, id, distance,
-        coord.toString());
+    String text = String.format(Locale.GERMAN, "%s(%s) - %.1f km %s", name, id,
+        distance, coord.toString());
     return text;
+  }
+
+  /**
+   * get a map of all DWD Stations
+   * 
+   * @return the map of DWD Stations by ID
+   * @throws Exception
+   */
+  public static Map<String, DWDStation> getAllStations() throws Exception {
+    Map<String, DWDStation> stations = new HashMap<String, DWDStation>();
+    Coord nw = new Coord(47.3, 5.9);
+    Coord se = new Coord(55.0, 15.1);
+    WFSResponse wfsresponse = WFS.getResponseForBox(WFSType.FF, nw, se);
+    for (Feature feature : wfsresponse.features) {
+      if (!stations.containsKey(feature.properties.ID)) {
+        DWDStation station = new DWDStation(feature);
+        stations.put(station.id, station);
+      }
+    }
+    return stations;
   }
 }

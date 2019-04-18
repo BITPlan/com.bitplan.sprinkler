@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -60,7 +61,7 @@ public class TestDWD {
       System.out.println(location.toString());
     Coord coord = location.getCoord();
     assertNotNull(coord);
-    WFSResponse wfsresponse = WFS.getHistory(WFS.WFSType.RR,coord, 0.5);
+    WFSResponse wfsresponse = WFS.getResponseAt(WFS.WFSType.RR,coord, 0.5);
     assertNotNull(wfsresponse);
     assertEquals("FeatureCollection", wfsresponse.type);
     assertEquals(9, wfsresponse.totalFeatures);
@@ -74,6 +75,12 @@ public class TestDWD {
       }
     DWDStation dusStation = wfsresponse.getClosestStation(coord);
     assertEquals("Düsseldorf(1078) - 18,6 km   51° 17’ 45.60” N   6° 46’  6.96” E", dusStation.toString());
+  }
+  
+  @Test
+  public void testGetAllStations() throws Exception {
+    Map<String, DWDStation> stations = DWDStation.getAllStations();
+    assertEquals(74,stations.size());
   }
   
   public DWDStation getDUSStation() {
@@ -112,7 +119,7 @@ public class TestDWD {
         "Essen-Bredeney(1303) - 19,4 km   51° 24’ 14.76” N   6° 58’  3.72” E",
         "München-Flughafen(1262) - 29,3 km   48° 20’ 51.72” N  11° 48’ 47.88” E",
         "Hamburg-Fuhlsbüttel(1975) - 9,3 km   53° 37’ 59.52” N   9° 59’ 17.16” E",
-        "Regensburg(4104) - 3,1 km   49°  2’ 32.64” N  12°  6’  7.56” E",
+        "Regensburg(4104) - 3,1 km   49°  2’ 33.00” N  12°  6’  6.84” E",
         "Aachen-Orsbach(15000) - 4,8 km   50° 47’ 53.88” N   6°  1’ 27.84” E",
         "Fehmarn(5516) - 10,6 km   54° 31’ 42.24” N  11°  3’ 37.80” E", null,
         null };
@@ -123,7 +130,7 @@ public class TestDWD {
       if (location != null) {
         if (debug)
           System.out.println(location.toString());
-        WFSResponse wfsresponse = WFS.getHistory(WFS.WFSType.RR,location.getCoord(), 0.5);
+        WFSResponse wfsresponse = WFS.getResponseAt(WFS.WFSType.RR,location.getCoord(), 0.5);
         DWDStation dwdStation = wfsresponse
             .getClosestStation(location.getCoord());
         if (dwdStation != null && debug) {

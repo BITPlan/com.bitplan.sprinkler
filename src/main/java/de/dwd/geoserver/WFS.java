@@ -51,7 +51,14 @@ public class WFS {
   public static boolean debug = false;
   // prepare a LOGGER
   protected static Logger LOGGER = Logger.getLogger("de.dwd.geoserver");
-  public enum WFSType{RR,FF,VPGB};
+  /**
+   * reale Evapotranspiration von Gras über sandigem Lehm (AMBAV) VGSL mm
+   * potentielle Evapotranspiration vonGras (AMBAV) VPGB mm
+   * potentielle Verdunstung über Gras (Haude) VPGH mm
+   * FF: Windgeschwindigkeit an RBSN Stationen
+   * RH: Relative Feuchte an RBSN Stationen
+   */
+  public enum WFSType{FF,RH,RR,T2m,VPGB};
 
   /**
    * Json WFS response decoding
@@ -76,8 +83,7 @@ public class WFS {
         Map<Double, DWDStation> distanceMap = new TreeMap<Double, DWDStation>();
         for (Feature feature : features) {
           double distance = feature.geometry.getCoord().distance(coord);
-          DWDStation fstation = new DWDStation(feature.properties.ID,
-              feature.properties.NAME, feature.geometry.getCoord(), distance);
+          DWDStation fstation = new DWDStation(feature,distance);
           distanceMap.put(distance, fstation);
         }
         Entry<Double, DWDStation> first = distanceMap.entrySet().iterator()
@@ -88,6 +94,11 @@ public class WFS {
     }
   }
 
+  /**
+   * a Feature
+   * @author wf
+   *
+   */
   public class Feature {
     public String type;
     public String id;
@@ -121,11 +132,15 @@ public class WFS {
   }
 
   static final DateFormat isoDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+  
+  // a property
   public class Property {
     String ID;
     String NAME;
     public Double PRECIPITATION;
     public Double EVAPORATION;
+    public Double SPEED;
+    public Double DIRECTION;
     String M_DATE;
     Double[] bbox;
 
@@ -160,9 +175,27 @@ public class WFS {
     builder.addParameter("outputFormat", "application/json");
     return builder;
   }
+  
+  /**
+   * get a response for the given box with the given north west and south east corner
+   * @param wfsType
+   * @param nw - north west corner
+   * @param se - south east corner
+   * @return - the response
+   * @throws Exception 
+   */
+  public static WFSResponse getResponseForBox(WFSType wfsType,Coord nw,Coord se) throws Exception {
+    URIBuilder builder = getGeoServiceURIBuilder(wfsType);
+    builder.addParameter("bbox",
+        String.format(Locale.ENGLISH, "%10.5f,%10.5f,%10.5f,%10.5f",
+            nw.getLat(), nw.getLon(),
+            se.getLat(), se.getLon()));
+    WFSResponse wfsresponse = fromURIBuilder(builder);
+    return wfsresponse;
+  }
 
   /**
-   * get the history for a given coordinate and WFSType
+   * get the response for a given coordinate and WFSType with a given margin
    * 
    * @param coord
    * @param boxMargin
@@ -170,15 +203,11 @@ public class WFS {
    * @return a WFS Response
    * @throws Exception
    */
-  public static WFSResponse getHistory(WFSType wfsType,Coord coord, double boxMargin)
+  public static WFSResponse getResponseAt(WFSType wfsType,Coord coord, double boxMargin)
       throws Exception {
-    URIBuilder builder = getGeoServiceURIBuilder(wfsType);
-    builder.addParameter("bbox",
-        String.format(Locale.ENGLISH, "%10.5f,%10.5f,%10.5f,%10.5f",
-            coord.getLat() - boxMargin, coord.getLon() - boxMargin,
-            coord.getLat() + boxMargin, coord.getLon() + boxMargin));
-    WFSResponse wfsresponse = fromURIBuilder(builder);
-    return wfsresponse;
+     Coord nw=new Coord(coord.getLat() - boxMargin, coord.getLon() - boxMargin);
+     Coord se=new Coord(coord.getLat() + boxMargin, coord.getLon() + boxMargin);
+    return getResponseForBox(wfsType,nw,se);
   }
 
   /**
@@ -207,7 +236,7 @@ public class WFS {
    * @throws Exception
    */
   public static WFSResponse getRainHistory(DWDStation dwdStation) throws Exception {
-    return getHistory(WFSType.RR,dwdStation.coord,0.01);
+    return getResponseAt(WFSType.RR,dwdStation.coord,0.01);
   }
 
   /**
@@ -217,6 +246,6 @@ public class WFS {
    * @throws Exception 
    */
   public static WFSResponse getEvaporationHistory(DWDStation dwdStation) throws Exception {
-    return getHistory(WFSType.VPGB,dwdStation.coord,0.01);
+    return getResponseAt(WFSType.VPGB,dwdStation.coord,0.01);
   }
 }

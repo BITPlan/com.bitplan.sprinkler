@@ -20,8 +20,6 @@
  */
 package com.bitplan.sprinkler;
 
-import java.util.logging.Logger;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.openweathermap.weather.WeatherForecast;

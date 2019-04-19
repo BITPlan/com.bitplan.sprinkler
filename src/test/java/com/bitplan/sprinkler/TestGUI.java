@@ -83,6 +83,7 @@ public class TestGUI extends BaseTest {
 
   @Test
   public void testGUI() throws Exception {
+    Sprinkler.testMode=true;
     SprinklerApp gApp = SprinklerApp.getInstance(new Sprinkler());
     gApp.show();
     gApp.waitOpen();

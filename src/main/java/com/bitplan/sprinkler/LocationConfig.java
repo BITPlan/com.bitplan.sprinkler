@@ -28,7 +28,7 @@ import org.openweathermap.weather.Location;
 
 import com.bitplan.json.JsonAble;
 
-import de.dwd.geoserver.DWDStation;
+import de.dwd.geoserver.Station;
 import de.dwd.geoserver.WFS;
 import de.dwd.geoserver.WFS.WFSResponse;
 
@@ -49,7 +49,7 @@ public class LocationConfig implements JsonAble {
   private Long id;
   public String dwdid;
   public String dwdStation;
-  DWDStation theDwdStation;
+  Station theDwdStation;
 
   public Long getId() {
     return id;

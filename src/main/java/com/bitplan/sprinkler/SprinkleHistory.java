@@ -35,7 +35,7 @@ import com.bitplan.json.JsonManager;
 import com.bitplan.json.JsonManagerImpl;
 import com.bitplan.sprinkler.SprinklePeriod.IrrigationEffect;
 
-import de.dwd.geoserver.DWDStation;
+import de.dwd.geoserver.Station;
 import de.dwd.geoserver.WFS;
 import de.dwd.geoserver.WFS.Feature;
 import de.dwd.geoserver.WFS.WFSResponse;
@@ -166,7 +166,7 @@ public class SprinkleHistory implements JsonAble {
    * @param dwdStation
    * @throws Exception
    */
-  public void addFromDWDStation(DWDStation dwdStation) throws Exception {
+  public void addFromDWDStation(Station dwdStation) throws Exception {
     reinit();
     WFSResponse wfsresponse = WFS.getRainHistory(dwdStation);
     for (Feature feature:wfsresponse.features) {

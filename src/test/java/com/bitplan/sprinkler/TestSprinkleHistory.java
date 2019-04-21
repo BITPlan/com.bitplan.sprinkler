@@ -29,7 +29,7 @@ import org.openweathermap.weather.Coord;
 import com.bitplan.i18n.Translator;
 import com.bitplan.sprinkler.SprinklePeriod.IrrigationEffect;
 
-import de.dwd.geoserver.DWDStation;
+import de.dwd.geoserver.Station;
 
 /**
  * test the sprinkler history
@@ -65,7 +65,7 @@ public class TestSprinkleHistory {
   public void testSprinkleHistoryFromDWD() throws Exception {
     SprinkleHistory history=new SprinkleHistory();
     Coord duscoord=new Coord(51.296,6.7686);
-    DWDStation dusStation=new DWDStation("1078","Düsseldorf",duscoord,18.6);
+    Station dusStation=new Station("1078","Düsseldorf",duscoord,18.6);
     history.addFromDWDStation(dusStation);
     assertTrue(history.getSprinklePeriods().size()>=3);
     history.addFromDWDStation(dusStation);

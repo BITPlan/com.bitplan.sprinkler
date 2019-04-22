@@ -49,9 +49,9 @@ import de.dwd.geoserver.WFS.WFSResponse;
 public class SprinkleHistory implements JsonAble {
 
   String name = null;
-  private List<SprinklePeriod> sprinklePeriods=new ArrayList<SprinklePeriod>();
-  private Map<Date,SprinklePeriod> sprinklePeriodByDate=new TreeMap<Date,SprinklePeriod>();
-  
+  private List<SprinklePeriod> sprinklePeriods = new ArrayList<SprinklePeriod>();
+  private Map<Date, SprinklePeriod> sprinklePeriodByDate = new TreeMap<Date, SprinklePeriod>();
+
   public List<SprinklePeriod> getSprinklePeriods() {
     return sprinklePeriods;
   }
@@ -61,8 +61,9 @@ public class SprinkleHistory implements JsonAble {
   }
 
   // make gson happy
-  public SprinkleHistory() {}
-  
+  public SprinkleHistory() {
+  }
+
   /**
    * construct me from a name and an array of periods
    * 
@@ -88,19 +89,22 @@ public class SprinkleHistory implements JsonAble {
       }
     });
   }
-  
+
   /**
    * return the total precipitation
+   * 
    * @param hours
    * @return - the sum
    */
   public Double totalPrecipitation(int hours) {
-    double total=0.0;
-    for (SprinklePeriod period:sprinklePeriods)
-      total+=period.mm;
+    double total = 0.0;
+    for (SprinklePeriod period : sprinklePeriods) {
+      if (period.mm != null)
+        total += period.mm;
+    }
     return total;
   }
-  
+
   public void add(SprinklePeriod period) {
     this.getSprinklePeriods().add(period);
     this.sprinklePeriodByDate.put(period.start, period);
@@ -111,7 +115,7 @@ public class SprinkleHistory implements JsonAble {
   public void reinit() {
     sortByStart();
     this.sprinklePeriodByDate.clear();
-    for (SprinklePeriod period:sprinklePeriods) {
+    for (SprinklePeriod period : sprinklePeriods) {
       sprinklePeriodByDate.put(period.start, period);
     }
   }
@@ -125,7 +129,8 @@ public class SprinkleHistory implements JsonAble {
 
   @Override
   public File getJsonFile() {
-    String appName=this.getClass().getSimpleName() + (name==null?"":"_" + name);
+    String appName = this.getClass().getSimpleName()
+        + (name == null ? "" : "_" + name);
     return JsonAble.getJsonFile(appName);
   }
 
@@ -133,6 +138,7 @@ public class SprinkleHistory implements JsonAble {
 
   /**
    * singleton access
+   * 
    * @return the singleton
    */
   public static SprinkleHistory getInstance() {
@@ -146,36 +152,41 @@ public class SprinkleHistory implements JsonAble {
 
   /**
    * add a SprinklePeriod based on the given parameters
+   * 
    * @param source
    * @param start
    * @param mm
    * @param mins
    */
-  public void addPeriod(SprinklePeriod.IrrigationEffect source,Date start,Double mm, int mins) {
-    SprinklePeriod period=new SprinklePeriod();
-    period.source=source;
-    period.mm=mm;
-    period.start=start;
-    period.stop=new Date(period.start.getTime()+60000*mins);
+  public void addPeriod(SprinklePeriod.IrrigationEffect source, Date start,
+      Double mm, int mins) {
+    SprinklePeriod period = new SprinklePeriod();
+    period.source = source;
+    period.mm = mm;
+    period.start = start;
+    period.stop = new Date(period.start.getTime() + 60000 * mins);
     if (!this.sprinklePeriodByDate.containsKey(period.start))
       add(period);
   }
-  
+
   /**
    * get a response for the given station
+   * 
    * @param dwdStation
    * @throws Exception
    */
   public void addFromDWDStation(Station dwdStation) throws Exception {
     reinit();
     WFSResponse wfsresponse = WFS.getRainHistory(dwdStation);
-    for (Feature feature:wfsresponse.features) {
-      addPeriod(IrrigationEffect.Rain,feature.properties.getDate(),feature.properties.PRECIPITATION,24*60);
+    for (Feature feature : wfsresponse.features) {
+      addPeriod(IrrigationEffect.Rain, feature.properties.getDate(),
+          feature.properties.PRECIPITATION, 24 * 60);
     }
-    wfsresponse=WFS.getEvaporationHistory(dwdStation);
-    for (Feature feature:wfsresponse.features) {
-      addPeriod(IrrigationEffect.Evaporation,feature.properties.getDate(),feature.properties.EVAPORATION,24*60);
-    }   
+    wfsresponse = WFS.getEvaporationHistory(dwdStation);
+    for (Feature feature : wfsresponse.features) {
+      addPeriod(IrrigationEffect.Evaporation, feature.properties.getDate(),
+          feature.properties.EVAPORATION, 24 * 60);
+    }
   }
 
 }

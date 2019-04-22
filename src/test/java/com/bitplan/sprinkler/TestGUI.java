@@ -39,24 +39,24 @@ import com.bitplan.sprinkler.javafx.WeatherPlot;
  *
  */
 public class TestGUI extends BaseTest {
- 
+
   static int SHOW_TIME = 3000;
 
   @Before
   public void initGUI() {
     WaitableApp.toolkitInit();
     Translator.initialize("sprinkler", "en");
-    Sprinkler.testMode=true; // avoid System.exit
+    Sprinkler.testMode = true; // avoid System.exit
   }
 
   @Test
   public void testWeatherPlot() throws Exception {
-    Sprinkler sprinkler=new Sprinkler();
-    WeatherService weatherService=sprinkler.getWeatherService();
-    WeatherForecast forecast=weatherService.getWeatherForecast();
-    if (forecast!=null) {
+    Sprinkler sprinkler = new Sprinkler();
+    WeatherService weatherService = sprinkler.getWeatherService();
+    WeatherForecast forecast = weatherService.getWeatherForecast();
+    if (forecast != null) {
       WeatherPlot weatherPlot = new WeatherPlot("5 day Weather Forecast",
-          "Date", "mm Rain",forecast.city.toString(), forecast);
+          "Date", "mm Rain", forecast.city.toString(), forecast);
       SampleApp sampleApp = new SampleApp("WeatherPlot",
           weatherPlot.getChart("BarChart"));
       sampleApp.show();
@@ -65,13 +65,13 @@ public class TestGUI extends BaseTest {
       sampleApp.close();
     }
   }
-  
+
   @Test
   public void testCurrentWeatherPane() throws Exception {
-    Sprinkler sprinkler=new Sprinkler();
-    WeatherService weatherService=sprinkler.getWeatherService();
-    WeatherReport report=weatherService.getWeatherReport();
-    if (report!=null) {
+    Sprinkler sprinkler = new Sprinkler();
+    WeatherService weatherService = sprinkler.getWeatherService();
+    WeatherReport report = weatherService.getWeatherReport();
+    if (report != null) {
       SampleApp sampleApp = new SampleApp("WeatherPlot",
           new CurrentWeatherPane(report));
       sampleApp.show();
@@ -83,12 +83,14 @@ public class TestGUI extends BaseTest {
 
   @Test
   public void testGUI() throws Exception {
-    Sprinkler.testMode=true;
-    SprinklerApp gApp = SprinklerApp.getInstance(new Sprinkler());
-    gApp.show();
-    gApp.waitOpen();
-    Thread.sleep(SHOW_TIME);
-    gApp.close();
+    if (!isTravis()) {
+      Sprinkler.testMode = true;
+      SprinklerApp gApp = SprinklerApp.getInstance(new Sprinkler());
+      gApp.show();
+      gApp.waitOpen();
+      Thread.sleep(SHOW_TIME);
+      gApp.close();
+    }
   }
 
 }

@@ -70,6 +70,7 @@ public class TestGUI extends BaseTest {
   @Test
   public void testCurrentWeatherPane() throws Exception {
     Sprinkler sprinkler = new Sprinkler();
+    sprinkler.nogui=true;
     WeatherService weatherService = sprinkler.getWeatherService();
     WeatherReport report = weatherService.getWeatherReport();
     if (report != null) {

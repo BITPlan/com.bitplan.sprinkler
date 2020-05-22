@@ -57,7 +57,7 @@ public class TestDWD {
         "Hamburg-Fuhlsbüttel(1975) - 9,3 km   53° 37’ 59.52” N   9° 59’ 17.16” E",
         "Regensburg(4104) - 3,1 km   49°  2’ 33.00” N  12°  6’  6.84” E",
         "Aachen-Orsbach(15000) - 5,1 km   50° 47’ 53.88” N   6°  1’ 27.84” E",
-        "Fehmarn(5516) - 10,6 km   54° 31’ 42.24” N  11°  3’ 37.80” E", null,
+        "Fehmarn(5516) - 10,6 km   54° 31’ 41.88” N  11°  3’ 38.16” E", null,
         null };
     int i = 0;
     debug=true;

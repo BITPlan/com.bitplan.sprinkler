@@ -44,8 +44,8 @@ public class TestGUI extends BaseTest {
 
   @Before
   public void initGUI() {
-    WaitableApp.toolkitInit();
     Translator.initialize("sprinkler", "en");
+    WaitableApp.toolkitInit();
     Sprinkler.testMode = true; // avoid System.exit
   }
 

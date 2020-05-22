@@ -35,7 +35,6 @@ import org.junit.Test;
 import org.openweathermap.weather.Coord;
 import org.openweathermap.weather.Location;
 
-import com.bitplan.json.TestJson.Person;
 import com.google.gson.Gson;
 
 /**

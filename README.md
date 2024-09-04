@@ -22,7 +22,7 @@ Maven dependency
 <dependency>
   <groupId>com.bitplan.sprinkler</groupId>
   <artifactId>com.bitplan.sprinkler</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 </dependency>
 ```
 
@@ -37,3 +37,4 @@ mvn install
 # History
 * 2018-08-02 Configuration and Location
 * 2018-08-20 0.0.1 first release
+* 2024-09-04 0.0.2 fixes city display

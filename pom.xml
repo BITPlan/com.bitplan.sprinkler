@@ -12,7 +12,8 @@
 	<artifactId>com.bitplan.sprinkler</artifactId>
 	<version>0.0.1</version>
 	<name>com.bitplan.sprinkler</name>
-	<description>software for sprinkler / water irrigation system based on weather and other parameters </description>
+	<description>software for sprinkler / water irrigation system based on
+		weather and other parameters </description>
 	<ciManagement>
 		<system>Travis</system>
 	</ciManagement>
@@ -51,12 +52,14 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.bitplan.gui/com.bitplan.javafx -->
+		<!--
+		https://mvnrepository.com/artifact/com.bitplan.gui/com.bitplan.javafx -->
 		<dependency>
 			<groupId>com.bitplan.gui</groupId>
 			<artifactId>com.bitplan.javafx</artifactId>
 		</dependency>
-		<!-- https://search.maven.org/#artifactdetails%7Ccom.bitplan%7Ccom.bitplan.fritzbox%7C0.0.1%7Cjar -->
+		<!--
+		https://search.maven.org/#artifactdetails%7Ccom.bitplan%7Ccom.bitplan.fritzbox%7C0.0.1%7Cjar -->
 		<dependency>
 			<groupId>com.bitplan</groupId>
 			<artifactId>com.bitplan.fritzbox</artifactId>
@@ -79,7 +82,7 @@
 			<artifactId>javafxsvg</artifactId>
 			<version>1.3.0</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -131,14 +134,16 @@
 						<configuration>
 							<dontWrapJar>false</dontWrapJar>
 							<headerType>console</headerType>
-							<jar>target/com.bitplan.sprinkler-${project.version}-jar-with-dependencies.jar</jar>
+							<jar>
+								target/com.bitplan.sprinkler-${project.version}-jar-with-dependencies.jar</jar>
 							<outfile>${project.build.directory}/sprinkler.exe</outfile>
 							<errTitle />
 							<cmdLine />
 							<chdir />
 							<priority>normal</priority>
 							<downloadUrl>http://java.com/download</downloadUrl>
-							<supportUrl>http://wiki.bitplan.com/index.php/Sprinkler</supportUrl>
+							<supportUrl>
+								http://wiki.bitplan.com/index.php/Sprinkler</supportUrl>
 							<customProcName>false</customProcName>
 							<stayAlive>false</stayAlive>
 							<manifest />
@@ -151,8 +156,10 @@
 								<initialHeapSize>256</initialHeapSize>
 								<maxHeapSize>3000</maxHeapSize>
 							</jre>
-							<!-- <splash> <file>${project.basedir}/src/main/build/Sunflower.bmp</file>
-								<waitForWindow>true</waitForWindow> <timeout>60</timeout> <timeoutErr>true</timeoutErr>
+							<!-- <splash>
+							<file>${project.basedir}/src/main/build/Sunflower.bmp</file>
+								<waitForWindow>true</waitForWindow> <timeout>60</timeout>
+							<timeoutErr>true</timeoutErr>
 								</splash> -->
 							<versionInfo>
 								<fileVersion>0.${project.version}</fileVersion>
@@ -170,7 +177,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- http://kosalads.blogspot.de/2013/04/maven-copy-artifact-in-to-separate.html
+			<!--
+			http://kosalads.blogspot.de/2013/04/maven-copy-artifact-in-to-separate.html
 				https://stackoverflow.com/a/16862404/1497139 -->
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>

@@ -110,10 +110,10 @@ public class SprinklerApp extends GenericApp {
           .getTabPane(SprinklerI18n.WEATHER_GROUP);
       WeatherService weatherService = sprinkler.getWeatherService();
       if (weatherTabPane != null && weatherService != null) {
-        Location city = weatherService.getLocation();
         // create the weather Forecast
         Tab forecastTab = xyTabPane.getTab(SprinklerI18n.WEATHER_FORECAST_FORM);
         WeatherForecast forecast = weatherService.getWeatherForecast();
+        Location city = forecast.city;
         if (forecast != null) {
           String title = I18n.get(SprinklerI18n.MULTI_DAY_WEATHER_FORECAST, 5,
               city.getName(), city.getCountry(),

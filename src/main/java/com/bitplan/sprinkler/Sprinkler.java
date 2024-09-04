@@ -147,10 +147,11 @@ public class Sprinkler extends Main {
     if (weatherService != null) {
       WeatherForecast forecast = weatherService.getWeatherForecast();
       if (forecast != null) {
-        System.out.println(String.format(
-            "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %4.1f mm",
-            forecast.city.getName(), forecast.city.getCountry(),
-            forecast.city.getId(), forecast.totalPrecipitation(5 * 24)));
+    	String forecast_msg=String.format(
+                "The forecast for the total precipitation at %s/%s id: %8d for the next 5 days is %4.1f mm",
+                forecast.city.getName(), forecast.city.getCountry(),
+                forecast.city.getId(), forecast.totalPrecipitation(5 * 24));
+        System.out.println(forecast_msg);
         if (rainforecast) {
           for (Forecast threehours : forecast.list) {
             double rain = 0.0;
